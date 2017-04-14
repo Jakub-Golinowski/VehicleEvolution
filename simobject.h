@@ -9,7 +9,7 @@ class SimObject
 public:
     SimObject();
 
-private:
+protected:
     std::shared_ptr<b2Body> body;
     std::shared_ptr<QGraphicsItem> item;
 };

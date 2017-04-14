@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 
     // QGraphics
     QGraphicsRectItem groundRectangle;
+    // First two parameters are setting the local origin point in the middle of the rectangle
+    // so that it complies with Box2D coordinates. May be harder to implement with general polygons.
     groundRectangle.setRect(-250,-20, 500, 40);
     testSimWorld.getScene()->addItem(&groundRectangle);
 
@@ -76,7 +78,10 @@ int main(int argc, char *argv[])
 
     // QGraphics
     QGraphicsRectItem box;
-//    box.setRect(dynBodyPosX*scaleFactor,sceneHeight - dynBodyPosY*scaleFactor, 10, 10);
+
+
+    // First two parameters are setting the local origin point in the middle of the rectangle
+    // so that it complies with Box2D coordinates. May be harder to implement with general polygons.
     box.setRect(-10,-10, 20, 20);
     testSimWorld.getScene()->addItem(&box);
     cout << "First position: " <<  dynBodyPosX*scaleFactor << " " << sceneHeight - dynBodyPosY*scaleFactor << endl;
