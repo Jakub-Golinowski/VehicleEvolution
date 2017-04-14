@@ -31,9 +31,8 @@ void SimWorld::addObject(std::pair<QGraphicsItem*, b2Body*> newObject)
 
 void SimWorld::startSimulation()
 {
-    QTimer * timer = new QTimer;
-    connect(timer, SIGNAL(timeout()), this, SLOT(simulate()));
-    timer->start(QT_TIMER_PERIOD);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(simulate()));
+    timer.start(QT_TIMER_PERIOD);
 }
 
 void SimWorld::simulate()

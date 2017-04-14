@@ -15,8 +15,6 @@ class SimWorld : public QObject {
     Q_OBJECT
 public:
 
-
-
     SimWorld( unsigned long sizeX, unsigned long sizeY, float gravityX, float gravityY);
 
     std::shared_ptr<QGraphicsScene> getScene() const;
@@ -39,8 +37,9 @@ private:
 
     std::shared_ptr<QGraphicsScene> scene;
     std::shared_ptr<b2World> world;
-
     std::vector<std::pair<QGraphicsItem*, b2Body*>> objects;
+
+    QTimer timer;
 };
 
 #endif // SIMWORLD_H
