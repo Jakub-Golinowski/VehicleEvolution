@@ -13,8 +13,9 @@ class SimRect : public SimObject
 public:
     SimRect( SimWorld * simworld,
              float width, float height,
-             float posX, float posY, float density
-             , float friction);
+             float posX, float posY, float density,
+             float friction, int body_type,
+             float angle_degrees);
 };
 
 #endif // SIMRECT_H

@@ -4,12 +4,15 @@
 SimRect::SimRect(SimWorld * simworld,
                  float width, float height,
                  float posX, float posY, float density,
-                 float friction)
+                 float friction, int body_type,
+                 float angle_degrees)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(posX, posY);
-
+    bodyDef.type = (b2BodyType)body_type;
+    bodyDef.angle = angle_degrees*180/M_PI;
     body = simworld->getWorld()->CreateBody(&bodyDef);
+
     b2PolygonShape boxShape;
     boxShape.SetAsBox(width/2, height/2);
     b2FixtureDef fixtureDef;
@@ -17,6 +20,8 @@ SimRect::SimRect(SimWorld * simworld,
     fixtureDef.density = density;
     fixtureDef.friction = friction;
     body->CreateFixture(&fixtureDef);
+
+
 
     item = new QGraphicsRectItem;
     static_cast<QGraphicsRectItem*>(item)->setRect(-width*SimWorld::BOX2D_QT_SCALE_FACTOR/2,

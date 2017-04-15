@@ -33,12 +33,16 @@ int main(int argc, char *argv[])
     float groundBodyPosX = 10.0f;
     float groundBodyPosY = 2.0f;
 
-    SimRect ground(&testSimWorld, 50.0f, 2.0f, groundBodyPosX, groundBodyPosY, 0.0f, 0.0f);
+    SimRect ground(&testSimWorld, 50.0f, 2.0f, groundBodyPosX,
+                   groundBodyPosY, 0.0f, 1.0f, b2_staticBody,
+                   0.0f);
 
-    float dynBodyPosX = 35.0f;
+    float dynBodyPosX = 10.0f;
     float dynBodyPosY = 40.0f;
 
-    SimRect dynamicBox(&testSimWorld, 2.0f, 2.0f, dynBodyPosX, dynBodyPosY, 1.0f, 0.3f);
+    SimRect dynamicBox(&testSimWorld, 2.0f, 2.0f, dynBodyPosX,
+                       dynBodyPosY, 1.0f, 0.3f, b2_dynamicBody,
+                       60.0f);
 
 
     testView.setFixedSize(sceneWidth,sceneHeight);
