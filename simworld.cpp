@@ -35,6 +35,12 @@ void SimWorld::startSimulation()
     timer.start(QT_TIMER_PERIOD);
 }
 
+
+void addRect(float posY, float posY, float width,
+             float height, float mass, float friction) {
+
+}
+
 void SimWorld::simulate()
 {
     world->Step(BOX2D_TIMESTEP, BOX2D_VELOCITY_ITERATIONS, BOX2D_POSITION_ITERATIONS);
