@@ -7,11 +7,10 @@
 class SimObject
 {
 public:
-    SimObject();
+    SimObject(){};
 
-protected:
-    std::shared_ptr<b2Body> body;
-    std::shared_ptr<QGraphicsItem> item;
+    b2Body  * body;
+    QGraphicsItem * item;
 };
 
 #endif // SIMOBJECT_H

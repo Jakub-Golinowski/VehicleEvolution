@@ -24,7 +24,7 @@ std::shared_ptr<b2World> SimWorld::getWorld() const
     return world;
 }
 
-void SimWorld::addObject(std::pair<QGraphicsItem*, b2Body*> newObject)
+void SimWorld::addObject(SimObject * newObject)
 {
     objects.push_back(newObject);
 }
@@ -38,12 +38,12 @@ void SimWorld::startSimulation()
 void SimWorld::simulate()
 {
     world->Step(BOX2D_TIMESTEP, BOX2D_VELOCITY_ITERATIONS, BOX2D_POSITION_ITERATIONS);
-    for( std::pair<QGraphicsItem*, b2Body*> object : objects){
-        b2Vec2 position = object.second->GetPosition();
-        float32 angle = object.second->GetAngle();
-        object.first->setPos(position.x*BOX2D_QT_SCALE_FACTOR, scene->height()-position.y*BOX2D_QT_SCALE_FACTOR);
-        object.first->setRotation(angle*180/M_PI);
-        std::cout << object.first->pos().x()<< " " << object.first->pos().y() << " " << angle << std::endl;
+    for( SimObject * object : objects){
+        b2Vec2 position = object->body->GetPosition();
+        float32 angle = object->body->GetAngle();
+        object->item->setPos(position.x*BOX2D_QT_SCALE_FACTOR, scene->height()-position.y*BOX2D_QT_SCALE_FACTOR);
+        object->item->setRotation(angle*180/M_PI);
+        std::cout << position.x<< " " << position.y << " " << angle << std::endl;
     }
 
 }
