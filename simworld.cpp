@@ -43,7 +43,7 @@ void SimWorld::simulate()
         float32 angle = object->body->GetAngle();
         object->item->setPos(position.x*BOX2D_QT_SCALE_FACTOR, scene->height()-position.y*BOX2D_QT_SCALE_FACTOR);
         object->item->setRotation(angle*180/M_PI);
-        std::cout << position.x<< " " << position.y << " " << angle << std::endl;
+        //std::cout << position.x<< " " << position.y << " " << angle << std::endl;
     }
 
 }

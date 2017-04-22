@@ -10,7 +10,7 @@ SimRect::SimRect(SimWorld * simworld,
     b2BodyDef bodyDef;
     bodyDef.position.Set(posX, posY);
     bodyDef.type = (b2BodyType)body_type;
-    bodyDef.angle = angle_degrees*180/M_PI;
+    bodyDef.angle = angle_degrees*M_PI/180.0f;
     body = simworld->getWorld()->CreateBody(&bodyDef);
 
     b2PolygonShape boxShape;
