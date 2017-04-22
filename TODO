@@ -2,3 +2,5 @@
 - wykorzystac AABB Queries, strona 59 manuala
 - rozkminic jak rysowac dowolne fixtures
 - pamietac o Fixture Filtering dla fixtures z pojazdu (str. 37)
+- renderowac uzywajac AABB Queries is dla kazdego fixture getShape i GetType
+  rozne funkcje renderujace dla kol, poligonow itp
