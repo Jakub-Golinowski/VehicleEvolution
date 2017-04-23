@@ -29,11 +29,17 @@ LIBS += -lBox2D
 SOURCES += main.cpp \
     simworld.cpp \
     simobject.cpp \
-    simrect.cpp
+    simrect.cpp \
+    model.cpp \
+    view.cpp \
+    controller.cpp
 
 HEADERS  += \
     simworld.h \
     simobject.h \
-    simrect.h
+    simrect.h \
+    model.h \
+    view.h \
+    controller.h
 
 FORMS    +=

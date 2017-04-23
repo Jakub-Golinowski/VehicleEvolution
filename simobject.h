@@ -7,7 +7,7 @@
 class SimObject
 {
 public:
-    SimObject(){};
+    SimObject(){}
 
     b2Body  * body;
     QGraphicsItem * item;
