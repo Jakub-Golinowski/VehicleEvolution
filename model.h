@@ -2,11 +2,25 @@
 #define MODEL_H
 
 #include <Box2D/Box2D.h>
+#include "qb2draw.h"
+
+
+
+// Model is basically a wrappe for b2World. It isn't dependend on the View object
 
 class Model
 {
 public:
-    Model(float gravityX, float gravityY);
+    Model(float gravityX, float gravityY, QB2Draw * drawer);
+
+    void DrawModelData();
+
+    void simulate();
+
+    b2Body* addBody(float posX, float posY, b2BodyType bodyType, float angle_degrees);
+
+    b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
+                                       float density, float friction, float restitution);
 
 private:
 
@@ -16,12 +30,10 @@ private:
 
     b2World _box2dWorld;
 
-    b2Body* addBody(float posX, float posY, b2BodyType bodyType, float angle_degrees);
 
-    b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
-                                       float density, float friction, float restitution);
 
-    void simulate();
+
+
 
 
 };

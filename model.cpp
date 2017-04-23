@@ -4,9 +4,15 @@ const float32 Model::BOX2D_TIMESTEP = 1.0f/60.0f;
 const int32 Model::BOX2D_VELOCITY_ITERATIONS = 6;
 const int32 Model::BOX2D_POSITION_ITERATIONS = 2;
 
-Model::Model(float gravityX, float gravityY) : _box2dWorld(b2Vec2(gravityX, gravityY))
+Model::Model(float gravityX, float gravityY, QB2Draw * drawer)
+    : _box2dWorld(b2Vec2(gravityX, gravityY))
 {
+    _box2dWorld.SetDebugDraw(drawer);
+}
 
+void Model::DrawModelData()
+{
+    _box2dWorld.DrawDebugData();
 }
 
 b2Body* Model::addBody(float posX, float posY, b2BodyType bodyType, float angle_radians)

@@ -27,19 +27,15 @@ LIBS += -L"../libs/Box2D/Box2D/Build/Box2D"
 LIBS += -lBox2D
 
 SOURCES += main.cpp \
-    simworld.cpp \
-    simobject.cpp \
-    simrect.cpp \
     model.cpp \
     view.cpp \
-    controller.cpp
+    controller.cpp \
+    qb2draw.cpp
 
 HEADERS  += \
-    simworld.h \
-    simobject.h \
-    simrect.h \
     model.h \
     view.h \
-    controller.h
+    controller.h \
+    qb2draw.h
 
 FORMS    +=

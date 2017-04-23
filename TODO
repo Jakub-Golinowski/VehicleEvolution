@@ -1,6 +1,8 @@
-- zamiana na projektu na model view controller
-- wykorzystac AABB Queries, strona 59 manuala
-- rozkminic jak rysowac dowolne fixtures
-- pamietac o Fixture Filtering dla fixtures z pojazdu (str. 37)
-- renderowac uzywajac AABB Queries is dla kazdego fixture getShape i GetType
-  rozne funkcje renderujace dla kol, poligonow itp
+- zamiana na projektu na model view controller (w sumie to zrobione)
+- definicja DrawPoint w QB2Draw, mozna ewentualnie przepisac to wszystko, zeby nie bylo,
+ze bierzemy gotowce ;p (przez to, ze DrawPoint nie ma definicji jest duzo warningow -Wunused-parameter)
+- wymyslic model tworzeniu pojazdu (chromosom)
+- Mozna do szkieletu zrobic jakis przykladowy pojazd, cokolwiek, zeby zaprezentowac renderowanie
+- Przy tworzeniu pojazdow trzeba wykorzystac Fixture filtering (Box2D manual, strona 37), bo bedzie
+ wiele Fixtures dla tego samego b2_Body i nie powinny sie one se soba zderzac 
+
