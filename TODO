@@ -2,7 +2,9 @@
 - definicja DrawPoint w QB2Draw, mozna ewentualnie przepisac to wszystko, zeby nie bylo,
 ze bierzemy gotowce ;p (przez to, ze DrawPoint nie ma definicji jest duzo warningow -Wunused-parameter)
 - wymyslic model tworzeniu pojazdu (chromosom)
-- Mozna do szkieletu zrobic jakis przykladowy pojazd, cokolwiek, zeby zaprezentowac renderowanie
+- Mozna do szkieletu zrobic jakis przykladowy pojazd, cokolwiek, zeby zaprezentowac 
+ jakos ladniej renderowanie
 - Przy tworzeniu pojazdow trzeba wykorzystac Fixture filtering (Box2D manual, strona 37), bo bedzie
  wiele Fixtures dla tego samego b2_Body i nie powinny sie one se soba zderzac 
-
+- Mozna ogarnac rysowanie obiektow w roznych kolorach
+- Moze jakies testy jednostkowe, tylko nie wiem gdzie i jakie
