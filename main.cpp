@@ -33,8 +33,25 @@ int main(int argc, char *argv[])
     b2Body* testBody = model.addRectBody(0.0,-50.0f,b2_staticBody, 0.0f);
     model.addRectFixture(testBody, 400.0f, 50.0f, 1.0f, 0.3f, 0.3f, 0);
 
-    testBody = model.addRectBody(0, 30.0, b2_dynamicBody, 0.0);
-    model.addRectFixture(testBody, 40, 20, 2.0, 0.5, 0.99, -1);
+    b2Body* carBody = model.addRectBody(0, 30.0, b2_dynamicBody, 0.0);
+    model.addRectFixture(carBody, 40, 20, 2.0, 0.5, 0.99, -1);
+
+    b2Body* leftWheelBody = model.addWheelBody(-40.0, 10.0,20);
+    model.addWheelFixture(leftWheelBody,10.0, 1.0, 0.3, 0.3, -1);
+
+    b2Body* rightWheelBody = model.addWheelBody(40.0, 10.0,20);
+    model.addWheelFixture(rightWheelBody,10.0, 1.0, 0.3, 0.3, -1);
+
+    b2RevoluteJointDef leftjointDef;
+    leftjointDef.Initialize(carBody, leftWheelBody, leftWheelBody->GetWorldCenter());
+
+    model.addRevoluteJoint(&leftjointDef);
+
+    b2RevoluteJointDef rightjointDef;
+    rightjointDef.Initialize(carBody, rightWheelBody, rightWheelBody->GetWorldCenter());
+
+    model.addRevoluteJoint(&rightjointDef);
+
 
 
 

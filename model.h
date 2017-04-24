@@ -24,6 +24,8 @@ public:
                                        float density, float friction, float restitution, uint16 collisionGroup);
 
     b2Body* addWheelBody(float poxX, float posY, float angularVelocity);
+    b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup);
+    b2Joint* addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef);
 
     void addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity);
 

@@ -44,7 +44,7 @@ void QB2Draw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount, const 
 
     QColor c=toQColor(color); //Convert the color
     painter->setPen(c); //set the pen color
-    painter->setBrush(c); //set the brush color
+    painter->setBrush(Qt::transparent); //set the brush color
     QPolygon pol; //Calculate the polygon
     for (int i=0;i<vertexCount;i++){ //Add all points to polygon
         pol.insert(i,toQPoint(vertices[i]));
@@ -66,7 +66,7 @@ void QB2Draw::DrawSolidCircle(const b2Vec2 &center, float32 radius, const b2Vec2
     if (painter==NULL) return; //Check the painter
     QColor c=toQColor(color); //Convert the color
     painter->setPen(c); //set pen color
-    painter->setBrush(c); //set brush color
+    painter->setBrush(Qt::transparent); //set brush color
     painter->drawEllipse(toQPoint(center),qRound(radius),qRound(radius)); //Draw circle
 }
 

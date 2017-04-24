@@ -61,6 +61,27 @@ b2Body* Model::addWheelBody(float posX, float posY, float angularVelocity)
     return _box2dWorld.CreateBody(&bodyDef);
 }
 
+b2Fixture* Model::addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup)
+{
+    b2CircleShape circleShape;
+    circleShape.m_radius = radius;
+    circleShape.m_p.Set(0,0); // Position relative to parent body position
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &circleShape;
+    fixtureDef.density = density;
+    fixtureDef.friction = friction;
+    fixtureDef.restitution = restitution;
+    fixtureDef.filter.groupIndex = collisionGroup; //Ustawiam collision group na -1 -> fixtures z tej grupy nie zderzają się ze sobą.
+
+    return parentBody->CreateFixture(&fixtureDef);
+}
+
+b2Joint* Model::addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef)
+{
+    return _box2dWorld.CreateJoint(dynamic_cast<b2JointDef*>(revoluteJointDef));
+}
+
 b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
                                    float density, float friction, float restitution)
 {
