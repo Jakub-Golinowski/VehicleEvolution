@@ -30,10 +30,13 @@ int main(int argc, char *argv[])
     /*b2Body * testBody = model.addWheelBody(10.0f,10.0f, 5.0f);
     model.addCircleFixture(testBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);*/
 
-    model.addSimpleCarBody(100.0, 100.0, 100.0, 30.0, 5.0);
+    b2Body* testBody = model.addRectBody(0.0,-50.0f,b2_staticBody, 0.0f);
+    model.addRectFixture(testBody, 400.0f, 50.0f, 1.0f, 0.3f, 0.3f, 0);
 
-    b2Body* testBody = model.addRectBody(-400.0f,-100.0f,b2_staticBody, 0.0f);
-    model.addRectFixture(testBody, 0.0f, 0.0f, 800.0f, 100.0f, 1.0f, 0.3f, 0.3f);
+    testBody = model.addRectBody(0, 30.0, b2_dynamicBody, 0.0);
+    model.addRectFixture(testBody, 40, 20, 2.0, 0.5, 0.99, -1);
+
+
 
    /* testBody = model.addBody(0.0f,-120.0f,b2_staticBody, 0.0f);
     model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);

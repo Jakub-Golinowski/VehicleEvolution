@@ -18,16 +18,20 @@ public:
     void simulate();
 
     b2Body* addBody(float posX, float posY, b2BodyType bodyType, float angle_degrees);
-    b2Body* addWheelBody(float poxX, float posY, float angularVelocity);
+
     b2Body* addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians);
+    b2Fixture* addRectFixture(b2Body *parentBody, float width, float height,
+                                       float density, float friction, float restitution, uint16 collisionGroup);
+
+    b2Body* addWheelBody(float poxX, float posY, float angularVelocity);
+
     void addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity);
 
 
     b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
                                        float density, float friction, float restitution);
 
-    b2Fixture* addRectFixture(b2Body *parentBody, float posX, float posY, float width, float height,
-                                       float density, float friction, float restitution);
+
 
 private:
 

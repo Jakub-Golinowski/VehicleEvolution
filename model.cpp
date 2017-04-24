@@ -35,6 +35,22 @@ b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float an
     return _box2dWorld.CreateBody(&bodyDef);
 }
 
+b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float half_height,
+                                   float density, float friction, float restitution, uint16 collisionGroup)
+{
+    b2PolygonShape polygonShape;
+    polygonShape.SetAsBox(half_width, half_height); // Position relative to parent body position
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &polygonShape;
+    fixtureDef.density = density;
+    fixtureDef.friction = friction;
+    fixtureDef.restitution = restitution;
+    fixtureDef.filter.groupIndex = collisionGroup; //Ustawiam collision group na -1 -> fixtures z tej grupy nie zderzają się ze sobą.
+
+    return parentBody->CreateFixture(&fixtureDef);
+}
+
 b2Body* Model::addWheelBody(float posX, float posY, float angularVelocity)
 {
     b2BodyDef bodyDef;
@@ -44,29 +60,6 @@ b2Body* Model::addWheelBody(float posX, float posY, float angularVelocity)
 
     return _box2dWorld.CreateBody(&bodyDef);
 }
-
-void Model::addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity)
-{
-    b2Body * carBody = this->addRectBody(posX, posY,b2_dynamicBody, 0.0f);
-    b2Body * leftWheelBody = this->addWheelBody(posX, posY, 0.0f);
-    //b2Body * rightWheelBody = this->addWheelBody(posX + width, posY - height, -5.0f);
-
-    this->addRectFixture(carBody, posX, posY, width, height, 1.0f, 0.3f, 0.3f);
-    this->addCircleFixture(leftWheelBody, posX, posY - height, 10.0f, 1.0f, 0.3f, 0.3f);
-    //this->addCircleFixture(rightWheelBody, posX + width, posY - height, 10.0f, 1.0f, 0.3f, 0.3f);
-
-   /* b2RevoluteJointDef leftWheelJointDef;
-    leftWheelJointDef.bodyA = carBody;
-    leftWheelJointDef.bodyB = leftWheelBody;
-    leftWheelJointDef.anchorPoint = myBody;
-
-    leftJointDef.Initialize(body, leftWheel, leftWheel.GetWorldCenter());
-    leftJointDef.enableMotor = true;
-    leftJointDef.maxMotorTorque = 100;*/
-
-}
-
-
 
 b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
                                    float density, float friction, float restitution)
@@ -84,26 +77,28 @@ b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, f
     return parentBody->CreateFixture(&fixtureDef);
 }
 
-b2Fixture* Model::addRectFixture(b2Body *parentBody, float posX, float posY, float width, float height,
-                                   float density, float friction, float restitution)
+void Model::addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity)
 {
-    b2Vec2 vertices[4];
-    vertices[0].Set(posX, posY);
-    vertices[1].Set(posX, posY - height);
-    vertices[2].Set(posX + width, posY - height);
-    vertices[3].Set(posX + width, posY);
-    int32 count = 4;
-    b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, count); // Position relative to parent body position
+    b2Body * carBody = this->addRectBody(posX, posY,b2_dynamicBody, 0.0f);
+    b2Body * leftWheelBody = this->addWheelBody(posX, posY, 0.0f);
+    //b2Body * rightWheelBody = this->addWheelBody(posX + width, posY - height, -5.0f);
 
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &polygonShape;
-    fixtureDef.density = density;
-    fixtureDef.friction = friction;
-    fixtureDef.restitution = restitution;
+    this->addRectFixture(carBody, width, height, 1.0f, 0.3f, 0.3f, 0);
+    this->addCircleFixture(leftWheelBody, posX, posY, 10.0f, 1.0f, 0.3f, 0.3f);
+    //this->addCircleFixture(rightWheelBody, posX + width, posY - height, 10.0f, 1.0f, 0.3f, 0.3f);
 
-    return parentBody->CreateFixture(&fixtureDef);
+    b2RevoluteJointDef leftWheelJointDef;
+    leftWheelJointDef.Initialize(carBody, leftWheelBody, carBody->GetWorldCenter());
+   // leftWheelJointDef.enableMotor = true;
+  //  leftWheelJointDef.maxMotorTorque = 100;
+
 }
+
+
+
+
+
+
 
 void Model::simulate()
 {
