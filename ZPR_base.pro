@@ -38,10 +38,10 @@ HEADERS  += \
     controller.h \
     qb2draw.h
 
-DESTDIR = debug
-OBJECTS_DIR = debug/.obj
-MOC_DIR = debug/.moc
-RCC_DIR = debug/.rcc
-UI_DIR = debug/.ui
+DESTDIR = build
+OBJECTS_DIR = build/.obj
+MOC_DIR = build/.moc
+RCC_DIR = build/.rcc
+UI_DIR = build/.ui
 
 FORMS    +=
