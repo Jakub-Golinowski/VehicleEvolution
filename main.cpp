@@ -27,23 +27,22 @@ int main(int argc, char *argv[])
     Controller controller(&model, &view);
 
     // Add some circles to the model
-    b2Body * circleBody = model.addBody(10.0f,10.0f,b2_dynamicBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);
+    /*b2Body * testBody = model.addWheelBody(10.0f,10.0f, 5.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);*/
 
-    circleBody = model.addBody(20.0f,70.0f,b2_dynamicBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);
+    model.addSimpleCarBody(100.0, 100.0, 100.0, 30.0, 5.0);
 
-    circleBody = model.addBody(-10.0f,50.0f,b2_dynamicBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);
+    b2Body* testBody = model.addRectBody(-400.0f,-100.0f,b2_staticBody, 0.0f);
+    model.addRectFixture(testBody, 0.0f, 0.0f, 800.0f, 100.0f, 1.0f, 0.3f, 0.3f);
 
-    circleBody = model.addBody(0.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
+   /* testBody = model.addBody(0.0f,-120.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
 
-    circleBody = model.addBody(80.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
+    testBody = model.addBody(80.0f,-120.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
 
-    circleBody = model.addBody(-80.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(circleBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
+    testBody = model.addBody(-80.0f,-120.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);*/
 
     // b2World will be simulated and drawn every 10 ms
     controller.startSimulation(10);
