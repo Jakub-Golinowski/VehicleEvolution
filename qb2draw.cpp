@@ -81,6 +81,16 @@ void QB2Draw::DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &col
     painter->drawLine(toQPoint(p1),toQPoint(p2)); //Draw the line
 }
 
+void QB2Draw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color){
+    if (painter==NULL) return; //Check the painter
+
+    QColor c=toQColor(color); //Convert the color
+    painter->setPen(c); //Set pen color
+    painter->setBrush(Qt::transparent); //set brush color
+    painter->drawPoint(toQPoint(p));
+
+}
+
 void QB2Draw::DrawTransform(const b2Transform &xf){
     painter->translate(toQPoint(xf.p)); //Translate
     painter->rotate(xf.q.GetAngle()*180.0/3.141628); //Rotate
