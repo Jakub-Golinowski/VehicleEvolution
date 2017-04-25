@@ -5,4 +5,4 @@ To build this project, go to VehicleEvolution folder and run script build.sh (li
 
 ## Dependencies
 QT 5.8  (sudo apt-get install qt5-default)
-CMake
+CMake   (sudo apt-get install cmake)
