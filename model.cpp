@@ -146,10 +146,13 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     carBody->CreateFixture(&fixtureDef);
 
     //Adding wheels
-    for(Wheel wheel : chromosome._wheels)
+   for(Wheel wheel : chromosome._wheels)
     {
         b2Body* wheelBody = addWheelBody(posX + wheel._WheelCenterPosition.x, posY + wheel._WheelCenterPosition.y, wheel._WheelAngularVelocity );
         this->addWheelFixture(wheelBody, wheel._WheelRadius, 1.0, 0.3, 0.3, -2);
+        b2RevoluteJointDef jointDef;
+        jointDef.Initialize(carBody, wheelBody, wheelBody->GetWorldCenter());
+        this->addRevoluteJoint(&jointDef);
     }
 
 

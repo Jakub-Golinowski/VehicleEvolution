@@ -30,10 +30,10 @@ int main(int argc, char *argv[])
     //Create examplary chromosome
     std::vector<Wheel> wheels;
 
-    wheels.push_back(Wheel(b2Vec2(10.0, 10.0), 10.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(-10.0, -10.0), 10.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(0.0, 0.0), 10.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(30.0, 30.0), 10.0, 10.0));
+    wheels.push_back(Wheel(b2Vec2(10.0, 10.0), 20.0, 10.0));
+    wheels.push_back(Wheel(b2Vec2(-10.0, -10.0), 20.0, 10.0));
+    wheels.push_back(Wheel(b2Vec2(0.0, 0.0), 20.0, 10.0));
+    wheels.push_back(Wheel(b2Vec2(30.0, 30.0), 20.0, 10.0));
 
     std::vector<b2Vec2> vertices;
     vertices.push_back(b2Vec2(-30.0, -30.0));
