@@ -30,13 +30,17 @@ SOURCES += main.cpp \
     model.cpp \
     view.cpp \
     controller.cpp \
-    qb2draw.cpp
+    qb2draw.cpp \
+    chromosome.cpp \
+    wheel.cpp
 
 HEADERS  += \
     model.h \
     view.h \
     controller.h \
-    qb2draw.h
+    qb2draw.h \
+    chromosome.h \
+    wheel.h
 
 FORMS    +=
 
