@@ -25,47 +25,25 @@ int main(int argc, char *argv[])
     view.show();
 
     Controller controller(&model, &view);
-
-    // Add some circles to the model
-    /*b2Body * testBody = model.addWheelBody(10.0f,10.0f, 5.0f);
-    model.addCircleFixture(testBody, 0.0f,0.0f,20.0f,1.0f,0.3f,0.3f);*/
-
+    //Add Ground
     b2Body* testBody = model.addRectBody(0.0,-50.0f,b2_staticBody, 0.0f);
     model.addRectFixture(testBody, 400.0f, 50.0f, 1.0f, 0.3f, 0.3f, 0);
 
-    b2Body* carBody = model.addRectBody(0, 30.0, b2_dynamicBody, 0.0);
-    model.addRectFixture(carBody, 40, 20, 2.0, 0.5, 0.99, -1);
+    //Add Car
+    model.addSimpleCarBody(-300.0,80.0,100,40, 30,50);
 
-    b2Body* leftWheelBody = model.addWheelBody(-40.0, 10.0,20);
-    model.addWheelFixture(leftWheelBody,10.0, 1.0, 0.3, 0.3, -1);
+    //Add Obstacles
+   testBody = model.addBody(0.0f,0.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,40.0f,1.0f,0.3f,0.3f);
 
-    b2Body* rightWheelBody = model.addWheelBody(40.0, 10.0,20);
-    model.addWheelFixture(rightWheelBody,10.0, 1.0, 0.3, 0.3, -1);
+    testBody = model.addBody(100.0f,-20.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,40.0f,1.0f,0.3f,0.3f);
 
-    b2RevoluteJointDef leftjointDef;
-    leftjointDef.Initialize(carBody, leftWheelBody, leftWheelBody->GetWorldCenter());
-
-    model.addRevoluteJoint(&leftjointDef);
-
-    b2RevoluteJointDef rightjointDef;
-    rightjointDef.Initialize(carBody, rightWheelBody, rightWheelBody->GetWorldCenter());
-
-    model.addRevoluteJoint(&rightjointDef);
-
-
-
-
-   /* testBody = model.addBody(0.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
-
-    testBody = model.addBody(80.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);
-
-    testBody = model.addBody(-80.0f,-120.0f,b2_staticBody, 0.0f);
-    model.addCircleFixture(testBody, 0.0f,0.0f,80.0f,1.0f,0.3f,0.3f);*/
+    testBody = model.addBody(-100.0f,-20.0f,b2_staticBody, 0.0f);
+    model.addCircleFixture(testBody, 0.0f,0.0f,40.0f,1.0f,0.3f,0.3f);
 
     // b2World will be simulated and drawn every 10 ms
-    controller.startSimulation(10);
+    controller.startSimulation(5);
 
 
     return a.exec();

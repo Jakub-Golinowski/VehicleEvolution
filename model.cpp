@@ -98,20 +98,27 @@ b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, f
     return parentBody->CreateFixture(&fixtureDef);
 }
 
-void Model::addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity)
+void Model::addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity)
 {
-    b2Body * carBody = this->addRectBody(posX, posY,b2_dynamicBody, 0.0f);
-    b2Body * leftWheelBody = this->addWheelBody(posX, posY, 0.0f);
-    //b2Body * rightWheelBody = this->addWheelBody(posX + width, posY - height, -5.0f);
+    b2Body* carBody = this->addRectBody(posX, posY, b2_dynamicBody, 0.0);
+    this->addRectFixture(carBody, width/2, height/2, 2.0, 0.5, 0.99, -1);
 
-    this->addRectFixture(carBody, width, height, 1.0f, 0.3f, 0.3f, 0);
-    this->addCircleFixture(leftWheelBody, posX, posY, 10.0f, 1.0f, 0.3f, 0.3f);
-    //this->addCircleFixture(rightWheelBody, posX + width, posY - height, 10.0f, 1.0f, 0.3f, 0.3f);
+    b2Body* leftWheelBody = this->addWheelBody(posX-width/2, posY-height/2,-angularVelocity);
 
-    b2RevoluteJointDef leftWheelJointDef;
-    leftWheelJointDef.Initialize(carBody, leftWheelBody, carBody->GetWorldCenter());
-   // leftWheelJointDef.enableMotor = true;
-  //  leftWheelJointDef.maxMotorTorque = 100;
+    this->addWheelFixture(leftWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
+
+    b2Body* rightWheelBody = this->addWheelBody(posX+width/2, posY-height/2,-angularVelocity);
+    this->addWheelFixture(rightWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
+
+    b2RevoluteJointDef leftjointDef;
+    leftjointDef.Initialize(carBody, leftWheelBody, leftWheelBody->GetWorldCenter());
+
+    this->addRevoluteJoint(&leftjointDef);
+
+    b2RevoluteJointDef rightjointDef;
+    rightjointDef.Initialize(carBody, rightWheelBody, rightWheelBody->GetWorldCenter());
+
+    this->addRevoluteJoint(&rightjointDef);
 
 }
 

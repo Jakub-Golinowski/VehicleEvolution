@@ -27,10 +27,10 @@ public:
     b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup);
     b2Joint* addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef);
 
-    void addSimpleCarBody(float posX, float posY, float width, float height, float angularVelocity);
+    void addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity);
 
 
-    b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
+    b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radiusl,
                                        float density, float friction, float restitution);
 
 
