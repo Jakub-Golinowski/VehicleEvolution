@@ -39,4 +39,4 @@ CMakeLists.txt.user
 # Build folder
 build/
 # Box2D build folder
-libraries/Build
+libraries/Build/*
