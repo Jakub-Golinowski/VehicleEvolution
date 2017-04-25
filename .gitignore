@@ -38,3 +38,8 @@ CMakeLists.txt.user
 
 # Build folder
 build/
+# Box2D build folder
+libraries/Build/Box2D/
+libraries/Build/CMakeCache.txt
+libraries/Build/CMakeFiles/
+libraries/Build/cmake_install.cmake
