@@ -124,8 +124,8 @@ void Model::addSimpleCarBody(float posX, float posY, float width, float height, 
 
 void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
 {
-    b2Vec2 vertices[chromosome._vertices.size()];
-    std::copy(chromosome._vertices.begin(), chromosome._vertices.end(), vertices);
+  /*  b2Vec2 vertices[chromosome.vertices_.size()];
+    std::copy(chromosome.vertices_.begin(), chromosome.vertices_.end(), vertices);
 
     //Create car body
     b2BodyDef carbodyDef;
@@ -133,7 +133,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     carbodyDef.type = b2_dynamicBody;
     //Create car fixture
     b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, chromosome._vertices.size());
+    polygonShape.Set(vertices, chromosome.vertices_.size());
     b2Body* carBody = _box2dWorld.CreateBody(&carbodyDef);
 
     b2FixtureDef fixtureDef;
@@ -146,7 +146,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     carBody->CreateFixture(&fixtureDef);
 
     //Adding wheels
-   for(Wheel wheel : chromosome._wheels)
+   for(Wheel wheel : chromosome.wheels_)
     {
         b2Body* wheelBody = addWheelBody(posX + wheel._WheelCenterPosition.x, posY + wheel._WheelCenterPosition.y, wheel._WheelAngularVelocity );
         this->addWheelFixture(wheelBody, wheel._WheelRadius, 1.0, 0.3, 0.3, -2);
@@ -156,7 +156,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     }
 
 
-
+*/
 
 }
 
