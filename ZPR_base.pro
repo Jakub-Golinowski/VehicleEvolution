@@ -32,7 +32,7 @@ SOURCES += main.cpp \
     controller.cpp \
     qb2draw.cpp \
     chromosome.cpp \
-    wheel.cpp
+    wheel.cpp \
 
 HEADERS  += \
     model.h \

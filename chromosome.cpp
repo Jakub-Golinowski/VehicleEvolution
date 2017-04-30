@@ -9,13 +9,16 @@
     for(i = 0; i < 2*NUMBER_OF_VERTICES ; ++i){
         float x = std::stof(chromosomeTokens_[i]);
         float y = std::stof(chromosomeTokens_[(i+1)]);
-        vertices_[i] = b2Vec2(x,y);
+        vertices_[i/2] = b2Vec2(x,y);
         ++i;
     };
-    for(i = (i - 1) ; i < NUMBER_OF_TOKENS; ++i){
+    int wheelsArrayIndex = 0;
+    for(i; i < NUMBER_OF_TOKENS; ++i){
         float wheelRadius = std::stof(chromosomeTokens_[i]);
         int vertexIndex = std::stoi(chromosomeTokens_[i+1]);
-        wheels_[i] = Wheel(vertices_[vertexIndex],wheelRadius, 10);
+        wheels_[wheelsArrayIndex] = Wheel(vertices_[vertexIndex],wheelRadius, 10);
+        ++i;
+        ++wheelsArrayIndex;
     };
 }
 

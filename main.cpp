@@ -49,7 +49,10 @@ int main(int argc, char *argv[])
     //Add Car
     model.addSimpleCarBody(-300.0,80.0,100,40, 30,50);
 
-    /*Chromosome chromosome(wheels, vertices);
+    std::string chromosomeString = "1.0 1.1 2.0 2.1 -1.0 -1.1 -2.0 -2.1 1.0 -1.1 2.0 -2.1 -1.0 1.1 -2.0 2.1 4.0 3 3.0 2";
+    Chromosome chromosome(chromosomeString);
+
+    /*
 
     model.addCarFromChromosome(chromosome, 0.0, 100);
 
