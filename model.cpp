@@ -110,11 +110,17 @@ void Model::addSimpleCarBody(float posX, float posY, float width, float height, 
     this->addWheelFixture(rightWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
 
     b2RevoluteJointDef leftjointDef;
+    leftjointDef.enableMotor = true;
+    leftjointDef.maxMotorTorque=10000;
+    leftjointDef.motorSpeed = -1000;
     leftjointDef.Initialize(carBody, leftWheelBody, leftWheelBody->GetWorldCenter());
 
     this->addRevoluteJoint(&leftjointDef);
 
     b2RevoluteJointDef rightjointDef;
+    rightjointDef.enableMotor = true;
+    rightjointDef.maxMotorTorque=10000;
+    rightjointDef.motorSpeed = -1000;
     rightjointDef.Initialize(carBody, rightWheelBody, rightWheelBody->GetWorldCenter());
 
     this->addRevoluteJoint(&rightjointDef);
@@ -127,14 +133,14 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     b2BodyDef carbodyDef;
     carbodyDef.position.Set(posX,posY);
     carbodyDef.type = b2_dynamicBody;
-    //Create CAR BODY
-    b2Body* carBody = _box2dWorld.CreateBody(&carbodyDef);
     //Create CAR FIXTURE DEFINITION STRUCT
     b2FixtureDef fixtureDef;
     fixtureDef.density = 1.0;
     fixtureDef.friction = 0.3;
     fixtureDef.restitution = 0.3;
     fixtureDef.filter.groupIndex = -2;
+    //Create CAR BODY
+    b2Body* carBody = _box2dWorld.CreateBody(&carbodyDef);
     //CAR SHAPES
     b2Vec2 centerPoint(posX, posY);
     b2PolygonShape triangleShape;
@@ -148,11 +154,47 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     for(Wheel wheel : chromosome.getWheels())
     {
         //TODO znaleźć błąd -> dlaczego tutaj muszę mnożyć razy 2 a nie po prostu brać posX i posY
+        //Axles
+        // shape def
+        b2PolygonShape axleShape;
+        axleShape.SetAsBox(5,5);
+        // fixture def
+        b2FixtureDef axleFixture;
+        axleFixture.density=0.5;
+        axleFixture.friction=3;
+        axleFixture.restitution=0.3;
+        axleFixture.shape= &axleShape;
+        axleFixture.filter.groupIndex=-2;
+        // body def
+        b2BodyDef axleBodyDef;
+        axleBodyDef.type = b2_dynamicBody;
+        axleBodyDef.position.Set(2*posX + wheel.wheelCenterPosition_.x, 2*posY + wheel.wheelCenterPosition_.y);
+        // Actual body
+        b2Body* axleBody = _box2dWorld.CreateBody(&axleBodyDef);
+        // Actual Fixture
+        axleBody->CreateFixture(&axleFixture);
+        //wheel
         b2Body* wheelBody = addWheelBody(2*posX + wheel.wheelCenterPosition_.x, 2*posY + wheel.wheelCenterPosition_.y);
         addWheelFixture(wheelBody, wheel.wheelRadius_, 1.0, 0.3, 0.3, -2);
-        b2RevoluteJointDef jointDef;
-        jointDef.Initialize(carBody, wheelBody, wheelBody->GetWorldCenter());
-        addRevoluteJoint(&jointDef);
+        //joint wheel to axle
+        b2RevoluteJointDef wheelToAxleJointDef;
+        wheelToAxleJointDef.Initialize(wheelBody,axleBody,wheelBody->GetWorldCenter());
+        wheelToAxleJointDef.enableMotor=true;
+        wheelToAxleJointDef.motorSpeed = 1000;
+        wheelToAxleJointDef.maxMotorTorque=10000;
+        b2Joint* wheelToAxleJoint = addRevoluteJoint(&wheelToAxleJointDef);
+        //joint axle to car
+        b2PrismaticJointDef axlePrismaticJointDef;
+        axlePrismaticJointDef.lowerTranslation=-5;
+        axlePrismaticJointDef.upperTranslation=5;
+        axlePrismaticJointDef.enableLimit=true;
+        axlePrismaticJointDef.enableMotor=true;
+        //axle
+        b2Vec2 axis(0,1);
+        axlePrismaticJointDef.Initialize(carBody, axleBody, axleBody->GetWorldCenter(), axis);
+        b2Joint* axleToCarJoint= _box2dWorld.CreateJoint(&axlePrismaticJointDef);
+
+
     }
 }
 
