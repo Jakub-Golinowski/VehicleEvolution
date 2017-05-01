@@ -51,12 +51,11 @@ b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float hal
     return parentBody->CreateFixture(&fixtureDef);
 }
 
-b2Body* Model::addWheelBody(float posX, float posY, float angularVelocity)
+b2Body* Model::addWheelBody(float posX, float posY)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(posX,posY);
     bodyDef.type = b2_dynamicBody; //koło jest zawsze dynamic
-    bodyDef.angularVelocity = angularVelocity;
 
     return _box2dWorld.CreateBody(&bodyDef);
 }
@@ -103,11 +102,11 @@ void Model::addSimpleCarBody(float posX, float posY, float width, float height, 
     b2Body* carBody = this->addRectBody(posX, posY, b2_dynamicBody, 0.0);
     this->addRectFixture(carBody, width/2, height/2, 2.0, 0.5, 0.99, -1);
 
-    b2Body* leftWheelBody = this->addWheelBody(posX-width/2, posY-height/2,-angularVelocity);
+    b2Body* leftWheelBody = this->addWheelBody(posX-width/2, posY-height/2);
 
     this->addWheelFixture(leftWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
 
-    b2Body* rightWheelBody = this->addWheelBody(posX+width/2, posY-height/2,-angularVelocity);
+    b2Body* rightWheelBody = this->addWheelBody(posX+width/2, posY-height/2);
     this->addWheelFixture(rightWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
 
     b2RevoluteJointDef leftjointDef;
@@ -124,40 +123,37 @@ void Model::addSimpleCarBody(float posX, float posY, float width, float height, 
 
 void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
 {
-  /*  b2Vec2 vertices[chromosome.vertices_.size()];
-    std::copy(chromosome.vertices_.begin(), chromosome.vertices_.end(), vertices);
-
-    //Create car body
+    //CAR BODY DEFINITION
     b2BodyDef carbodyDef;
     carbodyDef.position.Set(posX,posY);
     carbodyDef.type = b2_dynamicBody;
-    //Create car fixture
-    b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, chromosome.vertices_.size());
+    //Create CAR BODY
     b2Body* carBody = _box2dWorld.CreateBody(&carbodyDef);
-
+    //Create CAR FIXTURE DEFINITION STRUCT
     b2FixtureDef fixtureDef;
-    fixtureDef.shape = &polygonShape;
     fixtureDef.density = 1.0;
     fixtureDef.friction = 0.3;
     fixtureDef.restitution = 0.3;
     fixtureDef.filter.groupIndex = -2;
-
-    carBody->CreateFixture(&fixtureDef);
-
+    //CAR SHAPES
+    b2Vec2 centerPoint(posX, posY);
+    b2PolygonShape triangleShape;
+    for(int i = 0; i < Chromosome::NUMBER_OF_VERTICES; ++i){
+        //TODO -> known issue: w wypadku za małych odstępów pomiędzy punktami Box2D skleja je w jeden i jest błąd bo próubuje utworzyć trójkąt z mniej niż 3 wierzchołków
+        triangleShape.Set(chromosome.CreateTriangleByIndexAndThridVertex(i,centerPoint).begin(),3);
+        fixtureDef.shape = &triangleShape;
+        carBody->CreateFixture(&fixtureDef);
+    }
     //Adding wheels
-   for(Wheel wheel : chromosome.wheels_)
+    for(Wheel wheel : chromosome.getWheels())
     {
-        b2Body* wheelBody = addWheelBody(posX + wheel._WheelCenterPosition.x, posY + wheel._WheelCenterPosition.y, wheel._WheelAngularVelocity );
-        this->addWheelFixture(wheelBody, wheel._WheelRadius, 1.0, 0.3, 0.3, -2);
+        //TODO znaleźć błąd -> dlaczego tutaj muszę mnożyć razy 2 a nie po prostu brać posX i posY
+        b2Body* wheelBody = addWheelBody(2*posX + wheel.wheelCenterPosition_.x, 2*posY + wheel.wheelCenterPosition_.y);
+        addWheelFixture(wheelBody, wheel.wheelRadius_, 1.0, 0.3, 0.3, -2);
         b2RevoluteJointDef jointDef;
         jointDef.Initialize(carBody, wheelBody, wheelBody->GetWorldCenter());
-        this->addRevoluteJoint(&jointDef);
+        addRevoluteJoint(&jointDef);
     }
-
-
-*/
-
 }
 
 void Model::simulate()

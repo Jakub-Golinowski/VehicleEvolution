@@ -4,6 +4,7 @@
 #include <array>
 #include <string>
 #include <Box2D/Box2D.h>
+#include <boost/tokenizer.hpp>
 #include "wheel.h"
 
 //Wzór chromosomu w stringu:
@@ -16,19 +17,30 @@ public:
 
     Chromosome(std::string chromosomeString);
 
-    static const int NUMBER_OF_WHEELS = 2;
-    static const int NUMBER_OF_VERTICES = 8;
-    static const int NUMBER_OF_TOKENS = 2*NUMBER_OF_VERTICES + 2*NUMBER_OF_WHEELS; //Each vertice and each wheel is described by 2 tokens.
-    typedef std::array<std::string, NUMBER_OF_TOKENS> TokenizedChromosomeString_Type;
+    static const int32 NUMBER_OF_WHEELS = 2;
+    static const int32 NUMBER_OF_VERTICES = 8;
+    static const int32 NUMBER_OF_TOKENS = 2*NUMBER_OF_VERTICES + 2*NUMBER_OF_WHEELS; //Each vertice and each wheel is described by 2 tokens.
+    typedef std::array<std::string, NUMBER_OF_TOKENS> TokenizedChromosomeString_t;
+    typedef std::array<b2Vec2, NUMBER_OF_VERTICES> VerticesArray_t;
+    typedef std::array<b2Vec2, 2> VerticesPair_t;
+    typedef std::array<Wheel, NUMBER_OF_WHEELS> WheelsArray_t;
+    typedef std::array<b2Vec2, 3> TriangleVertices_t;
+    static const std::string CHROMOSOME_STRING_SEPARATOR;
+    static const float VERTEX_PROXIMITI_LIMIT;
 
-    TokenizedChromosomeString_Type TokenizeChromosomeString(std::string chromosomeString);
+    TokenizedChromosomeString_t TokenizeChromosomeString(std::string chromosomeString);
+    VerticesArray_t GetVerticesArray();
+    VerticesPair_t GetVerticesPairByIndex(int32 index);
+    TriangleVertices_t CreateTriangleByIndexAndThridVertex(int32 index, b2Vec2 thirdVertex);
+    bool MoveAwayIfTooClose(b2Vec2& vertex1, b2Vec2& vertex2);
+    WheelsArray_t getWheels();
 
 private:
     std::string chromosomeString_;
-    TokenizedChromosomeString_Type chromosomeTokens_;
+    TokenizedChromosomeString_t chromosomeTokens_;
 
-    std::array<Wheel, NUMBER_OF_WHEELS> wheels_;
-    std::array<b2Vec2, NUMBER_OF_VERTICES> vertices_;
+    WheelsArray_t wheels_;
+    VerticesArray_t vertices_;
 
 
 

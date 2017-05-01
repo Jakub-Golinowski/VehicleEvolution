@@ -27,21 +27,6 @@ int main(int argc, char *argv[])
 
     Controller controller(&model, &view);
 
-    //Create examplary chromosome
-    std::vector<Wheel> wheels;
-
-    wheels.push_back(Wheel(b2Vec2(10.0, 10.0), 20.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(-10.0, -10.0), 20.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(0.0, 0.0), 20.0, 10.0));
-    wheels.push_back(Wheel(b2Vec2(30.0, 30.0), 20.0, 10.0));
-
-    std::vector<b2Vec2> vertices;
-    vertices.push_back(b2Vec2(-30.0, -30.0));
-    vertices.push_back(b2Vec2(-30.0, 30.0));
-    vertices.push_back(b2Vec2(30.0, -30.0));
-    vertices.push_back(b2Vec2(30.0, 30.0));
-    vertices.push_back(b2Vec2(0, 60.0));
-
     //Add Ground
     b2Body* testBody = model.addRectBody(0.0,-50.0f,b2_staticBody, 0.0f);
     model.addRectFixture(testBody, 400.0f, 50.0f, 1.0f, 0.3f, 0.3f, 0);
@@ -49,13 +34,14 @@ int main(int argc, char *argv[])
     //Add Car
     model.addSimpleCarBody(-300.0,80.0,100,40, 30,50);
 
-    std::string chromosomeString = "1.0 1.1 2.0 2.1 -1.0 -1.1 -2.0 -2.1 1.0 -1.1 2.0 -2.1 -1.0 1.1 -2.0 2.1 4.0 3 3.0 2";
+    //std::string chromosomeString = "5.0 5.1 10.0 10.1 -5.0 -5.1 -10.0 -10.1 5.0 -5.1 10.0 -10.1 -5.0 5.1 -10.0 10.1 4.0 3 3.0 2";
+    //std::string chromosomeString = "-9.3448072351495 -69.046675519729 -37.668437525234 52.1939666854 63.3920628292 -72.161740366915 -88.799100536416 95.546979084756 36.313522226479 -2.8598957690793 79.958541175922 -28.646546713395 45.361071864414 -67.887854090023 37.171789557039 -13.937910841696 4.0 3 3.0 2";
+    std::string chromosomeString = "-20.0 5.0 -15.0 10.0 18.0 20.0 30.0 10.0 40.0 -8.0 25.0 -15.0 -10.0 -20.0 -30.0 -10.0 4.0 3 3.0 2";
     Chromosome chromosome(chromosomeString);
-
-    /*
 
     model.addCarFromChromosome(chromosome, 0.0, 100);
 
+    /*
     //Add Obstacles
     testBody = model.addBody(0.0f,0.0f,b2_staticBody, 0.0f);
     model.addCircleFixture(testBody, 0.0f,0.0f,40.0f,1.0f,0.3f,0.3f);

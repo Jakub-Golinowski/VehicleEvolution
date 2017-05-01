@@ -24,7 +24,7 @@ public:
     b2Fixture* addRectFixture(b2Body *parentBody, float width, float height,
                                        float density, float friction, float restitution, uint16 collisionGroup);
 
-    b2Body* addWheelBody(float poxX, float posY, float angularVelocity);
+    b2Body* addWheelBody(float poxX, float posY);
     b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup);
     b2Fixture* addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
                                        float density, float friction, float restitution);
@@ -35,24 +35,12 @@ public:
 
     void addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
-
-
-
-
 private:
-
     static const float32 BOX2D_TIMESTEP;
     static const int32 BOX2D_VELOCITY_ITERATIONS;
     static const int32 BOX2D_POSITION_ITERATIONS;
 
     b2World _box2dWorld;
-
-
-
-
-
-
-
 };
 
 #endif // MODEL_H

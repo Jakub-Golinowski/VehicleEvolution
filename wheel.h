@@ -8,13 +8,13 @@ class Wheel
 {
 public:
     Wheel();
-    Wheel(b2Vec2 WheelCenterPosition, float WheelRadius, float WheelAngularVelocity) :
-            _WheelCenterPosition(WheelCenterPosition), _WheelRadius(WheelRadius), _WheelAngularVelocity(WheelAngularVelocity) {}
+    Wheel(b2Vec2 WheelCenterPosition, float WheelRadius, int vertexIndex) :
+            wheelCenterPosition_(WheelCenterPosition), wheelRadius_(WheelRadius), vertexIndex_(vertexIndex) {}
 
 public:
-    b2Vec2 _WheelCenterPosition;
-    float _WheelRadius;
-    float _WheelAngularVelocity;
+    b2Vec2 wheelCenterPosition_;
+    float wheelRadius_;
+    int vertexIndex_;
 };
 
 #endif // WHEEL_H
