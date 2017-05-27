@@ -33,7 +33,7 @@ public:
 
     void addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity);
 
-    void addCarFromChromosome(Chromosome chromosome, float posX, float posY);
+    b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
 private:
     static const float32 BOX2D_TIMESTEP;
