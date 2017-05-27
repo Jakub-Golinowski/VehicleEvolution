@@ -9,6 +9,12 @@ EvolutionController::EvolutionController()
 
 }
 
+void EvolutionController::addChromosome(Chromosome newChromosome)
+{
+    // Add new chromosome with 0.0 fitness
+    currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, 0.0));
+}
+
 void EvolutionController::addTrackToModel(Model &model)
 {
     //TODO : Add proper track
