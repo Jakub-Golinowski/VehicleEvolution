@@ -7,7 +7,7 @@
 
 
 
-// Model is basically a wrappe for b2World. It isn't dependend on the View object
+// Model is basically a wrappe for b2World. It isn't dependent on the View object
 
 class Model
 {

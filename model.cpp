@@ -193,8 +193,6 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
         b2Vec2 axis(0,1);
         axlePrismaticJointDef.Initialize(carBody, axleBody, axleBody->GetWorldCenter(), axis);
         b2Joint* axleToCarJoint= _box2dWorld.CreateJoint(&axlePrismaticJointDef);
-
-
     }
 }
 
