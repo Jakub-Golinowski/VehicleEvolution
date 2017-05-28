@@ -12,8 +12,8 @@ View::View(Model * model, QB2Draw * drawer)
 
 void View::paintEvent(QPaintEvent *event)
 {
+    //TODO: Add drawing of ground
     //Set up the painter parameters
-
     QPainter p(this);
     p.setBrush(Qt::NoBrush);
     QPen pen;
@@ -77,10 +77,11 @@ void View::paintEvent(QPaintEvent *event)
     s << "Przejechany dystans: " << CarPosition.x;
     std::string distanceMessage = s.str();
 
+    //TODO: Make it less obscure
     p.drawText(CarPosition.x+ 400/(DRAWING_SCALE*2) , 300/(DRAWING_SCALE*2) -CarPosition.y, QString::fromStdString(distanceMessage) );
 
-    _drawer->setPainter(&p);
-    _model->DrawModelData();
+    //_drawer->setPainter(&p);
+    //_model->DrawModelData();
 
     p.end();
 }
