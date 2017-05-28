@@ -43,18 +43,6 @@ void View::paintEvent(QPaintEvent *event)
 
     QPolygon car = QPolygon(qPoints);
 
-    int halfwidth = 100;
-    qreal mfltElevation = 10.0;
-    QPolygon plyNeedle;
-       plyNeedle << QPoint(CarPosition.x - halfwidth + 400, CarPosition.y - halfwidth + 300)
-                 << QPoint(CarPosition.x - halfwidth + 400, CarPosition.y + halfwidth + 300)
-                 << QPoint(CarPosition.x + halfwidth + 400, CarPosition.y - halfwidth + 300)
-                 << QPoint(CarPosition.x + halfwidth + 400, CarPosition.y + halfwidth + 300);
-
-   plyNeedle = QTransform().translate(CarPosition.x, CarPosition.y)
-                               .rotate(-mfltElevation)
-                               .translate(-CarPosition.x, -CarPosition.y)
-                               .map(plyNeedle);
    p.drawPolygon(car);
 
     _drawer->setPainter(&p);
