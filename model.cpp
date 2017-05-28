@@ -127,7 +127,7 @@ void Model::addSimpleCarBody(float posX, float posY, float width, float height, 
 
 }
 
-void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
+b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
 {
     //CAR BODY DEFINITION
     b2BodyDef carbodyDef;
@@ -193,9 +193,8 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
         b2Vec2 axis(0,1);
         axlePrismaticJointDef.Initialize(chromosomeCarBodyPtr, axleBody, axleBody->GetWorldCenter(), axis);
         b2Joint* axleToCarJoint= _box2dWorld.CreateJoint(&axlePrismaticJointDef);
-
-
     }
+    return carBody;
 }
 
 void Model::simulate()

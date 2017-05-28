@@ -7,7 +7,7 @@
 
 
 
-// Model is basically a wrappe for b2World. It isn't dependend on the View object
+// Model is basically a wrappe for b2World. It isn't dependent on the View object
 
 class Model
 {
@@ -33,7 +33,7 @@ public:
 
     void addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity);
 
-    void addCarFromChromosome(Chromosome chromosome, float posX, float posY);
+    b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
     b2Body* chromosomeCarBodyPtr;
 

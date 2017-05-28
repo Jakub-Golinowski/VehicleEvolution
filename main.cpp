@@ -1,7 +1,8 @@
 
 #include <QApplication>
 
-
+#include <fstream>
+#include <iostream>
 #include <Box2D/Box2D.h>
 #include "controller.h"
 #include "model.h"
@@ -40,6 +41,20 @@ int main(int argc, char *argv[])
     Chromosome chromosome(chromosomeString);
 
     model.addCarFromChromosome(chromosome, 0.0, 100);
+
+    ifstream carsFile;
+    carsFile.open("exampleVehicles");
+    if( carsFile.is_open()){
+        string chromosomeFromFile;
+
+        getline(carsFile, chromosomeFromFile);
+        cout << "From file:" << chromosomeFromFile << endl;
+        model.addCarFromChromosome(Chromosome(chromosomeFromFile), 60.0,50.0);
+        getline(carsFile, chromosomeFromFile);
+        cout << "From file:" << chromosomeFromFile << endl;
+        model.addCarFromChromosome(Chromosome(chromosomeFromFile), -30.0,50.0);
+
+    }
 
     /*
     //Add Obstacles

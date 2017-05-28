@@ -33,6 +33,8 @@ SOURCES += main.cpp \
     qb2draw.cpp \
     chromosome.cpp \
     wheel.cpp \
+    evolutioncontroller.cpp
+
 
 HEADERS  += \
     model.h \
@@ -40,7 +42,8 @@ HEADERS  += \
     controller.h \
     qb2draw.h \
     chromosome.h \
-    wheel.h
+    wheel.h \
+    evolutioncontroller.h
 
 FORMS    +=
 

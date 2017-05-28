@@ -36,8 +36,9 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user
 
-# Build folder
+# Build folders
 build/
+TestsBuild/
 # Box2D build folder
 libraries/Build/Box2D/
 libraries/Build/CMakeCache.txt
