@@ -1,7 +1,8 @@
 #include "view.h"
 #include <vector>
+#include <sstream>
 
-const float32 DRAWING_SCALE = 100;
+const float32 View::DRAWING_SCALE = 2;
 
 View::View(Model * model, QB2Draw * drawer)
     :_model(model), _drawer(drawer)
@@ -12,6 +13,7 @@ View::View(Model * model, QB2Draw * drawer)
 void View::paintEvent(QPaintEvent *event)
 {
     //Set up the painter parameters
+
     QPainter p(this);
     p.setBrush(Qt::NoBrush);
     QPen pen;
@@ -21,8 +23,9 @@ void View::paintEvent(QPaintEvent *event)
 
     //Retrieve car position and angle
     b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
-    transform.scale(1,1);
+    transform.scale(DRAWING_SCALE,DRAWING_SCALE);
     transform.translate(-(CarPosition.x), CarPosition.y);
+
     p.setTransform(transform);
 
     //Retrieve all vertices of car body triangles and draw the car body triangles in scale
@@ -37,7 +40,7 @@ void View::paintEvent(QPaintEvent *event)
           for(int i = 0; i < count; ++i)
           {
              b2Vec2 Vertex = _model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) );
-             singleTriangle.append(QPoint((Vertex.x + 400),(300 - Vertex.y)));
+             singleTriangle.append(QPoint((Vertex.x + 400/DRAWING_SCALE),(300/DRAWING_SCALE - Vertex.y)));
              p.drawPolygon(singleTriangle, Qt::WindingFill);
           }
        }
@@ -46,7 +49,7 @@ void View::paintEvent(QPaintEvent *event)
     //Retrieve car wheels and draw them to scale
     for( b2Body* wheel : _model->WheelBodyPtrArray)
     {
-        QPointF wheelCenter = QPoint(wheel->GetPosition().x + 400, 300 - wheel->GetPosition().y);
+        QPointF wheelCenter = QPoint(wheel->GetPosition().x + 400/DRAWING_SCALE, 300/DRAWING_SCALE - wheel->GetPosition().y);
         qreal wheelRadius = 0;
 
         for (b2Fixture* f = wheel->GetFixtureList(); f; f = f->GetNext())
@@ -69,6 +72,12 @@ void View::paintEvent(QPaintEvent *event)
 
         p.drawEllipse(wheelCenter,wheelRadius,wheelRadius);
     }
+
+    std::stringstream s;
+    s << "Przejechany dystans: " << CarPosition.x;
+    std::string distanceMessage = s.str();
+
+    p.drawText(CarPosition.x+ 400/(DRAWING_SCALE*2) , 300/(DRAWING_SCALE*2) -CarPosition.y, QString::fromStdString(distanceMessage) );
 
     _drawer->setPainter(&p);
     _model->DrawModelData();
