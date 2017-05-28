@@ -18,37 +18,30 @@ void View::paintEvent(QPaintEvent *event)
     float angle = _model->chromosomeCarBodyPtr->GetAngle();
 
     //draw a polygon
-std::vector<b2Vec2> verts;
+    std::vector<b2Vec2> verts;
     for( b2Fixture *fixture = _model->chromosomeCarBodyPtr->GetFixtureList(); fixture; fixture = fixture->GetNext() )
     {
        if( fixture->GetShape()->GetType() == b2Shape::e_polygon )
        {
           b2PolygonShape *poly = (b2PolygonShape*)fixture->GetShape();
 
-
-
           int count = poly->GetVertexCount();
-          for(int i = 0; i < poly->GetVertexCount(); ++i)
+          for(int i = 0; i < count; ++i)
           {
-             verts.push_back(poly->GetVertex(i));
-          }
-
-          for( int i = 0; i < count; i++ )
-          {
-             verts[i] = _model->chromosomeCarBodyPtr->GetWorldPoint( verts[i] );
+             verts.push_back(_model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) ));
           }
 
           //verts now contains world co-ords of all the verts
        }
     }
-    int *points = new int[verts.size()*2];
-    for(int i = 0; i < 2*verts.size(); ++i){
-        points[i] = verts[i].x;
-        points[i+ 1] = verts[i].y;
+
+    QVector<QPoint> qPoints;
+    for(uint i = 0; i < verts.size(); ++i){
+        qPoints.push_back(QPoint( (verts[i].x + 400), (300 - verts[i].y) ));
         ++i;
     }
 
-    QPolygon car = QPolygon(static_cast<int>(verts.size()), points );
+    QPolygon car = QPolygon(qPoints);
 
     int halfwidth = 100;
     qreal mfltElevation = 10.0;
@@ -62,13 +55,7 @@ std::vector<b2Vec2> verts;
                                .rotate(-mfltElevation)
                                .translate(-CarPosition.x, -CarPosition.y)
                                .map(plyNeedle);
-    p.drawPolygon(car);
-
-
-    //CarPosition.x-400, -(CarPosition.y+300)
-
-
-
+   p.drawPolygon(car);
 
     _drawer->setPainter(&p);
     _model->DrawModelData();
