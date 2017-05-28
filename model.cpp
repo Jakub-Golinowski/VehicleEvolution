@@ -165,7 +165,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         //Axles
         // shape def
         b2PolygonShape axleShape;
-        axleShape.SetAsBox(5,5);
+        axleShape.SetAsBox(2,2);
         // fixture def
         b2FixtureDef axleFixture;
         axleFixture.density=0.5;
@@ -188,8 +188,8 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         b2RevoluteJointDef wheelToAxleJointDef;
         wheelToAxleJointDef.Initialize(wheelBody,axleBody,wheelBody->GetWorldCenter());
         wheelToAxleJointDef.enableMotor=true;
-        wheelToAxleJointDef.motorSpeed = 1000;
-        wheelToAxleJointDef.maxMotorTorque=10000;
+        wheelToAxleJointDef.motorSpeed = 10000;
+        wheelToAxleJointDef.maxMotorTorque=20000;
         b2Joint* wheelToAxleJoint = addRevoluteJoint(&wheelToAxleJointDef);
         //joint axle to car
         b2PrismaticJointDef axlePrismaticJointDef;

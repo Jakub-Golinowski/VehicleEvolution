@@ -17,10 +17,13 @@ void View::paintEvent(QPaintEvent *event)
     QPen pen;
     pen.setWidth(3);
     p.setPen(pen);
+    QTransform transform;
 
     //Retrieve car position and angle
-    //b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
-    //float angle = _model->chromosomeCarBodyPtr->GetAngle();
+    b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
+    transform.scale(1,1);
+    transform.translate(-(CarPosition.x), CarPosition.y);
+    p.setTransform(transform);
 
     //Retrieve all vertices of car body triangles and draw the car body triangles in scale
     for( b2Fixture *fixture = _model->chromosomeCarBodyPtr->GetFixtureList(); fixture; fixture = fixture->GetNext() )
@@ -34,7 +37,7 @@ void View::paintEvent(QPaintEvent *event)
           for(int i = 0; i < count; ++i)
           {
              b2Vec2 Vertex = _model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) );
-             singleTriangle.append(QPoint(Vertex.x + 400,300 - Vertex.y));
+             singleTriangle.append(QPoint((Vertex.x + 400),(300 - Vertex.y)));
              p.drawPolygon(singleTriangle, Qt::WindingFill);
           }
        }
