@@ -36,6 +36,7 @@ public:
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
     b2Body* chromosomeCarBodyPtr;
+    std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;
 
 private:
     static const float32 BOX2D_TIMESTEP;

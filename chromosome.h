@@ -35,6 +35,7 @@ public:
     bool MoveAwayIfTooClose(b2Vec2& vertex1, b2Vec2& vertex2);
     WheelsArray_t getWheels();
 
+
 private:
     std::string chromosomeString_;
     TokenizedChromosomeString_t chromosomeTokens_;

@@ -18,6 +18,8 @@ public:
    Model * _model;
    QB2Draw * _drawer;
 
+   static const float32 DRAWING_SCALE;
+
 protected:
     void paintEvent(QPaintEvent *event);
 };
