@@ -10,6 +10,11 @@ Model::Model(float gravityX, float gravityY, QB2Draw * drawer)
     _box2dWorld.SetDebugDraw(drawer);
 }
 
+Model::Model(float gravityX, float gravityY)
+    : _box2dWorld(b2Vec2(gravityX, gravityY))
+{
+}
+
 void Model::DrawModelData()
 {
     _box2dWorld.DrawDebugData();

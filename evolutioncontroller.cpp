@@ -25,9 +25,7 @@ void EvolutionController::addTrackToModel(Model &model)
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
-    QB2Draw drawer(QRect(0,0,800,600));
-    drawer.SetFlags(0x0001);
-    Model model(0.0f,-10.f, &drawer);
+    Model model(0.0f,-10.f);
     addTrackToModel(model);
     b2Body* evaluatedCar = model.addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
 
