@@ -35,12 +35,15 @@ public:
 
     void addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
+    b2Body* chromosomeCarBodyPtr;
+
 private:
     static const float32 BOX2D_TIMESTEP;
     static const int32 BOX2D_VELOCITY_ITERATIONS;
     static const int32 BOX2D_POSITION_ITERATIONS;
 
     b2World _box2dWorld;
+    QB2Draw* drawer_;
 };
 
 #endif // MODEL_H

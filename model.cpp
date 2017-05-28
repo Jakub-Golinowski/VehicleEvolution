@@ -5,7 +5,7 @@ const int32 Model::BOX2D_VELOCITY_ITERATIONS = 6;
 const int32 Model::BOX2D_POSITION_ITERATIONS = 2;
 
 Model::Model(float gravityX, float gravityY, QB2Draw * drawer)
-    : _box2dWorld(b2Vec2(gravityX, gravityY))
+    : _box2dWorld(b2Vec2(gravityX, gravityY)), drawer_(drawer)
 {
     _box2dWorld.SetDebugDraw(drawer);
 }
@@ -140,7 +140,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
     fixtureDef.restitution = 0.3;
     fixtureDef.filter.groupIndex = -2;
     //Create CAR BODY
-    b2Body* carBody = _box2dWorld.CreateBody(&carbodyDef);
+    chromosomeCarBodyPtr = _box2dWorld.CreateBody(&carbodyDef);
     //CAR SHAPES
     b2Vec2 centerPoint(posX, posY);
     b2PolygonShape triangleShape;
@@ -148,7 +148,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
         //TODO -> known issue: w wypadku za małych odstępów pomiędzy punktami Box2D skleja je w jeden i jest błąd bo próubuje utworzyć trójkąt z mniej niż 3 wierzchołków
         triangleShape.Set(chromosome.CreateTriangleByIndexAndThridVertex(i,centerPoint).begin(),3);
         fixtureDef.shape = &triangleShape;
-        carBody->CreateFixture(&fixtureDef);
+        chromosomeCarBodyPtr->CreateFixture(&fixtureDef);
     }
     //Adding wheels
     for(Wheel wheel : chromosome.getWheels())
@@ -191,7 +191,7 @@ void Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
         axlePrismaticJointDef.enableMotor=true;
         //axle
         b2Vec2 axis(0,1);
-        axlePrismaticJointDef.Initialize(carBody, axleBody, axleBody->GetWorldCenter(), axis);
+        axlePrismaticJointDef.Initialize(chromosomeCarBodyPtr, axleBody, axleBody->GetWorldCenter(), axis);
         b2Joint* axleToCarJoint= _box2dWorld.CreateJoint(&axlePrismaticJointDef);
 
 

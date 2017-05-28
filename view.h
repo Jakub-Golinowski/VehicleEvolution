@@ -20,7 +20,6 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event);
-
 };
 
 #endif // VIEW_H
