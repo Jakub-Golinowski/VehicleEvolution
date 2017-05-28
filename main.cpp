@@ -8,6 +8,7 @@
 #include "model.h"
 #include "view.h"
 #include "chromosome.h"
+#include"evolutioncontroller.h"
 
 
 
@@ -69,6 +70,11 @@ int main(int argc, char *argv[])
 
     // b2World will be simulated and drawn every 10 ms
     controller.startSimulation(5);
+
+    EvolutionController evolutionController;
+    evolutionController.addChromosome(chromosome);
+    evolutionController.evaluateChromosome(0);
+    evolutionController.visualizeChromosome(0);
 
     return a.exec();
 
