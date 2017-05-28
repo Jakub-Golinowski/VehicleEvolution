@@ -14,6 +14,8 @@ class Model
 public:
     Model(float gravityX, float gravityY, QB2Draw * drawer);
 
+    Model(float gravityX, float gravityY);
+
     void DrawModelData();
 
     void simulate();

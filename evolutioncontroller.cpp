@@ -4,9 +4,17 @@ const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
 const float EvolutionController::CAR_INITIAL_Y_POSITION = 10.0;
 const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 100000;
 
-EvolutionController::EvolutionController()
+EvolutionController::EvolutionController(): controller(nullptr), model(nullptr), view(nullptr), drawer(nullptr)
 {
 
+}
+
+EvolutionController::~EvolutionController()
+{
+    delete model;
+    delete controller;
+    delete view;
+    delete drawer;
 }
 
 void EvolutionController::addChromosome(Chromosome newChromosome)
@@ -25,9 +33,7 @@ void EvolutionController::addTrackToModel(Model &model)
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
-    QB2Draw drawer(QRect(0,0,800,600));
-    drawer.SetFlags(0x0001);
-    Model model(0.0f,-10.f, &drawer);
+    Model model(0.0f,-10.f);
     addTrackToModel(model);
     b2Body* evaluatedCar = model.addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
 
@@ -38,6 +44,21 @@ void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
     b2Vec2 finalPosition = evaluatedCar->GetPosition();
     float distanceTravelled = finalPosition.x - CAR_INITIAL_X_POSITION;
     currentGeneration_.at(chromosomeIndex).second = calculateFitness(distanceTravelled);
+}
+
+void EvolutionController::visualizeChromosome(unsigned int chromosomeIndex)
+{
+    drawer = new QB2Draw(QRect(0,0,800,600));
+    drawer->SetFlags(0x0001);
+    model = new Model(0.0f,-10.f, drawer);
+    addTrackToModel(*model);
+    model->addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
+    view = new View(model, drawer);
+    view->setGeometry(0,0,800,600);
+    view->show();
+    controller = new Controller(model, view);
+    controller->startSimulation(5);
+
 }
 
 float EvolutionController::calculateFitness(float distanceTravelled)
