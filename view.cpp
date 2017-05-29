@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-const float32 View::DRAWING_SCALE = 4;
+const float32 View::DRAWING_SCALE = 8;
 
 View::View(Model * model, QB2Draw * drawer)
     :_model(model), _drawer(drawer)
@@ -24,7 +24,7 @@ void View::paintEvent(QPaintEvent *event)
     //Retrieve car position and angle
     b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
     transform.scale(DRAWING_SCALE,DRAWING_SCALE);
-    transform.translate(-(CarPosition.x), CarPosition.y);
+    transform.translate(-(qreal(CarPosition.x)), qreal(CarPosition.y));
 
     p.setTransform(transform);
 
@@ -34,14 +34,14 @@ void View::paintEvent(QPaintEvent *event)
        if( fixture->GetShape()->GetType() == b2Shape::e_polygon )
        {
           b2PolygonShape *poly = (b2PolygonShape*)fixture->GetShape();
-          QVector<QPoint> singleTriangle;
+          QVector<QPointF> singleTriangle;
 
           int count = poly->GetVertexCount();
           for(int i = 0; i < count; ++i)
           {
              b2Vec2 Vertex = _model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) );
-             singleTriangle.append(QPoint((Vertex.x + 400/DRAWING_SCALE),(300/DRAWING_SCALE - Vertex.y)));
-             p.drawPolygon(singleTriangle, Qt::WindingFill);
+             singleTriangle.append(QPointF((Vertex.x + 400/DRAWING_SCALE),(300/DRAWING_SCALE - Vertex.y)));
+             p.drawPolygon(singleTriangle);
           }
        }
     }
@@ -49,7 +49,7 @@ void View::paintEvent(QPaintEvent *event)
     //Retrieve car wheels and draw them to scale
     for( b2Body* wheel : _model->WheelBodyPtrArray)
     {
-        QPointF wheelCenter = QPoint(wheel->GetPosition().x + 400/DRAWING_SCALE, 300/DRAWING_SCALE - wheel->GetPosition().y);
+        QPointF wheelCenter = QPointF(wheel->GetPosition().x + 400/DRAWING_SCALE, 300/DRAWING_SCALE - wheel->GetPosition().y);
         qreal wheelRadius = 0;
 
         for (b2Fixture* f = wheel->GetFixtureList(); f; f = f->GetNext())
