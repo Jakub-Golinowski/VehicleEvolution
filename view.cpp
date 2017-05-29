@@ -64,7 +64,7 @@ void View::paintEvent(QPaintEvent *event)
             }
         }
 
-        float32 angleRadians = -wheel->GetAngle();
+        float32 angleRadians = wheel->GetAngle();
 
         float32 xLength = cos(angleRadians) * wheelRadius;
         float32 yLength = sin(angleRadians) * wheelRadius;
