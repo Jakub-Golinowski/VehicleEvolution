@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-const float32 View::DRAWING_SCALE = 8;
+const float32 View::DRAWING_SCALE = 4;
 
 View::View(Model * model, QB2Draw * drawer)
     :_model(model), _drawer(drawer)
@@ -95,7 +95,7 @@ void View::paintEvent(QPaintEvent *event)
     std::string distanceMessage = s.str();
 
     //TODO: Make it less obscure
-    p.drawText(CarPosition.x+ 400/(DRAWING_SCALE*2) , 300/(DRAWING_SCALE*2) -CarPosition.y, QString::fromStdString(distanceMessage) );
+    p.drawText(QPointF((CarPosition.x+ 400/(DRAWING_SCALE*2)) , (300/(DRAWING_SCALE*2) -CarPosition.y)), QString::fromStdString(distanceMessage) );
 
   //  _drawer->setPainter(&p);
   //  _model->DrawModelData();
