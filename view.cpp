@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-const float32 View::DRAWING_SCALE = 4;
+const float32 View::DRAWING_SCALE = 6;
 
 View::View(Model * model, QB2Draw * drawer)
     :_model(model), _drawer(drawer)
@@ -23,10 +23,12 @@ void View::paintEvent(QPaintEvent *event)
 
     //Retrieve car position and angle
     b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
-    transform.scale(DRAWING_SCALE,DRAWING_SCALE);
-    transform.translate(-(qreal(CarPosition.x)), qreal(CarPosition.y));
-
+    // Translation moves point (0;0) to the middle of the view
+    transform.translate(this->geometry().width()/2,this->geometry().height()/2);
+    transform.scale(DRAWING_SCALE,-DRAWING_SCALE);
+    transform.translate(-(qreal(CarPosition.x)), -qreal(CarPosition.y));
     p.setTransform(transform);
+
 
     //Retrieve all vertices of car body triangles and draw the car body triangles in scale
     for( b2Fixture *fixture = _model->chromosomeCarBodyPtr->GetFixtureList(); fixture; fixture = fixture->GetNext() )
@@ -40,7 +42,7 @@ void View::paintEvent(QPaintEvent *event)
           for(int i = 0; i < count; ++i)
           {
              b2Vec2 Vertex = _model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) );
-             singleTriangle.append(QPointF((Vertex.x + 400/DRAWING_SCALE),(300/DRAWING_SCALE - Vertex.y)));
+             singleTriangle.append(QPointF((Vertex.x),(Vertex.y)));
              p.drawPolygon(singleTriangle);
           }
        }
@@ -49,7 +51,7 @@ void View::paintEvent(QPaintEvent *event)
     //Retrieve car wheels and draw them to scale
     for( b2Body* wheel : _model->WheelBodyPtrArray)
     {
-        QPointF wheelCenter = QPointF(wheel->GetPosition().x + 400/DRAWING_SCALE, 300/DRAWING_SCALE - wheel->GetPosition().y);
+        QPointF wheelCenter = QPointF(wheel->GetPosition().x , wheel->GetPosition().y);
         qreal wheelRadius = 0;
 
         for (b2Fixture* f = wheel->GetFixtureList(); f; f = f->GetNext())
@@ -85,7 +87,7 @@ void View::paintEvent(QPaintEvent *event)
       {
          b2EdgeShape edge;
          chain->GetChildEdge(&edge, i);
-         p.drawLine(QPointF(groundBodyXOffset + edge.m_vertex1.x + 400/DRAWING_SCALE,300/DRAWING_SCALE -(edge.m_vertex1.y+groundBodyYOffset)), QPointF(groundBodyXOffset + edge.m_vertex2.x+ 400/DRAWING_SCALE,300/DRAWING_SCALE -(edge.m_vertex2.y+groundBodyYOffset)));
+         p.drawLine(QPointF(groundBodyXOffset + edge.m_vertex1.x,edge.m_vertex1.y+groundBodyYOffset), QPointF(groundBodyXOffset + edge.m_vertex2.x,edge.m_vertex2.y+groundBodyYOffset));
       }
     }
 
@@ -94,11 +96,14 @@ void View::paintEvent(QPaintEvent *event)
     s << "Przejechany dystans: " << CarPosition.x;
     std::string distanceMessage = s.str();
 
-    //TODO: Make it less obscure
-    p.drawText(QPointF((CarPosition.x+ 400/(DRAWING_SCALE*2)) , (300/(DRAWING_SCALE*2) -CarPosition.y)), QString::fromStdString(distanceMessage) );
 
-  //  _drawer->setPainter(&p);
-  //  _model->DrawModelData();
+    QFont font;
+    font.setPixelSize(18/DRAWING_SCALE);
+    // Change scaling in Y axis, so the text won't be upside down
+    transform.scale(1,-1);
+    p.setFont(font);
+    p.setTransform(transform);
+    p.drawText(QPointF((CarPosition.x-this->geometry().height()/(3*DRAWING_SCALE)), -(CarPosition.y - this->geometry().height()/(3*DRAWING_SCALE))), QString::fromStdString(distanceMessage) );
 
     p.end();
 }

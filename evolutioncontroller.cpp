@@ -26,7 +26,7 @@ void EvolutionController::addChromosome(Chromosome newChromosome)
 void EvolutionController::addTrackToModel(Model &model)
 {
     //TODO : Add proper track
-    b2Body* testBody = model.addRectBody(-30.0f,-50.0f,b2_staticBody, 0.0f);
+    b2Body* testBody = model.addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
     b2Vec2 points[100];
     float x = 0.0;
     for(int i=0; i<100; ++i){
