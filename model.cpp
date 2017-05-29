@@ -58,6 +58,22 @@ b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float hal
     return parentBody->CreateFixture(&fixtureDef);
 }
 
+b2Fixture* Model::addGrounChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
+                                   float density, float friction, float restitution, uint16 collisionGroup)
+{
+    groundBodyPtr = parentBody;
+    b2ChainShape chainShape;
+    chainShape.CreateChain(points,pointsCount);
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &chainShape;
+    fixtureDef.density = density;
+    fixtureDef.friction = friction;
+    fixtureDef.restitution = restitution;
+    fixtureDef.filter.groupIndex = collisionGroup; //Ustawiam collision group na -1 -> fixtures z tej grupy nie zderzają się ze sobą.
+    return parentBody->CreateFixture(&fixtureDef);
+}
+
 b2Body* Model::addWheelBody(float posX, float posY)
 {
     b2BodyDef bodyDef;

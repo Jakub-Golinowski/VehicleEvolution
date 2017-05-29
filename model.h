@@ -23,7 +23,10 @@ public:
     b2Body* addBody(float posX, float posY, b2BodyType bodyType, float angle_degrees);
 
     b2Body* addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians);
+    b2Body* addGroundBody(b2Vec2* vertices, unsigned int verticesCount);
     b2Fixture* addRectFixture(b2Body *parentBody, float width, float height,
+                                       float density, float friction, float restitution, uint16 collisionGroup);
+    b2Fixture* addGrounChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                        float density, float friction, float restitution, uint16 collisionGroup);
 
     b2Body* addWheelBody(float poxX, float posY);
@@ -38,6 +41,7 @@ public:
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
     b2Body* chromosomeCarBodyPtr;
+    b2Body* groundBodyPtr;
     std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;
 
 private:

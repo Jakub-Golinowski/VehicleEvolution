@@ -73,6 +73,23 @@ void View::paintEvent(QPaintEvent *event)
         p.drawEllipse(wheelCenter,wheelRadius,wheelRadius);
     }
 
+    //Draw ground chain shape
+    b2Fixture *fixture = _model->groundBodyPtr->GetFixtureList();
+    if( fixture->GetShape()->GetType() == b2Shape::e_chain )
+    {
+      b2ChainShape *chain = (b2ChainShape*)fixture->GetShape();
+      float groundBodyXOffset = _model->groundBodyPtr->GetPosition().x;
+      float groundBodyYOffset = _model->groundBodyPtr->GetPosition().y;
+
+      for(int i = 0; i < chain->GetChildCount(); ++i)
+      {
+         b2EdgeShape edge;
+         chain->GetChildEdge(&edge, i);
+         p.drawLine(QPointF(groundBodyXOffset + edge.m_vertex1.x + 400/DRAWING_SCALE,300/DRAWING_SCALE -(edge.m_vertex1.y+groundBodyYOffset)), QPointF(groundBodyXOffset + edge.m_vertex2.x+ 400/DRAWING_SCALE,300/DRAWING_SCALE -(edge.m_vertex2.y+groundBodyYOffset)));
+      }
+    }
+
+
     std::stringstream s;
     s << "Przejechany dystans: " << CarPosition.x;
     std::string distanceMessage = s.str();
@@ -80,8 +97,8 @@ void View::paintEvent(QPaintEvent *event)
     //TODO: Make it less obscure
     p.drawText(CarPosition.x+ 400/(DRAWING_SCALE*2) , 300/(DRAWING_SCALE*2) -CarPosition.y, QString::fromStdString(distanceMessage) );
 
-    //_drawer->setPainter(&p);
-    //_model->DrawModelData();
+  //  _drawer->setPainter(&p);
+  //  _model->DrawModelData();
 
     p.end();
 }
