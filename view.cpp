@@ -2,7 +2,7 @@
 #include <vector>
 #include <sstream>
 
-const float32 View::DRAWING_SCALE = 2;
+const float32 View::DRAWING_SCALE = 4;
 
 View::View(Model * model, QB2Draw * drawer)
     :_model(model), _drawer(drawer)
@@ -17,7 +17,7 @@ void View::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.setBrush(Qt::NoBrush);
     QPen pen;
-    pen.setWidth(3);
+    pen.setWidth(1);
     p.setPen(pen);
     QTransform transform;
 

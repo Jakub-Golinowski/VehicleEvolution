@@ -1,7 +1,7 @@
 #include "evolutioncontroller.h"
 
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
-const float EvolutionController::CAR_INITIAL_Y_POSITION = 20.0;
+const float EvolutionController::CAR_INITIAL_Y_POSITION = 5.0;
 const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 100000;
 
 EvolutionController::EvolutionController(): controller(nullptr), model(nullptr), view(nullptr), drawer(nullptr)
