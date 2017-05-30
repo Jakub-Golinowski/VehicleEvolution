@@ -3,8 +3,9 @@
 
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
 const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
-const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 100000;
-const unsigned long EvolutionController::GENERATION_SIZE = 20;
+const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 50000;
+const unsigned long EvolutionController::GENERATION_SIZE = 10;
+const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 1;
 const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
 const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
 const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
@@ -29,6 +30,13 @@ void EvolutionController::addChromosome(Chromosome newChromosome)
     currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, 0.0));
 }
 
+void EvolutionController::evaluateCurrentGeneration()
+{
+    for(int i=0; i< currentGeneration_.size(); ++i){
+        evaluateChromosome(i);
+    }
+}
+
 void EvolutionController::addTrackToModel(Model &model)
 {
     //TODO : Add proper track
@@ -47,6 +55,8 @@ void EvolutionController::addTrackToModel(Model &model)
 
 void EvolutionController::initializeRandomFirstGeneration()
 {
+    currentGeneration_.clear();
+    //Create new generator with true random seed
     std::default_random_engine generator;
     generator.seed(std::random_device()());
     for(unsigned int numberOfChromosomes=0; numberOfChromosomes<GENERATION_SIZE; ++numberOfChromosomes){
@@ -82,6 +92,37 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
     return newChromosomeString;
 }
 
+void EvolutionController::selectionFromCurrentGeneration()
+{
+    selectedFromCurrentGeneration.clear();
+    //Create new generator with true random seed
+    std::default_random_engine generator;
+    generator.seed(std::random_device()());
+
+    for(unsigned int i=0; i < NUMBER_OF_SELECTED_CHROMOSOMES; ++i){
+        float fitnessSum = 0.0f;
+        for( ChromosomeAndFitness chromosomeAndFitness : currentGeneration_){
+            fitnessSum += chromosomeAndFitness.second;
+        }
+        std::uniform_real_distribution<float> fitnessDistribution(0.0, fitnessSum);
+        float value = fitnessDistribution(generator);
+        std::vector<ChromosomeAndFitness>::iterator it;
+        for(it = currentGeneration_.begin(); it != currentGeneration_.end(); ++it){
+            value -= (*it).second;
+            if(value <=0.0f) {
+                break;
+            }
+        }
+        selectedFromCurrentGeneration.push_back(*it);
+        currentGeneration_.erase(it);
+    }
+
+}
+
+
+
+
+
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
@@ -98,13 +139,23 @@ void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
     currentGeneration_.at(chromosomeIndex).second = calculateFitness(distanceTravelled);
 }
 
-void EvolutionController::visualizeChromosome(unsigned int chromosomeIndex)
+void EvolutionController::visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex)
+{
+    visualizeChromosome(currentGeneration_.at(chromosomeIndex).first);
+}
+
+void EvolutionController::visualizeSelectedChromosome(unsigned int chromosomeIndex)
+{
+    visualizeChromosome(selectedFromCurrentGeneration.at(chromosomeIndex).first);
+}
+
+void EvolutionController::visualizeChromosome(Chromosome chromosome)
 {
     drawer = new QB2Draw(QRect(0,0,800,600));
     drawer->SetFlags(0x0001);
     model = new Model(0.0f,-10.f, drawer);
     addTrackToModel(*model);
-    model->addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
+    model->addCarFromChromosome(chromosome, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
     view = new View(model, drawer);
     view->setGeometry(0,0,800,600);
     view->show();
@@ -116,6 +167,7 @@ void EvolutionController::visualizeChromosome(unsigned int chromosomeIndex)
 float EvolutionController::calculateFitness(float distanceTravelled)
 {
     // TODO: implement fitness function
-    return distanceTravelled;
+    if(distanceTravelled < 0.0f) distanceTravelled = 0.0f;
+    return std::pow(distanceTravelled,2.0);
 }
 
