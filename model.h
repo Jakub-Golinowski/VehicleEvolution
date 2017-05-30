@@ -26,7 +26,7 @@ public:
     b2Body* addGroundBody(b2Vec2* vertices, unsigned int verticesCount);
     b2Fixture* addRectFixture(b2Body *parentBody, float width, float height,
                                        float density, float friction, float restitution, uint16 collisionGroup);
-    b2Fixture* addGrounChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
+    b2Fixture* addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                        float density, float friction, float restitution, uint16 collisionGroup);
 
     b2Body* addWheelBody(float poxX, float posY);

@@ -24,10 +24,10 @@ EvolutionController::~EvolutionController()
     delete drawer;
 }
 
-void EvolutionController::addChromosome(Chromosome newChromosome)
+void EvolutionController::addChromosome(Chromosome newChromosome, float Fitness)
 {
     // Add new chromosome with 0.0 fitness
-    currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, 0.0));
+    currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, Fitness));
 }
 
 void EvolutionController::evaluateCurrentGeneration()
@@ -49,7 +49,7 @@ void EvolutionController::addTrackToModel(Model &model)
         float y = static_cast<float>(rand() % 20 - 9);
         points[i].y = y;
     }
-    model.addGrounChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
+    model.addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
 
 }
 
@@ -197,5 +197,48 @@ std::array<Chromosome, 2> EvolutionController::crossoverParentChromosomes(const 
         secondChild += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     return std::array<Chromosome,2>{Chromosome(firstChild), Chromosome(secondChild)};
+}
+
+void EvolutionController::saveCurrentGenerationToFile()
+{
+    std::time_t currentTime = std::time(NULL);
+    char currentTimeString[100];
+
+    if (std::strftime(currentTimeString, sizeof(currentTimeString), "%A %c", std::localtime(&currentTime))) {
+
+        std::string currentGenerationFileNameString = std::string(currentTimeString) + ".txt";
+        std::ofstream outfile (currentGenerationFileNameString);
+
+        for (ChromosomeAndFitness chromosomeAndFitness: currentGeneration_)
+        {
+            outfile << chromosomeAndFitness.first.chromosomeString_ << "; " << chromosomeAndFitness.second << std::endl;
+        }
+
+        outfile.close();
+   }
+
+}
+
+void EvolutionController::ReadGenerationFromFile()
+{
+    std::ifstream inFile ("wtorek wto, 30 maj 2017, 23:52:46.txt");
+    currentGeneration_.clear();
+
+    std::string line;
+    while (std::getline(inFile, line))
+    {
+        std::regex reg("(.*) ; (.*)");
+        std::smatch what;
+        if(regex_match(line,what,reg))
+        {
+            Chromosome chromosome = Chromosome(what[1]);
+            float fitness = boost::lexical_cast<float>(what[2]);
+            currentGeneration_.push_back(ChromosomeAndFitness(chromosome,fitness));
+        }
+
+
+    }
+
+
 }
 

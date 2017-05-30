@@ -58,7 +58,7 @@ b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float hal
     return parentBody->CreateFixture(&fixtureDef);
 }
 
-b2Fixture* Model::addGrounChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
+b2Fixture* Model::addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                    float density, float friction, float restitution, uint16 collisionGroup)
 {
     groundBodyPtr = parentBody;

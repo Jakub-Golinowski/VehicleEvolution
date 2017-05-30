@@ -6,13 +6,20 @@
 #include "model.h"
 #include "controller.h"
 #include "Box2D/Box2D.h"
+#include <iostream>
+#include <fstream>
+#include <ctime>
+#include <string>
+#include <boost/lexical_cast.hpp>
+#include <regex>
+
 
 class EvolutionController
 {
 public:
     EvolutionController();
     ~EvolutionController();
-    void addChromosome(Chromosome newChromosome);
+    void addChromosome(Chromosome newChromosome, float Fitness = 0.0);
     void evaluateCurrentGeneration();
     void evaluateChromosome( unsigned int chromosomeIndex);
     void visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex);
@@ -24,6 +31,9 @@ public:
     typedef std::pair<Chromosome, float> ChromosomeAndFitness;
     std::vector<ChromosomeAndFitness> currentGeneration_;
     std::vector<ChromosomeAndFitness> selectedFromCurrentGeneration;
+
+    void saveCurrentGenerationToFile();
+    void ReadGenerationFromFile();
 
 
 private:
