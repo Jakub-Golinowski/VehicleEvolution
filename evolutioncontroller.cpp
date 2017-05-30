@@ -1,13 +1,19 @@
 #include "evolutioncontroller.h"
+#include <random>
 
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
-const float EvolutionController::CAR_INITIAL_Y_POSITION = 5.0;
+const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
 const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 100000;
+const unsigned long EvolutionController::GENERATION_SIZE = 20;
+const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
+const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
+const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
 
 EvolutionController::EvolutionController(): controller(nullptr), model(nullptr), view(nullptr), drawer(nullptr)
 {
 
 }
+
 
 EvolutionController::~EvolutionController()
 {
@@ -38,6 +44,44 @@ void EvolutionController::addTrackToModel(Model &model)
     model.addGrounChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
 
 }
+
+void EvolutionController::initializeRandomFirstGeneration()
+{
+    std::default_random_engine generator;
+    generator.seed(std::random_device()());
+    for(unsigned int numberOfChromosomes=0; numberOfChromosomes<GENERATION_SIZE; ++numberOfChromosomes){
+        addChromosome(Chromosome(generateChromosomeString(generator)));
+    }
+}
+
+std::string EvolutionController::generateChromosomeString(std::default_random_engine &generator){
+
+    std::uniform_real_distribution<float> coordinatesDistribution(-CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE, CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE);
+    std::uniform_real_distribution<float> wheelRadiusDistribution(WHEEL_MINIMAL_RADIUS, WHEEL_MAXIMAL_RADIUS);
+    std::uniform_int_distribution<unsigned int> wheelVertexNumberDistribution(0, Chromosome::NUMBER_OF_VERTICES-1);
+
+    std::string newChromosomeString = "";
+    //Generate random vertices' coordinates
+    for(int numberOfCoordinate=0; numberOfCoordinate<2*Chromosome::NUMBER_OF_VERTICES; ++numberOfCoordinate){
+        float newCoordinate = coordinatesDistribution(generator);
+        newChromosomeString +=std::to_string(newCoordinate);
+        //Add separator
+        newChromosomeString += " ";
+    }
+    //Generate random wheels
+    for(int numberOfWheels=0; numberOfWheels < Chromosome::NUMBER_OF_WHEELS; ++numberOfWheels){
+        float newWheelRadius = wheelRadiusDistribution(generator);
+        unsigned int newWheelVertexNumber = wheelVertexNumberDistribution(generator);
+        newChromosomeString += std::to_string(newWheelRadius);
+        //Add separator
+        newChromosomeString += " ";
+        newChromosomeString += std::to_string(newWheelVertexNumber);
+        //Add separator
+        newChromosomeString += " ";
+    }
+    return newChromosomeString;
+}
+
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {

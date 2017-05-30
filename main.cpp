@@ -8,7 +8,7 @@
 #include "model.h"
 #include "view.h"
 #include "chromosome.h"
-#include"evolutioncontroller.h"
+#include "evolutioncontroller.h"
 
 
 
@@ -25,9 +25,11 @@ int main(int argc, char *argv[])
 
 
     EvolutionController evolutionController;
-    evolutionController.addChromosome(chromosome);
+    evolutionController.initializeRandomFirstGeneration();
    // evolutionController.evaluateChromosome(0);
     evolutionController.visualizeChromosome(0);
+    evolutionController.visualizeChromosome(1);
+    evolutionController.visualizeChromosome(2);
 
     return a.exec();
 

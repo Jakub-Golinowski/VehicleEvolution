@@ -15,18 +15,24 @@ public:
     void addChromosome(Chromosome newChromosome);
     void evaluateChromosome( unsigned int chromosomeIndex);
     void visualizeChromosome(unsigned int chromosomeIndex);
-    typedef std::pair<Chromosome, float> ChromosomeAndFitness;
-    std::vector<ChromosomeAndFitness> currentGeneration_;
+    void initializeRandomFirstGeneration();
 
 private:
 
     static const unsigned long NUMBER_OF_WORLD_ITERATIONS;
     static const float CAR_INITIAL_X_POSITION;
     static const float CAR_INITIAL_Y_POSITION;
+    static const unsigned long GENERATION_SIZE;
+    static const float CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE;
+    static const float WHEEL_MINIMAL_RADIUS;
+    static const float WHEEL_MAXIMAL_RADIUS;
+
+    typedef std::pair<Chromosome, float> ChromosomeAndFitness;
+    std::vector<ChromosomeAndFitness> currentGeneration_;
 
 
     void addTrackToModel( Model& model);
-    void initializeRandomFirstGeneration();
+    std::string generateChromosomeString(std::default_random_engine &generator);
     void selectionFromCurrentGeneration();
     void mutateCurrentGeneration();
     float calculateFitness(float distanceTravelled);
