@@ -34,12 +34,10 @@ public:
     TriangleVertices_t CreateTriangleByIndexAndThridVertex(int32 index, b2Vec2 thirdVertex);
     bool MoveAwayIfTooClose(b2Vec2& vertex1, b2Vec2& vertex2);
     WheelsArray_t getWheels();
-
+    TokenizedChromosomeString_t chromosomeTokens_;
+    std::string chromosomeString_;
 
 private:
-    std::string chromosomeString_;
-    TokenizedChromosomeString_t chromosomeTokens_;
-
     WheelsArray_t wheels_;
     VerticesArray_t vertices_;
 

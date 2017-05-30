@@ -15,7 +15,7 @@ const float Chromosome::VERTEX_PROXIMITI_LIMIT = 0.5;
         ++i;
     };
     int wheelsArrayIndex = 0;
-    for(i; i < NUMBER_OF_TOKENS; ++i){
+    for(; i < NUMBER_OF_TOKENS; ++i){
         float wheelRadius = std::stof(chromosomeTokens_[i]);
         int vertexIndex = std::stoi(chromosomeTokens_[i+1]);
         wheels_[wheelsArrayIndex] = Wheel(vertices_[vertexIndex], wheelRadius, vertexIndex);

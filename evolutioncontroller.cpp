@@ -32,7 +32,7 @@ void EvolutionController::addChromosome(Chromosome newChromosome)
 
 void EvolutionController::evaluateCurrentGeneration()
 {
-    for(int i=0; i< currentGeneration_.size(); ++i){
+    for(unsigned int i=0; i< currentGeneration_.size(); ++i){
         evaluateChromosome(i);
     }
 }
@@ -76,7 +76,7 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
         float newCoordinate = coordinatesDistribution(generator);
         newChromosomeString +=std::to_string(newCoordinate);
         //Add separator
-        newChromosomeString += " ";
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     //Generate random wheels
     for(int numberOfWheels=0; numberOfWheels < Chromosome::NUMBER_OF_WHEELS; ++numberOfWheels){
@@ -84,10 +84,10 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
         unsigned int newWheelVertexNumber = wheelVertexNumberDistribution(generator);
         newChromosomeString += std::to_string(newWheelRadius);
         //Add separator
-        newChromosomeString += " ";
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
         newChromosomeString += std::to_string(newWheelVertexNumber);
         //Add separator
-        newChromosomeString += " ";
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     return newChromosomeString;
 }
@@ -169,5 +169,33 @@ float EvolutionController::calculateFitness(float distanceTravelled)
     // TODO: implement fitness function
     if(distanceTravelled < 0.0f) distanceTravelled = 0.0f;
     return std::pow(distanceTravelled,2.0);
+}
+
+std::array<Chromosome, 2> EvolutionController::crossoverParentChromosomes(const Chromosome &firstParent, const Chromosome &secondParent, unsigned int firstCrossoverPoint, unsigned int secondCrossoverPoint)
+{
+    std::string firstChild = "";
+    std::string secondChild = "";
+
+    // If needed, switch values of first and second point, so the first point is always smaller
+    if(secondCrossoverPoint < firstCrossoverPoint){
+        unsigned int tempValue = firstCrossoverPoint;
+        firstCrossoverPoint = secondCrossoverPoint;
+        secondCrossoverPoint = tempValue;
+    }
+
+    for(unsigned int i = 0; i < Chromosome::NUMBER_OF_TOKENS; ++i)
+    {
+        if( i >= firstCrossoverPoint && i <= secondCrossoverPoint){
+            firstChild += secondParent.chromosomeTokens_.at(i);
+            secondChild += firstParent.chromosomeTokens_.at(i);
+        }else{
+            firstChild += firstParent.chromosomeTokens_.at(i);
+            secondChild += secondParent.chromosomeTokens_.at(i);
+        }
+        // Add separators
+        firstChild += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+        secondChild += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+    }
+    return std::array<Chromosome,2>{Chromosome(firstChild), Chromosome(secondChild)};
 }
 

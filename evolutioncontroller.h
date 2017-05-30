@@ -18,7 +18,13 @@ public:
     void visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex);
     void visualizeSelectedChromosome(unsigned int chromosomeIndex);
     void initializeRandomFirstGeneration();
-    void selectionFromCurrentGeneration();
+    void selectionFromCurrentGeneration();    
+    std::array<Chromosome, 2> crossoverParentChromosomes( const Chromosome& firstParent, const Chromosome& secondParent,
+                                                          unsigned int firsCrossoverPoint, unsigned int secondCrossoverPoint);
+    typedef std::pair<Chromosome, float> ChromosomeAndFitness;
+    std::vector<ChromosomeAndFitness> currentGeneration_;
+    std::vector<ChromosomeAndFitness> selectedFromCurrentGeneration;
+
 
 private:
 
@@ -31,17 +37,12 @@ private:
     static const float WHEEL_MINIMAL_RADIUS;
     static const float WHEEL_MAXIMAL_RADIUS;
 
-    typedef std::pair<Chromosome, float> ChromosomeAndFitness;
-    std::vector<ChromosomeAndFitness> currentGeneration_;
-    std::vector<ChromosomeAndFitness> selectedFromCurrentGeneration;
 
     void visualizeChromosome(Chromosome chromosome);
     void addTrackToModel( Model& model);
     std::string generateChromosomeString(std::default_random_engine &generator);
     void mutateCurrentGeneration();
     float calculateFitness(float distanceTravelled);
-    Chromosome crossoverParentChromosomes( const Chromosome& firstParent, const Chromosome& secondParent);
-
     // Visualisation
     Controller *controller;
     Model *model;

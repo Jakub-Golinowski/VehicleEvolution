@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
 
     EvolutionController evolutionController;
     evolutionController.initializeRandomFirstGeneration();
-   // evolutionController.evaluateChromosome(0);
     evolutionController.evaluateCurrentGeneration();
     evolutionController.selectionFromCurrentGeneration();
     evolutionController.visualizeSelectedChromosome(0);
