@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
 
 
     EvolutionController evolutionController;
-    evolutionController.ReadGenerationFromFile();
-    //evolutionController.initializeRandomFirstGeneration();
-    //evolutionController.evaluateCurrentGeneration();
-    //evolutionController.selectionFromCurrentGeneration();
-    //evolutionController.visualizeSelectedChromosome(0);
-    evolutionController.visualizeChromosomeFromCurrentGeneration(2);
+  //  evolutionController.ReadGenerationFromFile();
+    evolutionController.initializeRandomFirstGeneration();
+    evolutionController.evaluateCurrentGeneration();
+    evolutionController.selectionFromCurrentGeneration();
+    evolutionController.visualizeSelectedChromosome(0);
+//    evolutionController.visualizeChromosomeFromCurrentGeneration(2);
     //evolutionController.saveCurrentGenerationToFile();
 
 

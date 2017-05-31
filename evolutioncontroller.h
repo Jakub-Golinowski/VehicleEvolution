@@ -46,11 +46,12 @@ private:
     static const float CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE;
     static const float WHEEL_MINIMAL_RADIUS;
     static const float WHEEL_MAXIMAL_RADIUS;
-
+    static const float MUTATION_DECISION_THRESHOLD;
 
     void visualizeChromosome(Chromosome chromosome);
     void addTrackToModel( Model& model);
     std::string generateChromosomeString(std::default_random_engine &generator);
+    void mutateChromosome(Chromosome &chromosome, std::default_random_engine &generator);
     void mutateCurrentGeneration();
     float calculateFitness(float distanceTravelled);
     // Visualisation

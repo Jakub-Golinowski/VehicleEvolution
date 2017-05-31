@@ -9,6 +9,7 @@ const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 1;
 const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
 const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
 const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
+const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.05f;
 
 EvolutionController::EvolutionController(): controller(nullptr), model(nullptr), view(nullptr), drawer(nullptr)
 {
@@ -26,7 +27,6 @@ EvolutionController::~EvolutionController()
 
 void EvolutionController::addChromosome(Chromosome newChromosome, float Fitness)
 {
-    // Add new chromosome with 0.0 fitness
     currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, Fitness));
 }
 
@@ -35,6 +35,16 @@ void EvolutionController::evaluateCurrentGeneration()
     for(unsigned int i=0; i< currentGeneration_.size(); ++i){
         evaluateChromosome(i);
     }
+
+    // Functor for comparing ChromosomeAndFitness
+    struct {
+        bool operator ()(const ChromosomeAndFitness &firstPair, const ChromosomeAndFitness &secondPair) const
+        {
+            return firstPair.second < secondPair.second;
+        }
+    }compareFitness;
+
+    std::sort(currentGeneration_.begin(), currentGeneration_.end(), compareFitness);
 }
 
 void EvolutionController::addTrackToModel(Model &model)
@@ -92,6 +102,69 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
     return newChromosomeString;
 }
 
+void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_random_engine &generator)
+{
+    std::string newChromosomeString = "";
+    std::uniform_real_distribution<float> tokenMutationDistribution(0.0, 1.0);
+    std::uniform_real_distribution<float> coordinatesDistribution(-CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE, CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE);
+    std::uniform_real_distribution<float> wheelRadiusDistribution(WHEEL_MINIMAL_RADIUS, WHEEL_MAXIMAL_RADIUS);
+    std::uniform_int_distribution<unsigned int> wheelVertexNumberDistribution(0, Chromosome::NUMBER_OF_VERTICES-1);
+
+    // Mutate vertices
+    for( b2Vec2 vertex : chromosome.GetVerticesArray()){
+        // Decide wether to mutate x coordinate
+        bool mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        if( mutationDecision )
+        {
+            float newCoordinate = coordinatesDistribution(generator);
+            newChromosomeString += std::to_string(newCoordinate);
+        }
+        else
+        {
+            newChromosomeString += std::to_string(vertex.x);
+        }
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+        // Do the same for y coordinate
+        mutationDecision  = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        if( mutationDecision )
+        {
+            float newCoordinate = coordinatesDistribution(generator);
+            newChromosomeString += std::to_string(newCoordinate);
+        }else
+        {
+            newChromosomeString += std::to_string(vertex.y);
+        }
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+    }
+    // Mutate wheels
+    for( Wheel wheel : chromosome.getWheels()){
+        // Decide wether to mutate wheel radius
+        bool mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        if( mutationDecision )
+        {
+            float newWheelRadius = wheelRadiusDistribution(generator);
+            newChromosomeString += std::to_string(newWheelRadius);
+        }
+        else
+        {
+            newChromosomeString += std::to_string(wheel.wheelRadius_);
+        }
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+        //Decide wether to mutate wheel vertex number
+        mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        if( mutationDecision )
+        {
+            unsigned int newWheelVertexIndex = wheelVertexNumberDistribution(generator);
+            newChromosomeString += std::to_string(newWheelVertexIndex);
+        }
+        else
+        {
+            newChromosomeString += std::to_string(wheel.vertexIndex_);
+        }
+        newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
+    }
+}
+
 void EvolutionController::selectionFromCurrentGeneration()
 {
     selectedFromCurrentGeneration.clear();
@@ -116,13 +189,7 @@ void EvolutionController::selectionFromCurrentGeneration()
         selectedFromCurrentGeneration.push_back(*it);
         currentGeneration_.erase(it);
     }
-
 }
-
-
-
-
-
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
@@ -221,7 +288,7 @@ void EvolutionController::saveCurrentGenerationToFile()
 
 void EvolutionController::ReadGenerationFromFile()
 {
-    std::ifstream inFile ("wtorek wto, 30 maj 2017, 23:52:46.txt");
+    std::ifstream inFile ("wtorek-wto-30-maj-2017-235246.txt");
     currentGeneration_.clear();
 
     std::string line;
