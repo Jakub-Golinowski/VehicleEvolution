@@ -26,11 +26,8 @@ int main(int argc, char *argv[])
 
     EvolutionController evolutionController;
   //  evolutionController.ReadGenerationFromFile();
-    evolutionController.initializeRandomFirstGeneration();
-    evolutionController.evaluateCurrentGeneration();
-    evolutionController.selectionFromCurrentGeneration();
-    evolutionController.visualizeSelectedChromosome(0);
-//    evolutionController.visualizeChromosomeFromCurrentGeneration(2);
+    evolutionController.evolution(10);
+    evolutionController.visualizeChromosomeFromCurrentGeneration(evolutionController.currentGeneration_.size()-1);
     //evolutionController.saveCurrentGenerationToFile();
 
 

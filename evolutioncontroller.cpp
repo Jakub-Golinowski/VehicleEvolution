@@ -3,17 +3,18 @@
 
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
 const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
-const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 50000;
+const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 10000;
 const unsigned long EvolutionController::GENERATION_SIZE = 10;
-const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 1;
+const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 2;
 const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
 const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
 const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
-const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.05f;
+const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.01f;
 
 EvolutionController::EvolutionController(): controller(nullptr), model(nullptr), view(nullptr), drawer(nullptr)
 {
-
+    // Set seed of randomNumberGenerator to true random number
+    randomNumberGenerator.seed(std::random_device()());
 }
 
 
@@ -28,6 +29,31 @@ EvolutionController::~EvolutionController()
 void EvolutionController::addChromosome(Chromosome newChromosome, float Fitness)
 {
     currentGeneration_.push_back(ChromosomeAndFitness(newChromosome, Fitness));
+}
+
+void EvolutionController::evolution(unsigned long numberOfGenerations)
+{
+    initializeRandomFirstGeneration();
+    for(unsigned int i=0; i<numberOfGenerations;++i){
+        evaluateCurrentGeneration();
+        selectionFromCurrentGeneration();
+        currentGeneration_.clear();
+        currentGeneration_ = selectedFromCurrentGeneration;
+        std::uniform_int_distribution<unsigned int> crossoverPointDistribution(0, Chromosome::NUMBER_OF_TOKENS-1);
+        while(currentGeneration_.size() < GENERATION_SIZE)
+        {
+            unsigned int firstCrossoverPoint = crossoverPointDistribution(randomNumberGenerator);
+            unsigned int secondCrossoverPoint = crossoverPointDistribution(randomNumberGenerator);
+            std::array<Chromosome, 2> newChromosomes = crossoverParentChromosomes(selectedFromCurrentGeneration.at(0).first, selectedFromCurrentGeneration.at(1).first, firstCrossoverPoint, secondCrossoverPoint);
+            addChromosome(newChromosomes[0]);
+            if(currentGeneration_.size() < GENERATION_SIZE)
+            {
+                addChromosome(newChromosomes[1]);
+            }
+        }
+        mutateCurrentGeneration();
+    }
+    evaluateCurrentGeneration();
 }
 
 void EvolutionController::evaluateCurrentGeneration()
@@ -53,15 +79,15 @@ void EvolutionController::addTrackToModel(Model &model)
     b2Vec2 points[100];
     float x = -200.0;
     // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
-    std::default_random_engine generator;
-    generator.seed(1);
+    std::default_random_engine trackGenerator;
+    trackGenerator.seed(1);
     std::uniform_real_distribution<float> trackElevationDistribution(-15.0f,15.0f);
 
 
     for(int i=0; i<100; ++i){
         points[i].x = x;
         x += 50.0;
-        float y = trackElevationDistribution(generator);
+        float y = trackElevationDistribution(trackGenerator);
         points[i].y = y;
     }
     model.addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
@@ -71,15 +97,12 @@ void EvolutionController::addTrackToModel(Model &model)
 void EvolutionController::initializeRandomFirstGeneration()
 {
     currentGeneration_.clear();
-    //Create new generator with true random seed
-    std::default_random_engine generator;
-    generator.seed(std::random_device()());
     for(unsigned int numberOfChromosomes=0; numberOfChromosomes<GENERATION_SIZE; ++numberOfChromosomes){
-        addChromosome(Chromosome(generateChromosomeString(generator)));
+        addChromosome(Chromosome(generateChromosomeString()));
     }
 }
 
-std::string EvolutionController::generateChromosomeString(std::default_random_engine &generator){
+std::string EvolutionController::generateChromosomeString(){
 
     std::uniform_real_distribution<float> coordinatesDistribution(-CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE, CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE);
     std::uniform_real_distribution<float> wheelRadiusDistribution(WHEEL_MINIMAL_RADIUS, WHEEL_MAXIMAL_RADIUS);
@@ -88,15 +111,15 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
     std::string newChromosomeString = "";
     //Generate random vertices' coordinates
     for(int numberOfCoordinate=0; numberOfCoordinate<2*Chromosome::NUMBER_OF_VERTICES; ++numberOfCoordinate){
-        float newCoordinate = coordinatesDistribution(generator);
+        float newCoordinate = coordinatesDistribution(randomNumberGenerator);
         newChromosomeString +=std::to_string(newCoordinate);
         //Add separator
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     //Generate random wheels
     for(int numberOfWheels=0; numberOfWheels < Chromosome::NUMBER_OF_WHEELS; ++numberOfWheels){
-        float newWheelRadius = wheelRadiusDistribution(generator);
-        unsigned int newWheelVertexNumber = wheelVertexNumberDistribution(generator);
+        float newWheelRadius = wheelRadiusDistribution(randomNumberGenerator);
+        unsigned int newWheelVertexNumber = wheelVertexNumberDistribution(randomNumberGenerator);
         newChromosomeString += std::to_string(newWheelRadius);
         //Add separator
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
@@ -107,7 +130,7 @@ std::string EvolutionController::generateChromosomeString(std::default_random_en
     return newChromosomeString;
 }
 
-void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_random_engine &generator)
+void EvolutionController::mutateChromosome(Chromosome &chromosome)
 {
     std::string newChromosomeString = "";
     std::uniform_real_distribution<float> tokenMutationDistribution(0.0, 1.0);
@@ -118,10 +141,10 @@ void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_
     // Mutate vertices
     for( b2Vec2 vertex : chromosome.GetVerticesArray()){
         // Decide wether to mutate x coordinate
-        bool mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        bool mutationDecision = tokenMutationDistribution(randomNumberGenerator) < MUTATION_DECISION_THRESHOLD;
         if( mutationDecision )
         {
-            float newCoordinate = coordinatesDistribution(generator);
+            float newCoordinate = coordinatesDistribution(randomNumberGenerator);
             newChromosomeString += std::to_string(newCoordinate);
         }
         else
@@ -130,10 +153,10 @@ void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_
         }
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
         // Do the same for y coordinate
-        mutationDecision  = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        mutationDecision  = tokenMutationDistribution(randomNumberGenerator) < MUTATION_DECISION_THRESHOLD;
         if( mutationDecision )
         {
-            float newCoordinate = coordinatesDistribution(generator);
+            float newCoordinate = coordinatesDistribution(randomNumberGenerator);
             newChromosomeString += std::to_string(newCoordinate);
         }else
         {
@@ -144,10 +167,10 @@ void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_
     // Mutate wheels
     for( Wheel wheel : chromosome.getWheels()){
         // Decide wether to mutate wheel radius
-        bool mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        bool mutationDecision = tokenMutationDistribution(randomNumberGenerator) < MUTATION_DECISION_THRESHOLD;
         if( mutationDecision )
         {
-            float newWheelRadius = wheelRadiusDistribution(generator);
+            float newWheelRadius = wheelRadiusDistribution(randomNumberGenerator);
             newChromosomeString += std::to_string(newWheelRadius);
         }
         else
@@ -156,10 +179,10 @@ void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_
         }
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
         //Decide wether to mutate wheel vertex number
-        mutationDecision = tokenMutationDistribution(generator) < MUTATION_DECISION_THRESHOLD;
+        mutationDecision = tokenMutationDistribution(randomNumberGenerator) < MUTATION_DECISION_THRESHOLD;
         if( mutationDecision )
         {
-            unsigned int newWheelVertexIndex = wheelVertexNumberDistribution(generator);
+            unsigned int newWheelVertexIndex = wheelVertexNumberDistribution(randomNumberGenerator);
             newChromosomeString += std::to_string(newWheelVertexIndex);
         }
         else
@@ -170,20 +193,24 @@ void EvolutionController::mutateChromosome(Chromosome &chromosome, std::default_
     }
 }
 
+void EvolutionController::mutateCurrentGeneration()
+{
+    for(ChromosomeAndFitness chromosomeAndFitness : currentGeneration_)
+    {
+        //mutateChromosome();
+    }
+}
+
 void EvolutionController::selectionFromCurrentGeneration()
 {
     selectedFromCurrentGeneration.clear();
-    //Create new generator with true random seed
-    std::default_random_engine generator;
-    generator.seed(std::random_device()());
-
     for(unsigned int i=0; i < NUMBER_OF_SELECTED_CHROMOSOMES; ++i){
         float fitnessSum = 0.0f;
         for( ChromosomeAndFitness chromosomeAndFitness : currentGeneration_){
             fitnessSum += chromosomeAndFitness.second;
         }
         std::uniform_real_distribution<float> fitnessDistribution(0.0, fitnessSum);
-        float value = fitnessDistribution(generator);
+        float value = fitnessDistribution(randomNumberGenerator);
         std::vector<ChromosomeAndFitness>::iterator it;
         for(it = currentGeneration_.begin(); it != currentGeneration_.end(); ++it){
             value -= (*it).second;

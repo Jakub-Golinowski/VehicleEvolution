@@ -20,6 +20,7 @@ public:
     EvolutionController();
     ~EvolutionController();
     void addChromosome(Chromosome newChromosome, float Fitness = 0.0);
+    void evolution(unsigned long numberOfGenerations);
     void evaluateCurrentGeneration();
     void evaluateChromosome( unsigned int chromosomeIndex);
     void visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex);
@@ -48,10 +49,12 @@ private:
     static const float WHEEL_MAXIMAL_RADIUS;
     static const float MUTATION_DECISION_THRESHOLD;
 
+    std::default_random_engine randomNumberGenerator;
+
     void visualizeChromosome(Chromosome chromosome);
     void addTrackToModel( Model& model);
-    std::string generateChromosomeString(std::default_random_engine &generator);
-    void mutateChromosome(Chromosome &chromosome, std::default_random_engine &generator);
+    std::string generateChromosomeString();
+    void mutateChromosome(Chromosome &chromosome);
     void mutateCurrentGeneration();
     float calculateFitness(float distanceTravelled);
     // Visualisation
