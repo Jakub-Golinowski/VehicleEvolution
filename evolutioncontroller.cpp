@@ -37,6 +37,7 @@ void EvolutionController::evolution(unsigned long numberOfGenerations)
     for(unsigned int i=0; i<numberOfGenerations;++i){
         evaluateCurrentGeneration();
         selectionFromCurrentGeneration();
+        // Create next generation. TODO: Move to another function
         currentGeneration_.clear();
         currentGeneration_ = selectedFromCurrentGeneration;
         std::uniform_int_distribution<unsigned int> crossoverPointDistribution(0, Chromosome::NUMBER_OF_TOKENS-1);
@@ -76,7 +77,7 @@ void EvolutionController::evaluateCurrentGeneration()
 void EvolutionController::addTrackToModel(Model &model)
 {
     b2Body* testBody = model.addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
-    b2Vec2 points[100];
+    b2Vec2 points[300];
     float x = -200.0;
     // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
     std::default_random_engine trackGenerator;
@@ -84,10 +85,17 @@ void EvolutionController::addTrackToModel(Model &model)
     std::uniform_real_distribution<float> trackElevationDistribution(-15.0f,15.0f);
 
 
-    for(int i=0; i<100; ++i){
+    for(int i=0; i<300; ++i){
         points[i].x = x;
         x += 50.0;
-        float y = trackElevationDistribution(trackGenerator);
+        float y;
+        if( i > 5){
+            y = trackElevationDistribution(trackGenerator);
+        }else
+        {
+            y = 0.0;
+        }
+
         points[i].y = y;
     }
     model.addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
