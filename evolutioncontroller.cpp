@@ -49,14 +49,19 @@ void EvolutionController::evaluateCurrentGeneration()
 
 void EvolutionController::addTrackToModel(Model &model)
 {
-    //TODO : Add proper track
     b2Body* testBody = model.addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
     b2Vec2 points[100];
-    float x = 0.0;
+    float x = -200.0;
+    // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
+    std::default_random_engine generator;
+    generator.seed(1);
+    std::uniform_real_distribution<float> trackElevationDistribution(-15.0f,15.0f);
+
+
     for(int i=0; i<100; ++i){
         points[i].x = x;
         x += 50.0;
-        float y = static_cast<float>(rand() % 20 - 9);
+        float y = trackElevationDistribution(generator);
         points[i].y = y;
     }
     model.addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
@@ -228,6 +233,7 @@ void EvolutionController::visualizeChromosome(Chromosome chromosome)
     view->show();
     controller = new Controller(model, view);
     controller->startSimulation(5);
+
 
 }
 
