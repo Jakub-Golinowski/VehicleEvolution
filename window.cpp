@@ -14,21 +14,21 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     model_.addTrack();
     model_.addCarFromChromosome(chromosome, EvolutionController::CAR_INITIAL_X_POSITION, EvolutionController::CAR_INITIAL_Y_POSITION);
     view_.setGeometry(0,0,800,600);
-    controller_.startSimulation(5);
+  //  controller_.startSimulation(5);
 
 
-    evolutionInputGenerationTypeComboBox.addItem(tr("Random"), evolutionInputGenerationTypeEnum::Random);
-    evolutionInputGenerationTypeComboBox.addItem(tr("From File"), evolutionInputGenerationTypeEnum::FromFile);
+    evolutionInputGenerationTypeComboBox.addItem(tr("Losowe"), evolutionInputGenerationTypeEnum::Random);
+    evolutionInputGenerationTypeComboBox.addItem(tr("Plik"), evolutionInputGenerationTypeEnum::FromFile);
 
-    evolutionInputGenerationTypeLabel.setText("Input Generation Type:");
+    evolutionInputGenerationTypeLabel.setText("Źródło nowej generacji:");
     evolutionInputGenerationTypeLabel.setBuddy(&evolutionInputGenerationTypeComboBox);
 
     numberOfEvolutionGenerationsSpinBox.setRange(1, 20);
 
-    numberOfEvolutionGenerationsLabel.setText("Number of generations:");
+    numberOfEvolutionGenerationsLabel.setText("Numer generacji:");
     numberOfEvolutionGenerationsLabel.setBuddy(&numberOfEvolutionGenerationsSpinBox);
 
-    evolutionStartButton.setText("Start Evolution");
+    evolutionStartButton.setText("Start ewolucji");
 
     connect(&evolutionInputGenerationTypeComboBox, SIGNAL(activated(int)),
             this, SLOT(evolutionInputGenerationTypeChanged()));
@@ -49,7 +49,7 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     evolutionInputGenerationTypeChanged();
     numberOfEvolutionGenerationsChanged();
 
-    setWindowTitle(tr("Vehicle Evolution Graphical User Interface"));
+    setWindowTitle("Ewolucja pojazdów");
 }
 
 void Window::evolutionInputGenerationTypeChanged()

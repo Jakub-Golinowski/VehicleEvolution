@@ -95,7 +95,7 @@ b2Body* Model::addWheelBody(float posX, float posY)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(posX,posY);
-    bodyDef.type = b2_dynamicBody; //koło jest zawsze dynamic
+    bodyDef.type = b2_dynamicBody;
 
     return _box2dWorld.CreateBody(&bodyDef);
 }
