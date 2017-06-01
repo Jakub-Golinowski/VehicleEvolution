@@ -74,33 +74,7 @@ void EvolutionController::evaluateCurrentGeneration()
     std::sort(currentGeneration_.begin(), currentGeneration_.end(), compareFitness);
 }
 
-void EvolutionController::addTrackToModel(Model &model)
-{
-    b2Body* testBody = model.addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
-    b2Vec2 points[300];
-    float x = -200.0;
-    // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
-    std::default_random_engine trackGenerator;
-    trackGenerator.seed(1);
-    std::uniform_real_distribution<float> trackElevationDistribution(-15.0f,15.0f);
 
-
-    for(int i=0; i<300; ++i){
-        points[i].x = x;
-        x += 50.0;
-        float y;
-        if( i > 5){
-            y = trackElevationDistribution(trackGenerator);
-        }else
-        {
-            y = 0.0;
-        }
-
-        points[i].y = y;
-    }
-    model.addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
-
-}
 
 void EvolutionController::initializeRandomFirstGeneration()
 {
@@ -234,7 +208,7 @@ void EvolutionController::selectionFromCurrentGeneration()
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
     Model model(0.0f,-10.f);
-    addTrackToModel(model);
+    model.addTrack();
     b2Body* evaluatedCar = model.addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
 
     for(unsigned int i=0; i<NUMBER_OF_WORLD_ITERATIONS; ++i){
@@ -261,14 +235,14 @@ void EvolutionController::visualizeChromosome(Chromosome chromosome)
     drawer = new QB2Draw(QRect(0,0,800,600));
     drawer->SetFlags(0x0001);
     model = new Model(0.0f,-10.f, drawer);
-    addTrackToModel(*model);
+    model->addTrack();
     model->addCarFromChromosome(chromosome, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
     view = new View(model, drawer);
     view->setGeometry(0,0,800,600);
-    view->show();
+    //window->SetView(model, drawer);
+    //view->show();
     controller = new Controller(model, view);
     controller->startSimulation(5);
-
 
 }
 

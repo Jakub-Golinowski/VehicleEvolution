@@ -35,7 +35,9 @@ SOURCES += main.cpp \
     qb2draw.cpp \
     chromosome.cpp \
     wheel.cpp \
-    evolutioncontroller.cpp
+    evolutioncontroller.cpp \
+    window.cpp \
+    renderarea.cpp
 
 
 HEADERS  += \
@@ -45,7 +47,9 @@ HEADERS  += \
     qb2draw.h \
     chromosome.h \
     wheel.h \
-    evolutioncontroller.h
+    evolutioncontroller.h \
+    window.h \
+    renderarea.h
 
 FORMS    +=
 

@@ -15,11 +15,14 @@ class View : public QWidget
 public:
 
    View(Model * model, QB2Draw * drawer);
+   View();
 
    Model * _model;
    QB2Draw * _drawer;
 
    static const float32 DRAWING_SCALE;
+   QSize minimumSizeHint() const override;
+   QSize sizeHint() const override;
 
 protected:
     void paintEvent(QPaintEvent *event);

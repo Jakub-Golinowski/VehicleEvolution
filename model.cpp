@@ -74,6 +74,33 @@ b2Fixture* Model::addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsig
     return parentBody->CreateFixture(&fixtureDef);
 }
 
+void Model::addTrack()
+{
+    b2Body* testBody = addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
+    b2Vec2 points[300];
+    float x = -200.0;
+    // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
+    std::default_random_engine trackGenerator;
+    trackGenerator.seed(1);
+    std::uniform_real_distribution<float> trackElevationDistribution(-15.0f,15.0f);
+
+
+    for(int i=0; i<300; ++i){
+        points[i].x = x;
+        x += 50.0;
+        float y;
+        if( i > 5){
+            y = trackElevationDistribution(trackGenerator);
+        }else
+        {
+            y = 0.0;
+        }
+
+        points[i].y = y;
+    }
+    addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
+}
+
 b2Body* Model::addWheelBody(float posX, float posY)
 {
     b2BodyDef bodyDef;

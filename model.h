@@ -28,6 +28,7 @@ public:
                                        float density, float friction, float restitution, uint16 collisionGroup);
     b2Fixture* addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                        float density, float friction, float restitution, uint16 collisionGroup);
+    void addTrack();
 
     b2Body* addWheelBody(float poxX, float posY);
     b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup);

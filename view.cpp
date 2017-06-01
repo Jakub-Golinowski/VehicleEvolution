@@ -10,9 +10,14 @@ View::View(Model * model, QB2Draw * drawer)
 
 }
 
+View::View()
+{
+    _model=nullptr;
+    _drawer = nullptr;
+}
+
 void View::paintEvent(QPaintEvent *event)
 {
-    //TODO: Add drawing of ground
     //Set up the painter parameters
     QPainter p(this);
     p.setBrush(Qt::NoBrush);
@@ -107,3 +112,15 @@ void View::paintEvent(QPaintEvent *event)
 
     p.end();
 }
+
+
+QSize View::sizeHint() const
+{
+    return QSize(800, 600);
+}
+
+QSize View::minimumSizeHint() const
+{
+    return QSize(800, 600);
+}
+
