@@ -14,37 +14,37 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     model_.addTrack();
     model_.addCarFromChromosome(chromosome, EvolutionController::CAR_INITIAL_X_POSITION, EvolutionController::CAR_INITIAL_Y_POSITION);
     view_.setGeometry(0,0,800,600);
-  //  controller_.startSimulation(5);
+    controller_.startSimulation(5);
 
 
-    evolutionInputGenerationTypeComboBox.addItem(tr("Losowe"), evolutionInputGenerationTypeEnum::Random);
-    evolutionInputGenerationTypeComboBox.addItem(tr("Plik"), evolutionInputGenerationTypeEnum::FromFile);
+    evolutionInputGenerationTypeComboBox_.addItem(tr("Losowe"), evolutionInputGenerationTypeEnum::Random);
+    evolutionInputGenerationTypeComboBox_.addItem(tr("Plik"), evolutionInputGenerationTypeEnum::FromFile);
 
-    evolutionInputGenerationTypeLabel.setText("Źródło nowej generacji:");
-    evolutionInputGenerationTypeLabel.setBuddy(&evolutionInputGenerationTypeComboBox);
+    evolutionInputGenerationTypeLabel_.setText("Źródło nowej generacji:");
+    evolutionInputGenerationTypeLabel_.setBuddy(&evolutionInputGenerationTypeComboBox_);
 
-    numberOfEvolutionGenerationsSpinBox.setRange(1, 20);
+    numberOfEvolutionGenerationsSpinBox_.setRange(1, 20);
 
-    numberOfEvolutionGenerationsLabel.setText("Numer generacji:");
-    numberOfEvolutionGenerationsLabel.setBuddy(&numberOfEvolutionGenerationsSpinBox);
+    numberOfEvolutionGenerationsLabel_.setText("Numer generacji:");
+    numberOfEvolutionGenerationsLabel_.setBuddy(&numberOfEvolutionGenerationsSpinBox_);
 
-    evolutionStartButton.setText("Start ewolucji");
+    evolutionStartButton_.setText("Start ewolucji");
 
-    connect(&evolutionInputGenerationTypeComboBox, SIGNAL(activated(int)),
+    connect(&evolutionInputGenerationTypeComboBox_, SIGNAL(activated(int)),
             this, SLOT(evolutionInputGenerationTypeChanged()));
-    connect(&numberOfEvolutionGenerationsSpinBox, SIGNAL(valueChanged(int)),
+    connect(&numberOfEvolutionGenerationsSpinBox_, SIGNAL(valueChanged(int)),
             this, SLOT(numberOfEvolutionGenerationsChanged()));
-    connect(&evolutionStartButton, SIGNAL(clicked(bool)), this, SLOT(evolutionStartButtonClicked()));
+    connect(&evolutionStartButton_, SIGNAL(clicked(bool)), this, SLOT(evolutionStartButtonClicked()));
 
-    mainLayout.setColumnStretch(0, 1);
-    mainLayout.setColumnStretch(3, 1);
-    mainLayout.addWidget(&view_, 0, 0, 1, 4, Qt::AlignCenter);
-    mainLayout.addWidget(&evolutionInputGenerationTypeLabel, 1, 0, Qt::AlignLeft);
-    mainLayout.addWidget(&evolutionInputGenerationTypeComboBox, 1, 1, Qt::AlignLeft);
-    mainLayout.addWidget(&numberOfEvolutionGenerationsLabel, 2, 0, Qt::AlignLeft);
-    mainLayout.addWidget(&numberOfEvolutionGenerationsSpinBox, 2, 1, Qt::AlignLeft);
-    mainLayout.addWidget(&evolutionStartButton, 3,0, Qt::AlignCenter);
-    setLayout(&mainLayout);
+    mainLayout_.setColumnStretch(0, 1);
+    mainLayout_.setColumnStretch(3, 1);
+    mainLayout_.addWidget(&view_, 0, 0, 1, 4, Qt::AlignCenter);
+    mainLayout_.addWidget(&evolutionInputGenerationTypeLabel_, 1, 0, Qt::AlignLeft);
+    mainLayout_.addWidget(&evolutionInputGenerationTypeComboBox_, 1, 1, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfEvolutionGenerationsLabel_, 2, 0, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfEvolutionGenerationsSpinBox_, 2, 1, Qt::AlignLeft);
+    mainLayout_.addWidget(&evolutionStartButton_, 3,0, Qt::AlignCenter);
+    setLayout(&mainLayout_);
 
     evolutionInputGenerationTypeChanged();
     numberOfEvolutionGenerationsChanged();
@@ -54,18 +54,18 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
 
 void Window::evolutionInputGenerationTypeChanged()
 {
-   evolutionInputGenerationType= evolutionInputGenerationTypeEnum(evolutionInputGenerationTypeComboBox.currentIndex());
+   evolutionInputGenerationType= evolutionInputGenerationTypeEnum(evolutionInputGenerationTypeComboBox_.currentIndex());
 }
 
 void Window::numberOfEvolutionGenerationsChanged()
 {
-    numberOfEvolutionGenerationsInt = numberOfEvolutionGenerationsSpinBox.value();
+    numberOfEvolutionGenerationsInt_ = numberOfEvolutionGenerationsSpinBox_.value();
 }
 
 void Window::evolutionStartButtonClicked()
 {
     //TODO: add checking evolutionInputGenerationType and reading from file
-    evolutionController_.evolution(numberOfEvolutionGenerationsInt);
+    evolutionController_.evolution(numberOfEvolutionGenerationsInt_);
 }
 
 void Window::VisualiseChromosomeInWindow(Chromosome chomosome)

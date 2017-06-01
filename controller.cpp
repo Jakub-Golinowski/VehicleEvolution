@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller::Controller(Model * model, View * view) : _model(model), _view(view)
+Controller::Controller(Model * model, View * view) : model_(model), view_(view)
 {
 
 }
@@ -14,6 +14,6 @@ void Controller::startSimulation(unsigned long interval)
 
 void Controller::simulateAndDraw()
 {
-    _model->simulate();
-    _view->repaint();
+    model_->simulate();
+    view_->repaint();
 }

@@ -14,8 +14,8 @@ public:
     void startSimulation(unsigned long interval);
 
 private:
-    Model  * _model;
-    View  * _view;
+    Model  * model_;
+    View  * view_;
 
 public slots:
     void simulateAndDraw();

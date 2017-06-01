@@ -1,17 +1,20 @@
 #include "view.h"
 #include <vector>
+#include <QPen>
+#include <QPainter>
+#include <QTransform>
 #include <sstream>
 
 const float32 View::DRAWING_SCALE = 6;
 
-View::View(Model * model):_model(model)
+View::View(Model * model):model_(model)
 {
 
 }
 
 View::View()
 {
-    _model=nullptr;
+    model_=nullptr;
 }
 
 void View::paintEvent(QPaintEvent *event)
@@ -25,7 +28,7 @@ void View::paintEvent(QPaintEvent *event)
     QTransform transform;
 
     //Retrieve car position and angle
-    b2Vec2 CarPosition = _model->chromosomeCarBodyPtr->GetPosition();
+    b2Vec2 CarPosition = model_->chromosomeCarBodyPtr_->GetPosition();
     // Translation moves point (0;0) to the middle of the view
     transform.translate(this->geometry().width()/2,this->geometry().height()/2);
     transform.scale(DRAWING_SCALE,-DRAWING_SCALE);
@@ -34,7 +37,7 @@ void View::paintEvent(QPaintEvent *event)
 
 
     //Retrieve all vertices of car body triangles and draw the car body triangles in scale
-    for( b2Fixture *fixture = _model->chromosomeCarBodyPtr->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+    for( b2Fixture *fixture = model_->chromosomeCarBodyPtr_->GetFixtureList(); fixture; fixture = fixture->GetNext() )
     {
        if( fixture->GetShape()->GetType() == b2Shape::e_polygon )
        {
@@ -44,7 +47,7 @@ void View::paintEvent(QPaintEvent *event)
           int count = poly->GetVertexCount();
           for(int i = 0; i < count; ++i)
           {
-             b2Vec2 Vertex = _model->chromosomeCarBodyPtr->GetWorldPoint( poly->GetVertex(i) );
+             b2Vec2 Vertex = model_->chromosomeCarBodyPtr_->GetWorldPoint( poly->GetVertex(i) );
              singleTriangle.append(QPointF((Vertex.x),(Vertex.y)));
              p.drawPolygon(singleTriangle);
           }
@@ -52,7 +55,7 @@ void View::paintEvent(QPaintEvent *event)
     }
 
     //Retrieve car wheels and draw them to scale
-    for( b2Body* wheel : _model->WheelBodyPtrArray)
+    for( b2Body* wheel : model_->WheelBodyPtrArray)
     {
         QPointF wheelCenter = QPointF(wheel->GetPosition().x , wheel->GetPosition().y);
         qreal wheelRadius = 0;
@@ -79,12 +82,12 @@ void View::paintEvent(QPaintEvent *event)
     }
 
     //Draw ground chain shape
-    b2Fixture *fixture = _model->groundBodyPtr->GetFixtureList();
+    b2Fixture *fixture = model_->groundBodyPtr_->GetFixtureList();
     if( fixture->GetShape()->GetType() == b2Shape::e_chain )
     {
       b2ChainShape *chain = (b2ChainShape*)fixture->GetShape();
-      float groundBodyXOffset = _model->groundBodyPtr->GetPosition().x;
-      float groundBodyYOffset = _model->groundBodyPtr->GetPosition().y;
+      float groundBodyXOffset = model_->groundBodyPtr_->GetPosition().x;
+      float groundBodyYOffset = model_->groundBodyPtr_->GetPosition().y;
 
       for(int i = 0; i < chain->GetChildCount(); ++i)
       {

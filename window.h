@@ -3,7 +3,6 @@
 
 #include "view.h"
 #include "controller.h"
-#include "renderarea.h"
 #include <QWidget>
 #include <QLabel>
 #include <QComboBox>
@@ -12,14 +11,6 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include "evolutioncontroller.h"
-
-
-//class QCheckBox;
-//class QComboBox;
-//class QLabel;
-//class QSpinBox;
-
-class View;
 
 class Window : public QWidget
 {
@@ -32,7 +23,7 @@ public:
     enum evolutionInputGenerationTypeEnum{ Random = 0, FromFile = 1 };
 
     evolutionInputGenerationTypeEnum  evolutionInputGenerationType;
-    unsigned long numberOfEvolutionGenerationsInt;
+    unsigned long numberOfEvolutionGenerationsInt_;
 
 signals:
 
@@ -49,14 +40,14 @@ private:
     View view_;
     Controller controller_;
 
-    QGridLayout mainLayout;
-    QPushButton evolutionStartButton;
+    QGridLayout mainLayout_;
+    QPushButton evolutionStartButton_;
 
-    QLabel evolutionInputGenerationTypeLabel;
-    QLabel numberOfEvolutionGenerationsLabel;
+    QLabel evolutionInputGenerationTypeLabel_;
+    QLabel numberOfEvolutionGenerationsLabel_;
 
-    QComboBox evolutionInputGenerationTypeComboBox;
-    QSpinBox numberOfEvolutionGenerationsSpinBox;
+    QComboBox evolutionInputGenerationTypeComboBox_;
+    QSpinBox numberOfEvolutionGenerationsSpinBox_;
 
 };
 

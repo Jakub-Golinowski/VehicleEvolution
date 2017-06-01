@@ -2,7 +2,6 @@
 #define MODEL_H
 
 #include <Box2D/Box2D.h>
-#include "qb2draw.h"
 #include "chromosome.h"
 
 
@@ -39,8 +38,8 @@ public:
 
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
-    b2Body* chromosomeCarBodyPtr;
-    b2Body* groundBodyPtr;
+    b2Body* chromosomeCarBodyPtr_;
+    b2Body* groundBodyPtr_;
     std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;
 
 private:
@@ -50,7 +49,7 @@ private:
     static const float WORLD_X_GRAVITY_VALUE;
     static const float WORLD_y_GRAVITY_VALUE;
 
-    b2World _box2dWorld;
+    b2World box2dWorld_;
 };
 
 #endif // MODEL_H

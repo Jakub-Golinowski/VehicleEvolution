@@ -8,7 +8,7 @@ const float Model::WORLD_y_GRAVITY_VALUE = -10.0;
 std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;
 
 Model::Model()
-    : _box2dWorld(b2Vec2(WORLD_X_GRAVITY_VALUE, WORLD_y_GRAVITY_VALUE))
+    : box2dWorld_(b2Vec2(WORLD_X_GRAVITY_VALUE, WORLD_y_GRAVITY_VALUE))
 {
 }
 
@@ -19,7 +19,7 @@ b2Body* Model::addBody(float posX, float posY, b2BodyType bodyType, float angle_
     bodyDef.type = bodyType;
     bodyDef.angle = angle_radians;
 
-    return _box2dWorld.CreateBody(&bodyDef);
+    return box2dWorld_.CreateBody(&bodyDef);
 }
 
 b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians)
@@ -29,7 +29,7 @@ b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float an
     bodyDef.type = bodyType;
     bodyDef.angle = angle_radians;
 
-    return _box2dWorld.CreateBody(&bodyDef);
+    return box2dWorld_.CreateBody(&bodyDef);
 }
 
 b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float half_height,
@@ -51,7 +51,7 @@ b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float hal
 b2Fixture* Model::addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                    float density, float friction, float restitution, uint16 collisionGroup)
 {
-    groundBodyPtr = parentBody;
+    groundBodyPtr_ = parentBody;
     b2ChainShape chainShape;
     chainShape.CreateChain(points,pointsCount);
 
@@ -97,7 +97,7 @@ b2Body* Model::addWheelBody(float posX, float posY)
     bodyDef.position.Set(posX,posY);
     bodyDef.type = b2_dynamicBody;
 
-    return _box2dWorld.CreateBody(&bodyDef);
+    return box2dWorld_.CreateBody(&bodyDef);
 }
 
 b2Fixture* Model::addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup)
@@ -118,7 +118,7 @@ b2Fixture* Model::addWheelFixture(b2Body* parentBody, float radius, float densit
 
 b2Joint* Model::addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef)
 {
-    return _box2dWorld.CreateJoint(dynamic_cast<b2JointDef*>(revoluteJointDef));
+    return box2dWorld_.CreateJoint(dynamic_cast<b2JointDef*>(revoluteJointDef));
 }
 
 b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
@@ -180,7 +180,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
     fixtureDef.restitution = 0.3;
     fixtureDef.filter.groupIndex = -2;
     //Create CAR BODY
-    chromosomeCarBodyPtr = _box2dWorld.CreateBody(&carbodyDef);
+    chromosomeCarBodyPtr_ = box2dWorld_.CreateBody(&carbodyDef);
     //CAR SHAPES
     b2Vec2 centerPoint(posX, posY);
     b2PolygonShape triangleShape;
@@ -188,7 +188,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         //TODO -> known issue: w wypadku za małych odstępów pomiędzy punktami Box2D skleja je w jeden i jest błąd bo próubuje utworzyć trójkąt z mniej niż 3 wierzchołków
         triangleShape.Set(chromosome.CreateTriangleByIndexAndThridVertex(i,centerPoint).begin(),3);
         fixtureDef.shape = &triangleShape;
-        chromosomeCarBodyPtr->CreateFixture(&fixtureDef);
+        chromosomeCarBodyPtr_->CreateFixture(&fixtureDef);
     }
     //Adding wheels
     int wheelBodyPtrIterator = 0;
@@ -211,7 +211,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         axleBodyDef.type = b2_dynamicBody;
         axleBodyDef.position.Set(2*posX + wheel.wheelCenterPosition_.x, 2*posY + wheel.wheelCenterPosition_.y);
         // Actual body
-        b2Body* axleBody = _box2dWorld.CreateBody(&axleBodyDef);
+        b2Body* axleBody = box2dWorld_.CreateBody(&axleBodyDef);
         // Actual Fixture
         axleBody->CreateFixture(&axleFixture);
         //wheel
@@ -232,17 +232,17 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         axlePrismaticJointDef.enableMotor=true;
         //axle
         b2Vec2 axis(0,1);
-        axlePrismaticJointDef.Initialize(chromosomeCarBodyPtr, axleBody, axleBody->GetWorldCenter(), axis);
-        b2Joint* axleToCarJoint= _box2dWorld.CreateJoint(&axlePrismaticJointDef);
+        axlePrismaticJointDef.Initialize(chromosomeCarBodyPtr_, axleBody, axleBody->GetWorldCenter(), axis);
+        b2Joint* axleToCarJoint= box2dWorld_.CreateJoint(&axlePrismaticJointDef);
 
         WheelBodyPtrArray[wheelBodyPtrIterator] = wheelBody;
         ++wheelBodyPtrIterator;
     }
 
-    return chromosomeCarBodyPtr;
+    return chromosomeCarBodyPtr_;
 }
 
 void Model::simulate()
 {
-    _box2dWorld.Step(BOX2D_TIMESTEP, BOX2D_VELOCITY_ITERATIONS, BOX2D_POSITION_ITERATIONS);
+    box2dWorld_.Step(BOX2D_TIMESTEP, BOX2D_VELOCITY_ITERATIONS, BOX2D_POSITION_ITERATIONS);
 }

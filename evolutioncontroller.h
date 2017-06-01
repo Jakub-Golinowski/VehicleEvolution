@@ -49,19 +49,17 @@ private:
     static const float WHEEL_MAXIMAL_RADIUS;
     static const float MUTATION_DECISION_THRESHOLD;
 
-    std::default_random_engine randomNumberGenerator;
+    std::default_random_engine randomNumberGenerator_;
 
     void visualizeChromosome(Chromosome chromosome);
-    void addTrackToModel( Model& model);
+    void addTrackToModel( Model& model_);
     std::string generateChromosomeString();
     void mutateChromosome(Chromosome &chromosome);
     void mutateCurrentGeneration();
     float calculateFitness(float distanceTravelled);
-    // Visualisation
-    Controller *controller;
-    Model *model;
-    View *view;
-    QB2Draw *drawer;
+    Controller *controller_;
+    Model *model_;
+    View *view_;
 };
 
 #endif // EVOLUTIONCONTROLLER_H
