@@ -16,6 +16,7 @@ public:
 private:
     Model  * model_;
     View  * view_;
+    QTimer timer_;
 
 public slots:
     void simulateAndDraw();

@@ -10,6 +10,7 @@
 #include <QSpinBox>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QtConcurrent/QtConcurrent>
 #include "evolutioncontroller.h"
 
 class Window : public QWidget
@@ -18,6 +19,7 @@ class Window : public QWidget
 public:
     explicit Window();
     void StartEvolution(unsigned long numberOfGenerations);
+
 
     enum evolutionInputGenerationTypeEnum{ RANDOM = 0, FROMFILE = 1 };
 
@@ -33,8 +35,11 @@ private slots:
     void numberOfEvolutionGenerationsChanged();
     void numberOfVisualizedChromosomeChanged();
     void evolutionStartButtonClicked();
+    void finishedEvolutionHandler();
 
 private:
+
+    void doEvolution();
 
     EvolutionController evolutionController_;
 
@@ -53,6 +58,9 @@ private:
     QComboBox evolutionInputGenerationTypeComboBox_;
     QSpinBox numberOfEvolutionGenerationsSpinBox_;
     QSpinBox numberOfVisualizedChromosomeSpinBox_;
+
+    QFuture<void> evolutionFuture;
+    QFutureWatcher<void> evolutionWatcher;
 
 };
 

@@ -1,9 +1,6 @@
 #include "window.h"
 #include "evolutioncontroller.h"
 
-#include <QtWidgets>
-
-const int IdRole = Qt::UserRole;
 
 Window::Window(): view_(&model_), controller_(&model_, &view_)
 {
@@ -52,6 +49,10 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     numberOfEvolutionGenerationsChanged();
 
     setWindowTitle("Ewolucja pojazdów");
+
+    connect(&evolutionWatcher, SIGNAL(finished()), this, SLOT(finishedEvolutionHandler()));
+
+
 }
 
 void Window::numberOfEvolutionGenerationsChanged()
@@ -74,17 +75,27 @@ void Window::numberOfVisualizedChromosomeChanged()
 
 void Window::evolutionStartButtonClicked()
 {
+    evolutionStartButton_.setDisabled(true);
+    // Run evolution in separate thread from GUI
+    evolutionFuture = QtConcurrent::run(this, &Window::doEvolution);
+    evolutionWatcher.setFuture(evolutionFuture);
+}
+
+void Window::finishedEvolutionHandler()
+{
+    evolutionStartButton_.setDisabled(false);
+}
+
+void Window::doEvolution(){
     //TODO: add checking evolutionInputGenerationType and reading from file
     evolutionController_.evolution(numberOfEvolutionGenerationsInt_);
     // Evaluate so, the user can view cars in sorted order
     evolutionController_.evaluateCurrentGeneration();
 }
 
-
 void Window::randomGenerationButtonClicked()
 {
     evolutionController_.initializeRandomFirstGeneration();
-    // Evaluate so, the user can view cars in sorted order
 }
 
 void Window::fromFileButtonButtonClicked()
