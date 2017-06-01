@@ -2,19 +2,22 @@
 #define VIEW_H
 
 #include <QWidget> 
+#include <QFrame>
 #include <Box2D/Box2D.h>
 #include <Box2D/Common/b2Math.h>
 #include "model.h"
 #include "spawn.h"
 
 
-class View : public QWidget
+class View : public QFrame
 {
     Q_OBJECT
 public:
 
    View(Model * model);
    View();
+
+   void setModel(Model * model);
 
    Model * model_;
 

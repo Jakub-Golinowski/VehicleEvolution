@@ -9,13 +9,19 @@ const float32 View::DRAWING_SCALE = 6;
 
 View::View(Model * model):model_(model)
 {
-
 }
 
 View::View()
 {
-    model_=nullptr;
+
 }
+
+void View::setModel(Model *model)
+{
+    delete model_;
+    model_ = model;
+}
+
 
 void View::paintEvent(QPaintEvent *event)
 {
@@ -27,6 +33,12 @@ void View::paintEvent(QPaintEvent *event)
     p.setPen(pen);
     QTransform transform;
 
+    if( !model_->chromosomeCarBodyPtr_ )
+    {
+        p.drawText(QPointF(this->geometry().width()/2,this->geometry().height()/2), "Brak chromosomów");
+        p.end();
+        return;
+    }
     //Retrieve car position and angle
     b2Vec2 CarPosition = model_->chromosomeCarBodyPtr_->GetPosition();
     // Translation moves point (0;0) to the middle of the view
@@ -97,12 +109,10 @@ void View::paintEvent(QPaintEvent *event)
       }
     }
 
-
+    //Draw distance info
     std::stringstream s;
     s << "Przejechany dystans: " << CarPosition.x;
     std::string distanceMessage = s.str();
-
-
     QFont font;
     font.setPixelSize(18/DRAWING_SCALE);
     // Change scaling in Y axis, so the text won't be upside down

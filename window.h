@@ -17,24 +17,26 @@ class Window : public QWidget
     Q_OBJECT
 public:
     explicit Window();
-    void VisualiseChromosomeInWindow(Chromosome chomosome);
     void StartEvolution(unsigned long numberOfGenerations);
 
-    enum evolutionInputGenerationTypeEnum{ Random = 0, FromFile = 1 };
+    enum evolutionInputGenerationTypeEnum{ RANDOM = 0, FROMFILE = 1 };
 
     evolutionInputGenerationTypeEnum  evolutionInputGenerationType;
-    unsigned long numberOfEvolutionGenerationsInt_;
+    unsigned int numberOfEvolutionGenerationsInt_ = 5;
+    unsigned int numberOfVisualizedChromosome_ = 0;
 
 signals:
 
 private slots:
-    void evolutionInputGenerationTypeChanged();
+    void randomGenerationButtonClicked();
+    void fromFileButtonButtonClicked();
     void numberOfEvolutionGenerationsChanged();
+    void numberOfVisualizedChromosomeChanged();
     void evolutionStartButtonClicked();
 
 private:
 
-    EvolutionController evolutionController_{};
+    EvolutionController evolutionController_;
 
     Model model_;
     View view_;
@@ -43,11 +45,14 @@ private:
     QGridLayout mainLayout_;
     QPushButton evolutionStartButton_;
 
-    QLabel evolutionInputGenerationTypeLabel_;
+    QPushButton randomGenerationButton;
+    QPushButton fromFileButton;
     QLabel numberOfEvolutionGenerationsLabel_;
+    QLabel numberOfVisualizedChromosomeLabel_;
 
     QComboBox evolutionInputGenerationTypeComboBox_;
     QSpinBox numberOfEvolutionGenerationsSpinBox_;
+    QSpinBox numberOfVisualizedChromosomeSpinBox_;
 
 };
 

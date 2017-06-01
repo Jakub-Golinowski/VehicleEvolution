@@ -38,6 +38,8 @@ public:
 
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
+    void deleteCar();
+
     b2Body* chromosomeCarBodyPtr_;
     b2Body* groundBodyPtr_;
     std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;

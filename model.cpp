@@ -68,7 +68,7 @@ void Model::addTrack()
 {
     b2Body* testBody = addRectBody(-80.0f,0.0f,b2_staticBody, 0.0f);
     b2Vec2 points[300];
-    float x = -200.0;
+    float x = -150.0;
     // Set random number generation seed to 1, so the track appears as random, but doesn't change beetween instances
     std::default_random_engine trackGenerator;
     trackGenerator.seed(1);
@@ -223,7 +223,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         wheelToAxleJointDef.enableMotor=true;
         wheelToAxleJointDef.motorSpeed = 5;
         wheelToAxleJointDef.maxMotorTorque=1000;
-        b2Joint* wheelToAxleJoint = addRevoluteJoint(&wheelToAxleJointDef);
+        addRevoluteJoint(&wheelToAxleJointDef);
         //joint axle to car
         b2PrismaticJointDef axlePrismaticJointDef;
         axlePrismaticJointDef.lowerTranslation=-1;
@@ -233,13 +233,22 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         //axle
         b2Vec2 axis(0,1);
         axlePrismaticJointDef.Initialize(chromosomeCarBodyPtr_, axleBody, axleBody->GetWorldCenter(), axis);
-        b2Joint* axleToCarJoint= box2dWorld_.CreateJoint(&axlePrismaticJointDef);
+        box2dWorld_.CreateJoint(&axlePrismaticJointDef);
 
         WheelBodyPtrArray[wheelBodyPtrIterator] = wheelBody;
         ++wheelBodyPtrIterator;
     }
 
     return chromosomeCarBodyPtr_;
+}
+
+void Model::deleteCar()
+{
+    if(chromosomeCarBodyPtr_)
+    {
+        box2dWorld_.DestroyBody(chromosomeCarBodyPtr_);
+        chromosomeCarBodyPtr_ = nullptr;
+    }
 }
 
 void Model::simulate()

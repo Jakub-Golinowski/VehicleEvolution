@@ -26,7 +26,8 @@ public:
     void visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex);
     void visualizeSelectedChromosome(unsigned int chromosomeIndex);
     void initializeRandomFirstGeneration();
-    void selectionFromCurrentGeneration();    
+    void selectionFromCurrentGeneration();
+    Chromosome getChromosome(unsigned int chromosomeIndex);
     std::array<Chromosome, 2> crossoverParentChromosomes( const Chromosome& firstParent, const Chromosome& secondParent,
                                                           unsigned int firsCrossoverPoint, unsigned int secondCrossoverPoint);
     typedef std::pair<Chromosome, float> ChromosomeAndFitness;
@@ -38,11 +39,11 @@ public:
 
     static const float CAR_INITIAL_X_POSITION;
     static const float CAR_INITIAL_Y_POSITION;
+    static const unsigned long GENERATION_SIZE;
 
 private:
 
     static const unsigned long NUMBER_OF_WORLD_ITERATIONS;
-    static const unsigned long GENERATION_SIZE;
     static const unsigned long NUMBER_OF_SELECTED_CHROMOSOMES;
     static const float CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE;
     static const float WHEEL_MINIMAL_RADIUS;

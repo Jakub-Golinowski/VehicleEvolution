@@ -3,8 +3,8 @@
 
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
 const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
-const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 10000;
-const unsigned long EvolutionController::GENERATION_SIZE = 10;
+const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 1000;
+const unsigned long EvolutionController::GENERATION_SIZE = 30;
 const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 2;
 const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
 const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
@@ -94,7 +94,6 @@ std::string EvolutionController::generateChromosomeString(){
     for(int numberOfCoordinate=0; numberOfCoordinate<2*Chromosome::NUMBER_OF_VERTICES; ++numberOfCoordinate){
         float newCoordinate = coordinatesDistribution(randomNumberGenerator_);
         newChromosomeString +=std::to_string(newCoordinate);
-        //Add separator
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     //Generate random wheels
@@ -102,10 +101,8 @@ std::string EvolutionController::generateChromosomeString(){
         float newWheelRadius = wheelRadiusDistribution(randomNumberGenerator_);
         unsigned int newWheelVertexNumber = wheelVertexNumberDistribution(randomNumberGenerator_);
         newChromosomeString += std::to_string(newWheelRadius);
-        //Add separator
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
         newChromosomeString += std::to_string(newWheelVertexNumber);
-        //Add separator
         newChromosomeString += Chromosome::CHROMOSOME_STRING_SEPARATOR;
     }
     return newChromosomeString;
@@ -178,13 +175,14 @@ void EvolutionController::mutateCurrentGeneration()
 {
     for(ChromosomeAndFitness chromosomeAndFitness : currentGeneration_)
     {
-        //mutateChromosome();
+        mutateChromosome(chromosomeAndFitness.first);
     }
 }
 
 void EvolutionController::selectionFromCurrentGeneration()
 {
     selectedFromCurrentGeneration.clear();
+    // Fitness proportionate selection
     for(unsigned int i=0; i < NUMBER_OF_SELECTED_CHROMOSOMES; ++i){
         float fitnessSum = 0.0f;
         for( ChromosomeAndFitness chromosomeAndFitness : currentGeneration_){
@@ -202,6 +200,11 @@ void EvolutionController::selectionFromCurrentGeneration()
         selectedFromCurrentGeneration.push_back(*it);
         currentGeneration_.erase(it);
     }
+}
+
+Chromosome EvolutionController::getChromosome(unsigned int chromosomeIndex)
+{
+    return currentGeneration_.at(chromosomeIndex).first;
 }
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
