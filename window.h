@@ -5,13 +5,19 @@
 #include "controller.h"
 #include "renderarea.h"
 #include <QWidget>
+#include <QLabel>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QSpinBox>
 #include <QPushButton>
+#include <QGridLayout>
 #include "evolutioncontroller.h"
 
-class QCheckBox;
-class QComboBox;
-class QLabel;
-class QSpinBox;
+
+//class QCheckBox;
+//class QComboBox;
+//class QLabel;
+//class QSpinBox;
 
 class View;
 
@@ -37,20 +43,20 @@ private slots:
 
 private:
 
-    EvolutionController *evolutionController_;
+    EvolutionController evolutionController_{};
 
-    Model *model_;
-    QB2Draw *drawer_;
-    Controller *controller_;
-    View *view_;
+    Model model_;
+    View view_;
+    Controller controller_;
 
-    QPushButton *evolutionStartButton;
+    QGridLayout mainLayout;
+    QPushButton evolutionStartButton;
 
-    QLabel *evolutionInputGenerationTypeLabel;
-    QLabel *numberOfEvolutionGenerationsLabel;
+    QLabel evolutionInputGenerationTypeLabel;
+    QLabel numberOfEvolutionGenerationsLabel;
 
-    QComboBox *evolutionInputGenerationTypeComboBox;
-    QSpinBox *numberOfEvolutionGenerationsSpinBox;
+    QComboBox evolutionInputGenerationTypeComboBox;
+    QSpinBox numberOfEvolutionGenerationsSpinBox;
 
 };
 

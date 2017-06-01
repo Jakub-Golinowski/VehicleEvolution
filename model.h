@@ -12,9 +12,7 @@
 class Model
 {
 public:
-    Model(float gravityX, float gravityY, QB2Draw * drawer);
-
-    Model(float gravityX, float gravityY);
+    Model();
 
     void DrawModelData();
 
@@ -49,9 +47,10 @@ private:
     static const float32 BOX2D_TIMESTEP;
     static const int32 BOX2D_VELOCITY_ITERATIONS;
     static const int32 BOX2D_POSITION_ITERATIONS;
+    static const float WORLD_X_GRAVITY_VALUE;
+    static const float WORLD_y_GRAVITY_VALUE;
 
     b2World _box2dWorld;
-    QB2Draw* drawer_;
 };
 
 #endif // MODEL_H

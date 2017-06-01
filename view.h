@@ -14,7 +14,7 @@ class View : public QWidget
     Q_OBJECT
 public:
 
-   View(Model * model, QB2Draw * drawer);
+   View(Model * model);
    View();
 
    Model * _model;

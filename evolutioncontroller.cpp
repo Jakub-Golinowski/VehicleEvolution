@@ -207,7 +207,7 @@ void EvolutionController::selectionFromCurrentGeneration()
 
 void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 {
-    Model model(0.0f,-10.f);
+    Model model;
     model.addTrack();
     b2Body* evaluatedCar = model.addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
 
@@ -232,12 +232,11 @@ void EvolutionController::visualizeSelectedChromosome(unsigned int chromosomeInd
 
 void EvolutionController::visualizeChromosome(Chromosome chromosome)
 {
-    drawer = new QB2Draw(QRect(0,0,800,600));
-    drawer->SetFlags(0x0001);
-    model = new Model(0.0f,-10.f, drawer);
+
+    model = new Model;
     model->addTrack();
     model->addCarFromChromosome(chromosome, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
-    view = new View(model, drawer);
+    view = new View(model);
     view->setGeometry(0,0,800,600);
     //window->SetView(model, drawer);
     //view->show();

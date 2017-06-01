@@ -4,8 +4,7 @@
 
 const float32 View::DRAWING_SCALE = 6;
 
-View::View(Model * model, QB2Draw * drawer)
-    :_model(model), _drawer(drawer)
+View::View(Model * model):_model(model)
 {
 
 }
@@ -13,7 +12,6 @@ View::View(Model * model, QB2Draw * drawer)
 View::View()
 {
     _model=nullptr;
-    _drawer = nullptr;
 }
 
 void View::paintEvent(QPaintEvent *event)
