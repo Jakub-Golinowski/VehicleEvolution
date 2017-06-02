@@ -9,7 +9,7 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     evolutionInputGenerationTypeComboBox_.addItem(tr("Losowe"), evolutionInputGenerationTypeEnum::RANDOM);
     evolutionInputGenerationTypeComboBox_.addItem(tr("Plik"), evolutionInputGenerationTypeEnum::FROMFILE);
 
-    numberOfEvolutionGenerationsSpinBox_.setRange(1, 20);
+    numberOfEvolutionGenerationsSpinBox_.setRange(1, 50);
 
     numberOfEvolutionGenerationsLabel_.setText("Liczba iteracji algorytmu:");
     numberOfEvolutionGenerationsLabel_.setBuddy(&numberOfEvolutionGenerationsSpinBox_);
@@ -68,7 +68,7 @@ void Window::numberOfVisualizedChromosomeChanged()
         model_.deleteCar();
         model_.addCarFromChromosome(evolutionController_.getChromosome(numberOfVisualizedChromosome_),
                                     EvolutionController::CAR_INITIAL_X_POSITION, EvolutionController::CAR_INITIAL_Y_POSITION);
-        controller_.startSimulation(7);
+        controller_.startSimulation(10);
     }
 
 }

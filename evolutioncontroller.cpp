@@ -6,10 +6,10 @@ const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
 const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 10000;
 const unsigned long EvolutionController::GENERATION_SIZE = 30;
 const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 2;
-const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 10.0f;
-const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 7.0f;
+const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 13.0f;
+const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 10.0f;
 const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
-const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.01f;
+const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.05f;
 
 EvolutionController::EvolutionController(): controller_(nullptr), model_(nullptr), view_(nullptr)
 {
@@ -213,12 +213,12 @@ void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
     model.addTrack();
     b2Body* evaluatedCar = model.addCarFromChromosome(currentGeneration_.at(chromosomeIndex).first, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
 
+    float distanceTravelled = 0.0;
     for(unsigned int i=0; i<NUMBER_OF_WORLD_ITERATIONS; ++i){
         model.simulate();
+        if(distanceTravelled < evaluatedCar->GetPosition().x - CAR_INITIAL_X_POSITION)
+            distanceTravelled = evaluatedCar->GetPosition().x - CAR_INITIAL_X_POSITION;
     }
-
-    b2Vec2 finalPosition = evaluatedCar->GetPosition();
-    float distanceTravelled = finalPosition.x - CAR_INITIAL_X_POSITION;
     currentGeneration_.at(chromosomeIndex).second = calculateFitness(distanceTravelled);
 }
 
