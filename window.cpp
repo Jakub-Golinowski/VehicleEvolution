@@ -31,9 +31,6 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
             this, SLOT(numberOfVisualizedChromosomeChanged()));
     connect(&evolutionStartButton_, SIGNAL(clicked(bool)), this, SLOT(evolutionStartButtonClicked()));
 
-    view_.setFrameShape( view_.Box);
-    view_.setLineWidth(3);
-
     mainLayout_.setColumnStretch(0, 1);
     mainLayout_.setColumnStretch(3, 1);
     mainLayout_.addWidget(&view_, 0, 0, 1, 4, Qt::AlignCenter);

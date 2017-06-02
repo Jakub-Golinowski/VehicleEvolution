@@ -9,7 +9,7 @@
 #include "spawn.h"
 
 
-class View : public QFrame
+class View : public QWidget
 {
     Q_OBJECT
 public:
