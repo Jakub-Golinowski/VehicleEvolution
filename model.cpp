@@ -22,7 +22,7 @@ b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float an
     return box2dWorld_.CreateBody(&bodyDef);
 }
 
-b2Fixture* Model::addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
+b2Fixture* Model::addGroundChainFixture(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                    float density, float friction, float restitution, uint16 collisionGroup)
 {
     groundBodyPtr_ = parentBody;
@@ -62,7 +62,7 @@ void Model::addTrack()
 
         points[i].y = y;
     }
-    addGroundChainShape(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
+    addGroundChainFixture(testBody, points, 100, 1.0f, 0.3f, 0.3f, 0);
 }
 
 b2Body* Model::addWheelBody(float posX, float posY)
@@ -93,22 +93,6 @@ b2Fixture* Model::addWheelFixture(b2Body* parentBody, float radius, float densit
 b2Joint* Model::addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef)
 {
     return box2dWorld_.CreateJoint(dynamic_cast<b2JointDef*>(revoluteJointDef));
-}
-
-b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, float radius,
-                                   float density, float friction, float restitution)
-{
-    b2CircleShape circleShape;
-    circleShape.m_radius = radius;
-    circleShape.m_p.Set(posX,posY); // Position relative to parent body position
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &circleShape;
-    fixtureDef.density = density;
-    fixtureDef.friction = friction;
-    fixtureDef.restitution = restitution;
-
-    return parentBody->CreateFixture(&fixtureDef);
 }
 
 b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
