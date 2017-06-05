@@ -16,6 +16,8 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     numberOfVisualizedChromosomeLabel_.setText("Numer wyświetlanego chromosomu:");
     numberOfVisualizedChromosomeLabel_.setBuddy(&numberOfVisualizedChromosomeSpinBox_);
 
+    numberOfVisualizedGenerationLabel_.setText(QString("Numer generacji: %1").arg(currentGenerationNumber_));
+
     randomGenerationButton.setText("Wygeneruj losową generację pojazdów");
     evolutionStartButton_.setText("Start ewolucji");
     evolutionStartButton_.setDisabled(true);
@@ -26,15 +28,15 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
             this, SLOT(numberOfVisualizedChromosomeChanged()));
     connect(&evolutionStartButton_, SIGNAL(clicked(bool)), this, SLOT(evolutionStartButtonClicked()));
 
-    mainLayout_.setColumnStretch(0, 1);
     mainLayout_.setColumnStretch(3, 1);
     mainLayout_.addWidget(&view_, 0, 0, 1, 4, Qt::AlignCenter);
-    mainLayout_.addWidget(&numberOfVisualizedChromosomeLabel_, 1, 0, Qt::AlignLeft);
-    mainLayout_.addWidget(&numberOfVisualizedChromosomeSpinBox_, 1, 1, Qt::AlignLeft);
-    mainLayout_.addWidget(&randomGenerationButton, 2, 0, Qt::AlignLeft);
-    mainLayout_.addWidget(&numberOfEvolutionGenerationsLabel_, 3, 0, Qt::AlignLeft);
-    mainLayout_.addWidget(&numberOfEvolutionGenerationsSpinBox_, 3, 1, Qt::AlignLeft);
-    mainLayout_.addWidget(&evolutionStartButton_, 4,0, Qt::AlignCenter);
+    mainLayout_.addWidget(&numberOfVisualizedGenerationLabel_,1,0, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfVisualizedChromosomeLabel_, 2, 0, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfVisualizedChromosomeSpinBox_, 2, 1, Qt::AlignLeft);
+    mainLayout_.addWidget(&randomGenerationButton, 3, 0, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfEvolutionGenerationsLabel_, 4, 0, Qt::AlignLeft);
+    mainLayout_.addWidget(&numberOfEvolutionGenerationsSpinBox_, 4, 1, Qt::AlignLeft);
+    mainLayout_.addWidget(&evolutionStartButton_, 5,0, Qt::AlignCenter);
     setLayout(&mainLayout_);
 
     numberOfEvolutionGenerationsChanged();
@@ -82,6 +84,7 @@ void Window::finishedEvolutionHandler()
     numberOfVisualizedChromosomeSpinBox_.setDisabled(false);
     randomGenerationButton.setDisabled(false);
     numberOfEvolutionGenerationsSpinBox_.setDisabled(false);
+    numberOfVisualizedGenerationLabel_.setText(QString("Numer generacji: %1").arg(currentGenerationNumber_));
     numberOfVisualizedChromosomeChanged();
 }
 
@@ -95,6 +98,7 @@ void Window::doEvolution(){
 void Window::randomGenerationButtonClicked()
 {
     currentGenerationNumber_ = 1;
+    numberOfVisualizedGenerationLabel_.setText(QString("Numer generacji: %1").arg(currentGenerationNumber_));
     evolutionController_.initializeRandomFirstGeneration();
     evolutionStartButton_.setDisabled(false);
     numberOfVisualizedChromosomeChanged();
