@@ -7,6 +7,7 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     model_.addTrack();
 
     numberOfEvolutionGenerationsSpinBox_.setRange(1, 50);
+    numberOfEvolutionGenerationsSpinBox_.setValue(numberOfEvolutionGenerationsInt_);
 
     numberOfEvolutionGenerationsLabel_.setText("Liczba iteracji algorytmu:");
     numberOfEvolutionGenerationsLabel_.setBuddy(&numberOfEvolutionGenerationsSpinBox_);
@@ -39,18 +40,15 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     mainLayout_.addWidget(&evolutionStartButton_, 5,0, Qt::AlignCenter);
     setLayout(&mainLayout_);
 
-    numberOfEvolutionGenerationsChanged();
-
     setWindowTitle("Ewolucja pojazdów");
 
     connect(&evolutionWatcher, SIGNAL(finished()), this, SLOT(finishedEvolutionHandler()));
-
 
 }
 
 void Window::numberOfEvolutionGenerationsChanged()
 {
-    numberOfEvolutionGenerationsInt_ = numberOfEvolutionGenerationsSpinBox_.value();
+
 }
 
 void Window::numberOfVisualizedChromosomeChanged()
@@ -89,7 +87,6 @@ void Window::finishedEvolutionHandler()
 }
 
 void Window::doEvolution(){
-    //TODO: add checking evolutionInputGenerationType and reading from file
     evolutionController_.evolution(numberOfEvolutionGenerationsInt_);
     // Evaluate so, the user can view cars in sorted order
     evolutionController_.evaluateCurrentGeneration();

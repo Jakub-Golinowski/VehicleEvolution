@@ -10,7 +10,7 @@
  *
  * \section install_sec Application
  *
- * After user starts the application he/she generates new random population of cars. After specifying the number of generations user starts evolution process. When evolution process is finished user can all the cars from the latest generation by changing the car index in the graphical user interface.
+ * After user starts the application he/she generates new random population of cars. After specifying the number of generations user starts evolution process. When evolution process is finished user can view all the cars from the latest generation by changing the car index in the graphical user interface.
  */
 
 int main(int argc, char *argv[])
@@ -21,5 +21,4 @@ int main(int argc, char *argv[])
     window.show();
 
     return a.exec();
-
 }

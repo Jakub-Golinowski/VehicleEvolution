@@ -9,22 +9,12 @@ const float32 View::DRAWING_SCALE = 6;
 
 View::View(Model * model):model_(model)
 {
-}
-
-View::View()
-{
 
 }
-
-void View::setModel(Model *model)
-{
-    delete model_;
-    model_ = model;
-}
-
 
 void View::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
     //Set up the painter parameters
     QPainter p(this);
     p.setBrush(Qt::NoBrush);

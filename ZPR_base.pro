@@ -33,7 +33,6 @@ SOURCES += main.cpp \
     view.cpp \
     controller.cpp \
     chromosome.cpp \
-    wheel.cpp \
     evolutioncontroller.cpp \
     window.cpp
 

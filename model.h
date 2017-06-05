@@ -11,18 +11,18 @@
 class Model
 {
 public:
+    /*! Model constructor. It initializes the Box2D world with default gravity.
+     * \brief Model constructor
+     */
     Model();
-
     /*!
      * \brief wrapper for Box2D simulation step.
      */
     void simulate();
-
     /*!
      * \brief Adds track used to evaluate cars.
      */
     void addTrack();
-
     /*! Adds full car body from chromosome class. The car body is located in the coordinates given in the second and third argument.
      * \brief Adds full car body from chromosome class.
      * \param chromosome class that contains all the parameters needed to create a full car.
@@ -31,7 +31,6 @@ public:
      * \return poiter on newly created car body.
      */
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
-
     /*! Deletes the car body from the Box2D world. Sets the chromosomeCarBodyPtr_ to nullptr.
      * \brief Deletes the car body from the Box2D world.
      */
@@ -51,7 +50,6 @@ private:
      * \return pointer to newly created body.
      */
     b2Body* addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians);
-
     /*! Creates wheel body in Box2D world. The wheel body is centered in coordinates given as arguments
      * \brief Creates wheel body in Box2D world.
      * \param poxX x coordinate of the body center in Box2D world coordinate system.
@@ -59,7 +57,6 @@ private:
      * \return pointer to newly created WheelBody
      */
     b2Body* addWheelBody(float poxX, float posY);
-
     /*!
      * \brief Creates ground chain fixture which is used as a track used to evaluate cars.
      * \param parentBody body to which ground chain shape will be added.
@@ -73,14 +70,12 @@ private:
      */
     b2Fixture* addGroundChainFixture(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
                                        float density, float friction, float restitution, uint16 collisionGroup);
-
     /*!
      * \brief Adds revolute joint to the car model.
      * \param revoluteJointDef a data structer that contains revolute joint parameters.
      * \return pointer to the newly created joint.
      */
     b2Joint* addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef);
-
     /*!
      * \brief Adds wheel fixture that will be used to create a wheel as part od car.
      * \param parentBody body to which wheel fixture is attached (eg. car).
