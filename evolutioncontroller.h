@@ -9,7 +9,7 @@
 #include <iostream>
 
 /*!
- * \brief The EvolutionController class
+ * \brief The EvolutionController class controls and performs the genetic algorithm
  */
 
 class EvolutionController
@@ -52,10 +52,9 @@ private:
     std::string generateChromosomeString();
     void mutateChromosome(Chromosome &chromosome);
     void mutateCurrentGeneration();
+    void populateNewGeneration();
     float calculateFitness(float distanceTravelled);
-    Controller *controller_;
     Model *model_;
-    View *view_;
 };
 
 #endif // EVOLUTIONCONTROLLER_H

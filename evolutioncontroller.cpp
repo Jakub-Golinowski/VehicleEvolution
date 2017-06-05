@@ -11,7 +11,7 @@ const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 10.0f;
 const float EvolutionController::WHEEL_MINIMAL_RADIUS = 0.5f;
 const float EvolutionController::MUTATION_DECISION_THRESHOLD = 0.05f;
 
-EvolutionController::EvolutionController(): controller_(nullptr), model_(nullptr), view_(nullptr)
+EvolutionController::EvolutionController(): model_(nullptr)
 {
     // Set seed of randomNumberGenerator to true random number
     randomNumberGenerator_.seed(std::random_device()());
@@ -21,8 +21,6 @@ EvolutionController::EvolutionController(): controller_(nullptr), model_(nullptr
 EvolutionController::~EvolutionController()
 {
     delete model_;
-    delete controller_;
-    delete view_;
 }
 
 void EvolutionController::addChromosome(Chromosome newChromosome, float Fitness)
@@ -36,24 +34,28 @@ void EvolutionController::evolution(unsigned long numberOfGenerations)
     for(unsigned int i=0; i<numberOfGenerations;++i){
         evaluateCurrentGeneration();
         selectionFromCurrentGeneration();
-        // Create next generation. TODO: Move to another function
-        currentGeneration_.clear();
-        currentGeneration_ = selectedFromCurrentGeneration;
-        std::uniform_int_distribution<unsigned int> crossoverPointDistribution(0, Chromosome::NUMBER_OF_TOKENS-1);
-        while(currentGeneration_.size() < GENERATION_SIZE)
-        {
-            unsigned int firstCrossoverPoint = crossoverPointDistribution(randomNumberGenerator_);
-            unsigned int secondCrossoverPoint = crossoverPointDistribution(randomNumberGenerator_);
-            std::array<Chromosome, 2> newChromosomes = crossoverParentChromosomes(selectedFromCurrentGeneration.at(0).first, selectedFromCurrentGeneration.at(1).first, firstCrossoverPoint, secondCrossoverPoint);
-            addChromosome(newChromosomes[0]);
-            if(currentGeneration_.size() < GENERATION_SIZE)
-            {
-                addChromosome(newChromosomes[1]);
-            }
-        }
+        populateNewGeneration();
         mutateCurrentGeneration();
     }
     evaluateCurrentGeneration();
+}
+
+void EvolutionController::populateNewGeneration()
+{
+    currentGeneration_.clear();
+    currentGeneration_ = selectedFromCurrentGeneration;
+    std::uniform_int_distribution<unsigned int> crossoverPointDistribution(0, Chromosome::NUMBER_OF_TOKENS-1);
+    while(currentGeneration_.size() < GENERATION_SIZE)
+    {
+        unsigned int firstCrossoverPoint = crossoverPointDistribution(randomNumberGenerator_);
+        unsigned int secondCrossoverPoint = crossoverPointDistribution(randomNumberGenerator_);
+        std::array<Chromosome, 2> newChromosomes = crossoverParentChromosomes(selectedFromCurrentGeneration.at(0).first, selectedFromCurrentGeneration.at(1).first, firstCrossoverPoint, secondCrossoverPoint);
+        addChromosome(newChromosomes[0]);
+        if(currentGeneration_.size() < GENERATION_SIZE)
+        {
+            addChromosome(newChromosomes[1]);
+        }
+    }
 }
 
 void EvolutionController::evaluateCurrentGeneration()
@@ -220,31 +222,6 @@ void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
             distanceTravelled = evaluatedCar->GetPosition().x - CAR_INITIAL_X_POSITION;
     }
     currentGeneration_.at(chromosomeIndex).second = calculateFitness(distanceTravelled);
-}
-
-void EvolutionController::visualizeChromosomeFromCurrentGeneration(unsigned int chromosomeIndex)
-{
-    visualizeChromosome(currentGeneration_.at(chromosomeIndex).first);
-}
-
-void EvolutionController::visualizeSelectedChromosome(unsigned int chromosomeIndex)
-{
-    visualizeChromosome(selectedFromCurrentGeneration.at(chromosomeIndex).first);
-}
-
-void EvolutionController::visualizeChromosome(Chromosome chromosome)
-{
-
-    model_ = new Model;
-    model_->addTrack();
-    model_->addCarFromChromosome(chromosome, CAR_INITIAL_X_POSITION, CAR_INITIAL_Y_POSITION);
-    view_ = new View(model_);
-    view_->setGeometry(0,0,800,600);
-    //window->SetView(model, drawer);
-    //view->show();
-    controller_ = new Controller(model_, view_);
-    controller_->startSimulation(5);
-
 }
 
 float EvolutionController::calculateFitness(float distanceTravelled)
