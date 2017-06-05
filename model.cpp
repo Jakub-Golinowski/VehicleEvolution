@@ -12,16 +12,6 @@ Model::Model()
 {
 }
 
-b2Body* Model::addBody(float posX, float posY, b2BodyType bodyType, float angle_radians)
-{
-    b2BodyDef bodyDef;
-    bodyDef.position.Set(posX,posY);
-    bodyDef.type = bodyType;
-    bodyDef.angle = angle_radians;
-
-    return box2dWorld_.CreateBody(&bodyDef);
-}
-
 b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians)
 {
     b2BodyDef bodyDef;
@@ -30,22 +20,6 @@ b2Body* Model::addRectBody(float posX, float posY, b2BodyType bodyType, float an
     bodyDef.angle = angle_radians;
 
     return box2dWorld_.CreateBody(&bodyDef);
-}
-
-b2Fixture* Model::addRectFixture(b2Body *parentBody, float half_width, float half_height,
-                                   float density, float friction, float restitution, uint16 collisionGroup)
-{
-    b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(half_width, half_height); // Position relative to parent body position
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &polygonShape;
-    fixtureDef.density = density;
-    fixtureDef.friction = friction;
-    fixtureDef.restitution = restitution;
-    fixtureDef.filter.groupIndex = collisionGroup; //Ustawiam collision group na -1 -> fixtures z tej grupy nie zderzają się ze sobą.
-
-    return parentBody->CreateFixture(&fixtureDef);
 }
 
 b2Fixture* Model::addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
@@ -137,36 +111,6 @@ b2Fixture* Model::addCircleFixture(b2Body *parentBody, float posX, float posY, f
     return parentBody->CreateFixture(&fixtureDef);
 }
 
-void Model::addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity)
-{
-    b2Body* carBody = this->addRectBody(posX, posY, b2_dynamicBody, 0.0);
-    this->addRectFixture(carBody, width/2, height/2, 2.0, 0.5, 0.99, -1);
-
-    b2Body* leftWheelBody = this->addWheelBody(posX-width/2, posY-height/2);
-
-    this->addWheelFixture(leftWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
-
-    b2Body* rightWheelBody = this->addWheelBody(posX+width/2, posY-height/2);
-    this->addWheelFixture(rightWheelBody,wheelRadius, 1.0, 0.3, 0.3, -1);
-
-    b2RevoluteJointDef leftjointDef;
-    leftjointDef.enableMotor = true;
-    leftjointDef.maxMotorTorque=10000;
-    leftjointDef.motorSpeed = -1000;
-    leftjointDef.Initialize(carBody, leftWheelBody, leftWheelBody->GetWorldCenter());
-
-    this->addRevoluteJoint(&leftjointDef);
-
-    b2RevoluteJointDef rightjointDef;
-    rightjointDef.enableMotor = true;
-    rightjointDef.maxMotorTorque=10000;
-    rightjointDef.motorSpeed = -1000;
-    rightjointDef.Initialize(carBody, rightWheelBody, rightWheelBody->GetWorldCenter());
-
-    this->addRevoluteJoint(&rightjointDef);
-
-}
-
 b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float posY)
 {
     //CAR BODY DEFINITION
@@ -185,7 +129,6 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
     b2Vec2 centerPoint(posX, posY);
     b2PolygonShape triangleShape;
     for(int i = 0; i < Chromosome::NUMBER_OF_VERTICES; ++i){
-        //TODO -> known issue: w wypadku za małych odstępów pomiędzy punktami Box2D skleja je w jeden i jest błąd bo próubuje utworzyć trójkąt z mniej niż 3 wierzchołków
         triangleShape.Set(chromosome.CreateTriangleByIndexAndThridVertex(i,centerPoint).begin(),3);
         fixtureDef.shape = &triangleShape;
         chromosomeCarBodyPtr_->CreateFixture(&fixtureDef);
@@ -222,7 +165,7 @@ b2Body* Model::addCarFromChromosome(Chromosome chromosome, float posX, float pos
         wheelToAxleJointDef.Initialize(wheelBody,axleBody,wheelBody->GetWorldCenter());
         wheelToAxleJointDef.enableMotor=true;
         wheelToAxleJointDef.motorSpeed = 5;
-        wheelToAxleJointDef.maxMotorTorque=1000;
+        wheelToAxleJointDef.maxMotorTorque=1500;
         addRevoluteJoint(&wheelToAxleJointDef);
         //joint axle to car
         b2PrismaticJointDef axlePrismaticJointDef;

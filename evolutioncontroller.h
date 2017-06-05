@@ -7,12 +7,10 @@
 #include "controller.h"
 #include "Box2D/Box2D.h"
 #include <iostream>
-#include <fstream>
-#include <ctime>
-#include <string>
-#include <boost/lexical_cast.hpp>
-#include <regex>
 
+/*!
+ * \brief The EvolutionController class
+ */
 
 class EvolutionController
 {
@@ -33,9 +31,6 @@ public:
     typedef std::pair<Chromosome, float> ChromosomeAndFitness;
     std::vector<ChromosomeAndFitness> currentGeneration_;
     std::vector<ChromosomeAndFitness> selectedFromCurrentGeneration;
-
-    void saveCurrentGenerationToFile();
-    void ReadGenerationFromFile();
 
     static const float CAR_INITIAL_X_POSITION;
     static const float CAR_INITIAL_Y_POSITION;

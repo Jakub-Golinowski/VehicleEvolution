@@ -5,26 +5,29 @@
 #include "chromosome.h"
 
 
-
-// Model is basically a wrappe for b2World. It isn't dependent on the View object
-
+/*! Model is a wrapper for b2World. It isn't dependent on the View object.
+ * \brief Model is a wrapper for b2World. It isn't dependent on the View object
+ */
 class Model
 {
 public:
     Model();
 
-    void DrawModelData();
-
+    /*!
+     * \brief wrapper for Box2D simulation step.
+     */
     void simulate();
 
-    b2Body* addBody(float posX, float posY, b2BodyType bodyType, float angle_degrees);
-
+    /*!
+     * \brief Adds rectangular body to Box2D world.
+     * \param posX x coordinate of the body center in Box2D world coordinate system.
+     * \param posY y coordinate of the body center in Box2D world coordinate system.
+     * \param bodyType type of body (static/dynamic/kinematic).
+     * \param angle_radians initial body angle (in radians).
+     * \return pointer to newly created body.
+     */
     b2Body* addRectBody(float posX, float posY, b2BodyType bodyType, float angle_radians);
-    b2Body* addGroundBody(b2Vec2* vertices, unsigned int verticesCount);
-    b2Fixture* addRectFixture(b2Body *parentBody, float width, float height,
-                                       float density, float friction, float restitution, uint16 collisionGroup);
-    b2Fixture* addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
-                                       float density, float friction, float restitution, uint16 collisionGroup);
+
     void addTrack();
 
     b2Body* addWheelBody(float poxX, float posY);
@@ -33,8 +36,6 @@ public:
                                        float density, float friction, float restitution);
 
     b2Joint* addRevoluteJoint(b2RevoluteJointDef* revoluteJointDef);
-
-    void addSimpleCarBody(float posX, float posY, float width, float height, float wheelRadius, float angularVelocity);
 
     b2Body* addCarFromChromosome(Chromosome chromosome, float posX, float posY);
 
@@ -45,6 +46,20 @@ public:
     std::array<b2Body*, Chromosome::NUMBER_OF_WHEELS> WheelBodyPtrArray;
 
 private:
+    /*!
+     * \brief Creates ground chain shape which is a track used to evaluate cars.
+     * \param parentBody
+     * \param points
+     * \param pointsCount
+     * \param density
+     * \param friction
+     * \param restitution
+     * \param collisionGroup
+     * \return
+     */
+    b2Fixture* addGroundChainShape(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
+                                       float density, float friction, float restitution, uint16 collisionGroup);
+
     static const float32 BOX2D_TIMESTEP;
     static const int32 BOX2D_VELOCITY_ITERATIONS;
     static const int32 BOX2D_POSITION_ITERATIONS;

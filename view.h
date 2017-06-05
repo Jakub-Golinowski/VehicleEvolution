@@ -8,7 +8,6 @@
 #include "model.h"
 #include "spawn.h"
 
-
 class View : public QWidget
 {
     Q_OBJECT
