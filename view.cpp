@@ -35,7 +35,7 @@ void View::paintEvent(QPaintEvent *event)
 
     if( !model_->chromosomeCarBodyPtr_ )
     {
-        p.drawText(QPointF(this->geometry().width()/2,this->geometry().height()/2), "Brak chromosomów");
+        p.drawText(this->geometry(), Qt::AlignCenter, "Brak chromosomów, wygeneruj pierwszą populację");
         p.end();
         return;
     }

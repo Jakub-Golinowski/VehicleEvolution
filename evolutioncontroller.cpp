@@ -4,7 +4,7 @@
 const float EvolutionController::CAR_INITIAL_X_POSITION = 0.0;
 const float EvolutionController::CAR_INITIAL_Y_POSITION = 15.0;
 const unsigned long EvolutionController::NUMBER_OF_WORLD_ITERATIONS = 10000;
-const unsigned long EvolutionController::GENERATION_SIZE = 30;
+const unsigned long EvolutionController::GENERATION_SIZE = 20;
 const unsigned long EvolutionController::NUMBER_OF_SELECTED_CHROMOSOMES = 2;
 const float EvolutionController::CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE = 13.0f;
 const float EvolutionController::WHEEL_MAXIMAL_RADIUS = 10.0f;

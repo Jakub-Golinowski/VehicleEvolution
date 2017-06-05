@@ -6,9 +6,6 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
 {
     model_.addTrack();
 
-    evolutionInputGenerationTypeComboBox_.addItem(tr("Losowe"), evolutionInputGenerationTypeEnum::RANDOM);
-    evolutionInputGenerationTypeComboBox_.addItem(tr("Plik"), evolutionInputGenerationTypeEnum::FROMFILE);
-
     numberOfEvolutionGenerationsSpinBox_.setRange(1, 50);
 
     numberOfEvolutionGenerationsLabel_.setText("Liczba iteracji algorytmu:");
@@ -20,13 +17,11 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     numberOfVisualizedChromosomeLabel_.setBuddy(&numberOfVisualizedChromosomeSpinBox_);
 
     randomGenerationButton.setText("Wygeneruj losową generację pojazdów");
-    fromFileButton.setText("Wczytaj generację pojazdów z pliku");
     evolutionStartButton_.setText("Start ewolucji");
+    evolutionStartButton_.setDisabled(true);
 
     connect(&randomGenerationButton, SIGNAL(clicked(bool)),
             this, SLOT(randomGenerationButtonClicked()));
-    connect(&fromFileButton, SIGNAL(clicked(bool)),
-            this, SLOT(fromFileButtonButtonClicked()));
     connect(&numberOfVisualizedChromosomeSpinBox_, SIGNAL(valueChanged(int)),
             this, SLOT(numberOfVisualizedChromosomeChanged()));
     connect(&evolutionStartButton_, SIGNAL(clicked(bool)), this, SLOT(evolutionStartButtonClicked()));
@@ -37,7 +32,6 @@ Window::Window(): view_(&model_), controller_(&model_, &view_)
     mainLayout_.addWidget(&numberOfVisualizedChromosomeLabel_, 1, 0, Qt::AlignLeft);
     mainLayout_.addWidget(&numberOfVisualizedChromosomeSpinBox_, 1, 1, Qt::AlignLeft);
     mainLayout_.addWidget(&randomGenerationButton, 2, 0, Qt::AlignLeft);
-    mainLayout_.addWidget(&fromFileButton, 2, 1, Qt::AlignLeft);
     mainLayout_.addWidget(&numberOfEvolutionGenerationsLabel_, 3, 0, Qt::AlignLeft);
     mainLayout_.addWidget(&numberOfEvolutionGenerationsSpinBox_, 3, 1, Qt::AlignLeft);
     mainLayout_.addWidget(&evolutionStartButton_, 4,0, Qt::AlignCenter);
@@ -61,7 +55,7 @@ void Window::numberOfVisualizedChromosomeChanged()
 {
     if( evolutionController_.currentGeneration_.size())
     {
-        numberOfVisualizedChromosome_ = numberOfVisualizedChromosomeSpinBox_.value()-1;
+        numberOfVisualizedChromosome_ = EvolutionController::GENERATION_SIZE - (numberOfVisualizedChromosomeSpinBox_.value());
         model_.deleteCar();
         model_.addCarFromChromosome(evolutionController_.getChromosome(numberOfVisualizedChromosome_),
                                     EvolutionController::CAR_INITIAL_X_POSITION, EvolutionController::CAR_INITIAL_Y_POSITION);
@@ -72,7 +66,11 @@ void Window::numberOfVisualizedChromosomeChanged()
 
 void Window::evolutionStartButtonClicked()
 {
+    currentGenerationNumber_ += numberOfEvolutionGenerationsSpinBox_.value();
     evolutionStartButton_.setDisabled(true);
+    numberOfVisualizedChromosomeSpinBox_.setDisabled(true);
+    randomGenerationButton.setDisabled(true);
+    numberOfEvolutionGenerationsSpinBox_.setDisabled(true);
     // Run evolution in separate thread from GUI
     evolutionFuture = QtConcurrent::run(this, &Window::doEvolution);
     evolutionWatcher.setFuture(evolutionFuture);
@@ -81,6 +79,10 @@ void Window::evolutionStartButtonClicked()
 void Window::finishedEvolutionHandler()
 {
     evolutionStartButton_.setDisabled(false);
+    numberOfVisualizedChromosomeSpinBox_.setDisabled(false);
+    randomGenerationButton.setDisabled(false);
+    numberOfEvolutionGenerationsSpinBox_.setDisabled(false);
+    numberOfVisualizedChromosomeChanged();
 }
 
 void Window::doEvolution(){
@@ -92,11 +94,9 @@ void Window::doEvolution(){
 
 void Window::randomGenerationButtonClicked()
 {
+    currentGenerationNumber_ = 1;
     evolutionController_.initializeRandomFirstGeneration();
-}
-
-void Window::fromFileButtonButtonClicked()
-{
-
+    evolutionStartButton_.setDisabled(false);
+    numberOfVisualizedChromosomeChanged();
 }
 
