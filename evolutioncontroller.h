@@ -8,6 +8,7 @@
 #include "Box2D/Box2D.h"
 #include <iostream>
 
+
 /*!
  * \brief The EvolutionController class controls and performs the genetic algorithm
  */
@@ -65,8 +66,9 @@ public:
     static const float CAR_INITIAL_Y_POSITION;
     static const unsigned long GENERATION_SIZE;
 
-private:
-
+#ifndef UNIT_TEST
+    private:
+#endif
     static const unsigned long NUMBER_OF_WORLD_ITERATIONS;
     static const unsigned long NUMBER_OF_SELECTED_CHROMOSOMES;
     static const float CAR_MAXIMUM_ABSOLUTE_COORDINATE_VALUE;
