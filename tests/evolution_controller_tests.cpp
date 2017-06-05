@@ -3,8 +3,6 @@
 #include "../evolutioncontroller.h"
 BOOST_AUTO_TEST_SUITE(EVOLUTION_CONTROLLER_CLASS_TEST_SUITE)
 
-
-
 BOOST_AUTO_TEST_CASE(EVALUATION_TEST)
 {
     EvolutionController evolutionController;

@@ -69,8 +69,9 @@ public:
     WheelsArray_t getWheels();
     TokenizedChromosomeString_t chromosomeTokens_;
 
-
-private:
+#ifndef UNIT_TEST
+    private:
+#endif
     /*! Forms a pair of vertices from the vertex indicated by index and the vertex indicated by index+1 in vertices_ field.
      * \brief Creates a pair of vertex(index) and vertex(index+1)
      * \param index
