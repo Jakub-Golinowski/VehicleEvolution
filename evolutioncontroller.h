@@ -96,11 +96,6 @@ public:
      */
     std::array<Chromosome, 2> crossoverParentChromosomes( const Chromosome& firstParent, const Chromosome& secondParent,
                                                           unsigned int firsCrossoverPoint, unsigned int secondCrossoverPoint);
-    /*! Adds track to model
-     * \brief Adds track to model
-     * \param Reference to model
-    */
-    void addTrackToModel( Model& model_);
     /*! Generates random chromosome string
      * \brief Generates random chromosome string
      * \return New chromosome string

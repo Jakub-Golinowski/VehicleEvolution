@@ -233,7 +233,6 @@ void EvolutionController::evaluateChromosome(unsigned int chromosomeIndex)
 
 float EvolutionController::calculateFitness(float distanceTravelled)
 {
-    // TODO: implement fitness function
     if(distanceTravelled < 0.0f) distanceTravelled = 0.0f;
     return std::pow(distanceTravelled,2.0);
 }
