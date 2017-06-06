@@ -31,12 +31,6 @@ public:
      * \brief EvolutionController destructor
      */
     ~EvolutionController();
-    /*! Adds new chromosome to currentGeneration_ vector and sets it's fitness
-     * \brief Adds new chromosome to currentGeneration_ vector
-     * \param new chromosome object
-     * \param new chromosome fitness value (default 0.0)
-     */
-    void addChromosome(Chromosome newChromosome, float Fitness = 0.0);
     /*! Performs given amount of iterations of the genetic algorithm
      * \brief Performs genetic algorithm
      * \param Number of iterations of the genetic algorithm to be performed
@@ -46,19 +40,10 @@ public:
      * \brief Performs evaluation for the current generation
      */
     void evaluateCurrentGeneration();
-    /*! Evaluates the selected chromosome in currentGeneration_ vector
-     * \brief Evalutes the selected chromosome
-     * \param Index of the chromosome to be evaluated
-     */
-    void evaluateChromosome( unsigned int chromosomeIndex);
     /*! Fills the currentGeneration_ vector with randomly generated chromosomes
      * \brief Generates random chromosomes
     */
     void initializeRandomFirstGeneration();
-    /*! Performs selection algorithm on the currentGeneration_ vector
-     * \brief Performs the selection algorithm
-     */
-    void selectionFromCurrentGeneration();
     /*! Return chromosome from the currentGeneration_ vector
      * \brief Returns chromosome
      * \param Index of the chromosome to be returned
@@ -86,6 +71,17 @@ public:
     std::default_random_engine randomNumberGenerator_;
     Model *model_;
 
+    /*! Adds new chromosome to currentGeneration_ vector and sets it's fitness
+     * \brief Adds new chromosome to currentGeneration_ vector
+     * \param new chromosome object
+     * \param new chromosome fitness value (default 0.0)
+     */
+    void addChromosome(Chromosome newChromosome, float Fitness = 0.0);
+    /*! Evaluates the selected chromosome in currentGeneration_ vector
+     * \brief Evalutes the selected chromosome
+     * \param Index of the chromosome to be evaluated
+     */
+    void evaluateChromosome( unsigned int chromosomeIndex);
     /*! Performs crossover between two parent chromosomes and given points in chromosomes
      * \brief Performs crossover
      * \param First parent
@@ -120,6 +116,10 @@ public:
      * \return Output of the fitness function
     */
     float calculateFitness(float distanceTravelled);
+    /*! Performs selection algorithm on the currentGeneration_ vector
+     * \brief Performs the selection algorithm
+     */
+    void selectionFromCurrentGeneration();
 
 };
 
