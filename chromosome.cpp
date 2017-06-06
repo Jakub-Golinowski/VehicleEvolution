@@ -1,3 +1,10 @@
+/*!
+ * @file chromosome.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Chromosome class implementation
+ */
+
 #include "chromosome.h"
 
 const std::string Chromosome::CHROMOSOME_STRING_SEPARATOR = " ";

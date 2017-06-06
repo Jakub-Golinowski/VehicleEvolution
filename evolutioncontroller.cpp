@@ -1,3 +1,10 @@
+/*!
+ * @file evolutioncontroller.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief EvolutionController class implementation
+ */
+
 #include "evolutioncontroller.h"
 #include <random>
 

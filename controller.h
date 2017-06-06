@@ -1,3 +1,10 @@
+/*!
+ * @file controller.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for Controller class
+ */
+
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 

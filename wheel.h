@@ -1,3 +1,10 @@
+/*!
+ * @file wheel.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for Wheel class (there is no .cpp file)
+ */
+
 #ifndef WHEEL_H
 #define WHEEL_H
 

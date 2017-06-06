@@ -1,3 +1,10 @@
+/*!
+ * @file view.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for View class
+ */
+
 #ifndef VIEW_H
 #define VIEW_H
 

@@ -1,3 +1,10 @@
+/*!
+ * @file model.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Model class implementation
+ */
+
 #include "model.h"
 
 

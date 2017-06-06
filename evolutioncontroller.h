@@ -1,3 +1,10 @@
+/*!
+ * @file evolutioncontroller.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for EvolutionController class
+ */
+
 #ifndef EVOLUTIONCONTROLLER_H
 #define EVOLUTIONCONTROLLER_H
 

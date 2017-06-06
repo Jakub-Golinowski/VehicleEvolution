@@ -1,3 +1,10 @@
+/*!
+ * @file window.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for Window class
+ */
+
 #ifndef WINDOW_H
 #define WINDOW_H
 

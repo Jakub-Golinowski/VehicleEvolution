@@ -1,3 +1,10 @@
+/*!
+ * @file model.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for Model class
+ */
+
 #ifndef MODEL_H
 #define MODEL_H
 

@@ -1,3 +1,10 @@
+/*!
+ * @file controller.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Controller class implementation
+ */
+
 #include "controller.h"
 
 Controller::Controller(Model * model, View * view) : model_(model), view_(view)

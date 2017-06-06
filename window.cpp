@@ -1,3 +1,10 @@
+/*!
+ * @file window.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Window class implementation
+ */
+
 #include "window.h"
 #include "evolutioncontroller.h"
 

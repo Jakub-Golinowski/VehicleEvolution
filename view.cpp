@@ -1,3 +1,10 @@
+/*!
+ * @file View.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief View class implementation
+ */
+
 #include "view.h"
 #include <vector>
 #include <QPen>

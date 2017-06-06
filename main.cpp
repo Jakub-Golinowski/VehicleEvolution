@@ -1,3 +1,10 @@
+/*!
+ * @file main.cpp
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Program main function.
+ */
+
 #include <QApplication>
 #include "window.h"
 

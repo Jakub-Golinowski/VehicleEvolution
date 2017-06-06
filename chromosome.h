@@ -1,3 +1,10 @@
+/*!
+ * @file chromosome.h
+ * @author J.Golinowski, P. Sykulski
+ * @date June 2017
+ * @brief Header file for Chromosome class
+ */
+
 #ifndef CHROMOSOME_H
 #define CHROMOSOME_H
 
