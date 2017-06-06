@@ -43,6 +43,9 @@ private:
     Model * model_;
 
     static const float32 DRAWING_SCALE;
+    static const int PEN_WIDTH;
+    static const float32 ORIGINAL_PIXEL_SIZE;
+    static const float DISTANCE_STRING_PROPER_PLACEMENT_COEFFICIENT;
 };
 
 #endif // VIEW_H

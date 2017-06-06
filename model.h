@@ -69,7 +69,7 @@ private:
      * \return Chain shape fixture.
      */
     b2Fixture* addGroundChainFixture(b2Body *parentBody, b2Vec2 * points, unsigned int pointsCount,
-                                       float density, float friction, float restitution, uint16 collisionGroup);
+                                       float density, float friction, float restitution, int16 collisionGroup);
     /*!
      * \brief Adds revolute joint to the car model.
      * \param revoluteJointDef a data structer that contains revolute joint parameters.
@@ -86,8 +86,38 @@ private:
      * \param collisionGroup number denoting a group to which shape will belong. Shapes in the same group of negative value do not collide.
      * \return Wheel Fixture
      */
-    b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, uint16 collisionGroup);
+    b2Fixture* addWheelFixture(b2Body* parentBody, float radius, float density, float friction, float restitution, int16 collisionGroup);
 
+    static const float TRACK_FIXTURE_DENSITY;
+    static const float TRACK_FIXTURE_FRICTION;
+    static const float TRACK_FIXTURE_RESTITUTION;
+    static const int16 TRACK_FIXTURE_COLLISION_GROUP;
+    static const float TRACK_BODY_CENTER_X_COORDINATE;
+    static const float TRACK_BODY_CENTER_Y_COORDINATE;
+    static const float TRACK_BODY_ANGLE_RADS;
+    static const float TRACK_POINTS_SPACING;
+    static const int TRACK_BODY_NUMBER_OF_FLAT_POINTS;
+    static const float TRACK_Y_MIN_VALUE;
+    static const float TRACK_Y_MAX_VALUE;
+    static const int NUMBER_OF_TRACK_POINTS;
+    static const float FITST_TRACK_POINT_X_COORDINATE;
+    static const float CARBODY_FIXTURE_DENSITY;
+    static const float CARBODY_FIXTURE_FRICTION;
+    static const float CARBODY_FIXTURE_RESTITUTION;
+    static const int16 CARBODY_FIXTURE_COLLISION_GROUP;
+    static const float AXLE_SHAPE_RECT_SIDE_LENGTH;
+    static const float AXLE_FIXTURE_DENSITY;
+    static const float AXLE_FIXTURE_FRICTION;
+    static const float AXLE_FIXTURE_RESTITUTION;
+    static const int16 AXLE_FIXTURE_GROUP_INDEX;
+    static const float WHEEL_FIXTURE_DENSITY;
+    static const float WHEEL_FIXTURE_FRICTION;
+    static const float WHEEL_FIXTURE_RESTITUTION;
+    static const int16 WHEEL_FIXTURE_COLLISION_GROUP;
+    static const float WHEEL_MOTOR_SPEED;
+    static const float WHEEL_MAX_MOTOR_TORQUE;
+    static const float PRISMATIC_JOINT_LOWER_TRANSLATION;
+    static const float PRISMATIC_JOINT_UPPER_TRANSLATION;
     static const float32 BOX2D_TIMESTEP;
     static const int32 BOX2D_VELOCITY_ITERATIONS;
     static const int32 BOX2D_POSITION_ITERATIONS;

@@ -5,7 +5,11 @@
 #include <QTransform>
 #include <sstream>
 
-const float32 View::DRAWING_SCALE = 6;
+const float32 View::DRAWING_SCALE = 6.0;
+const int View::PEN_WIDTH = 1;
+const float32 View::ORIGINAL_PIXEL_SIZE = 18.0;
+const float View::DISTANCE_STRING_PROPER_PLACEMENT_COEFFICIENT = 3.0;
+
 
 View::View(Model * model):model_(model)
 {
@@ -19,13 +23,13 @@ void View::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.setBrush(Qt::NoBrush);
     QPen pen;
-    pen.setWidth(1);
+    pen.setWidth(PEN_WIDTH);
     p.setPen(pen);
     QTransform transform;
 
     if( !model_->chromosomeCarBodyPtr_ )
     {
-        p.drawText(this->geometry(), Qt::AlignCenter, "Brak chromosomów, wygeneruj pierwszą populację");
+        p.drawText(this->geometry(), Qt::AlignCenter, "Brak chromosomów, wygeneruj pierwszą populację.");
         p.end();
         return;
     }
@@ -104,12 +108,12 @@ void View::paintEvent(QPaintEvent *event)
     s << "Przejechany dystans: " << CarPosition.x;
     std::string distanceMessage = s.str();
     QFont font;
-    font.setPixelSize(18/DRAWING_SCALE);
+    font.setPixelSize(ORIGINAL_PIXEL_SIZE/DRAWING_SCALE);
     // Change scaling in Y axis, so the text won't be upside down
     transform.scale(1,-1);
     p.setFont(font);
     p.setTransform(transform);
-    p.drawText(QPointF((CarPosition.x-this->geometry().height()/(3*DRAWING_SCALE)), -(CarPosition.y - this->geometry().height()/(3*DRAWING_SCALE))), QString::fromStdString(distanceMessage) );
+    p.drawText(QPointF((CarPosition.x-this->geometry().height()/(DISTANCE_STRING_PROPER_PLACEMENT_COEFFICIENT*DRAWING_SCALE)), -(CarPosition.y - this->geometry().height()/(DISTANCE_STRING_PROPER_PLACEMENT_COEFFICIENT*DRAWING_SCALE))), QString::fromStdString(distanceMessage) );
 
     p.end();
 }
